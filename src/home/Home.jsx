@@ -153,7 +153,7 @@ function Home() {
                 <li><IoCheckmarkDoneSharp style={{ color: '#ffb923' }} /> Enhanced Patient Satisfaction</li>
               </ul>
               <div className="btn-box">
-                <Link to="/" className="btn btn-primary">Learn More</Link>
+                <Link to="/about" className="btn btn-primary">Learn More</Link>
               </div>
             </div>
           </Col>

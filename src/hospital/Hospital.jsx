@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import Pagetitle from '../patients/Pagetitle'
 import hospitalad from '../img/hospitalad.jpg';
 import { Container, Row, Col, Image } from 'react-bootstrap';
@@ -16,6 +16,33 @@ import Hospitaldesc from './Hospitaldesc';
 import { MdArrowForwardIos } from "react-icons/md";
 
 function Hospital() {
+
+  const [hospitalData, setHospitalData] = useState([]);
+
+  useEffect(() => {
+    // Dummy data
+    const dummyData = [
+      {
+        mainheading: 'Sterling Hospital',
+        headings: ['Alkapuri', 'Gotri']
+      },
+      {
+        mainheading: 'Medkart Pharmacy',
+        headings: ['Alkapuri', 'Gotri', 'Manjalpur']
+      },
+      {
+        mainheading: 'Another Hospital',
+        headings: ['Location1', 'Location2']
+      },
+      {
+        mainheading: 'Another Hospital',
+        headings: ['Location1', 'Location2']
+      }
+    ];
+
+    // Set the dummy data to state
+    setHospitalData(dummyData);
+  }, []);
   const location = [
     "Alkapuri",
     "Bhayli",
@@ -45,6 +72,7 @@ function Hospital() {
     // Other hospital objects
   ];
 
+  
   
     const [open1, setOpen1] = useState(true);
     const [open2, setOpen2] = useState(true);
@@ -212,14 +240,18 @@ navigatelink="/hospital-login"
 
   <div className="col-lg-8 col-md-12">
   <div className="row mt-3">
-    <div className="col-lg-6 col-md-6 col-12">
-      <Hospitaldesc
-      hospitalimage={sterling}
-      mainheading="Sterling Hospital"
-      headings={['Alkapuri', 'Gotri']} 
-      />
-    </div>
-    <div className="col-lg-6 col-md-6 col-12">
+ 
+      {hospitalData.map((hospital, index) => (
+        <div className="col-lg-6 col-md-6 col-12" key={index}>
+          <Hospitaldesc
+            hospitalimage={hospital.mainheading === 'Sterling Hospital' ? sterling : sterling} // Example logic for assigning images
+            mainheading={hospital.mainheading}
+            headings={hospital.headings.map((heading, idx) => <span className='headingspan' key={idx}>{heading}</span>)}
+          />
+        </div>
+      ))}
+  
+    {/* <div className="col-lg-6 col-md-6 col-12">
 <Hospitaldesc
 
   hospitalimage={zydus}
@@ -240,7 +272,7 @@ navigatelink="/hospital-login"
       mainheading="Gujrat Hospital"
       headings={['Alkapuri', 'Karelibaug']} 
       />
-    </div>
+    </div> */}
   </div>
 </div>
 

@@ -21,10 +21,10 @@ function Footer() {
             <div className="single-footer-widget ms-5">
               <h3>Useful Links</h3>
               <ul className="useful-links-list">
-                <li><Link to="/">About Us</Link></li>
-                <li><Link to="/">Contact Us</Link></li>
-                <li><Link to="/">Privacy Policy</Link></li>
-                <li><Link to="/">Terms and Conditions</Link></li>
+                <li><Link to="/about">About Us</Link></li>
+                <li><Link to="/contact">Contact Us</Link></li>
+                <li><Link to="/privacy-policies">Privacy Policy</Link></li>
+                <li><Link to="/terms-condition">Terms and Conditions</Link></li>
               </ul>
             </div>
           </Col>

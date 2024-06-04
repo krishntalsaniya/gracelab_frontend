@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Pagetitle from '../patients/Pagetitle'
 import hospitalad from '../img/hospitalad.jpg';
 import { Container, Row, Col, Image } from 'react-bootstrap';
@@ -15,8 +15,49 @@ import { Hospitalad,Hospitallable,Hospitalname } from '../hospital/Hospitallable
 import Hospitalsearch from '../hospital/Hospitalsearch';
 import Hospitaldesc from '../hospital/Hospitaldesc';
 import { MdArrowForwardIos } from "react-icons/md";
+import axios from 'axios';
+
+
+
 
 function Pharmacy() {
+  const [pharmacylist, setpharmacylist] = useState(null)
+  const [pharmacylocation, setpharmacylocation] = useState(null)
+
+  useEffect(() => {
+    
+  const Pharmacylist = async () =>{
+    try {
+      const pharmactl = await axios.get(
+        `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listPharmacies`
+      )
+      setpharmacylist(pharmactl.data)
+      console.log("Pharmacy list : ",pharmactl.data)
+
+    } catch (error) {
+      console.log('Error Show : ',error)
+    }
+  };
+  Pharmacylist ();
+
+  const Pharmacylocation = async () =>{
+
+    try {
+      const locationp = await axios.get(
+        `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/location/city`
+      )
+      setpharmacylocation(locationp.data)
+      console.log('Pharmacy Location: ',locationp.data)
+
+      
+    } catch (error) {
+      console.log('Error :', error)
+    }
+  };
+  Pharmacylocation();
+   
+  }, [])
+  
   const location = [
     "Alkapuri",
     "Bhayli",
@@ -103,8 +144,8 @@ navigatelink="/pharmacy-login"
                   <Hospitalsearch />
                 </form>
                 <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
-                {location.map((label, index) => (
-                <Hospitallable key={index} label={label} size="6" />
+                {pharmacylocation?.map((locationpha) => (
+                <Hospitallable label={locationpha.Name} size="6" />
               ))}
                  {/* Render additional labels only if showMore is true */}
                  
@@ -132,8 +173,8 @@ navigatelink="/pharmacy-login"
                  <Hospitalsearch />
                 </form>
                 <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
-                {pharmacyname.map((label, index) => (
-                <Hospitallable key={index} label={label} size="12" />
+                {pharmacylist?.map((listshow) => (
+                <Hospitallable label={listshow.PharmacyName} size="12" />
               ))}
                  {/* Render additional labels only if showMore is true */}
                  

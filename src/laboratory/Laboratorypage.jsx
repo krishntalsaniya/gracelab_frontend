@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Pagetitle from '../patients/Pagetitle'
 import hospitalad from '../img/hospitalad.jpg';
 import { Container, Row, Col, Image } from 'react-bootstrap';
@@ -14,30 +14,79 @@ import { Hospitalad,Hospitallable,Hospitalname } from '../hospital/Hospitallable
 import Hospitalsearch from '../hospital/Hospitalsearch';
 import Hospitaldesc from '../hospital/Hospitaldesc';
 import { MdArrowForwardIos } from "react-icons/md";
+import axios from 'axios';
 
 function Laboratorypage() {
+  const [loc, setloc] = useState(null)
+  const [lab, setlab] = useState(null)
+  const [labtest, setlabtest] = useState(null)
+  useEffect(() => {
+    const fetchAllLocations = async () => {
+      try {
+        const location = await axios.get(
+          `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/location/city`
+        );
+        setloc(location.data);
+        console.log("all", location.data);
+      } catch (error) {
+        console.log("Error : ", error);
+      }
+    };
+    fetchAllLocations();
 
-    const hospitals = [
-        { id: 1, name: 'Divine Lab' },
-        { id: 2, name: 'Baroda Laboratory' },
-        { id: 3, name: 'Desai Urological & Maternity Hospital' },
-        { id: 4, name: 'Gayatri Pathological Laboratory' },
-        { id: 5, name: 'Khushbu Pathology Laboratory' },
-        { id: 6, name: 'Dr. Soni Laboratory' },
+    const fetchAllLaboratory = async () => {
+      try {
+        const laboratory = await axios.get(
+          `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listLaborateries`
+        );
+        setlab(laboratory.data);
+        console.log("laboratory", laboratory.data);
+      } catch (error) {
+        console.log("Error : ", error);
+      }
+    };
+    fetchAllLaboratory();
+
+    const fetchLaboratorytest = async  () => {
+
+      try{
+        const test = await axios.get(
+          `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/get/getAllLabTests`
+        )
+        setlabtest(test.data)
+        console.log("labtest",test.data)
+      }catch (error)
+      {
+        console.log("errors: ",error)
+      }
+    }
+    fetchLaboratorytest();
+
+    
+  
+  }, []);
+
+    // const hospitals = [
+    //     { id: 1, name: 'Divine Lab' },
+    //     { id: 2, name: 'Baroda Laboratory' },
+    //     { id: 3, name: 'Desai Urological & Maternity Hospital' },
+    //     { id: 4, name: 'Gayatri Pathological Laboratory' },
+    //     { id: 5, name: 'Khushbu Pathology Laboratory' },
+    //     { id: 6, name: 'Dr. Soni Laboratory' },
         
-        // Other hospital objects
-      ];
-      const Speciality = [
-        { id: 1, name: 'Genetic tests' },
-        { id: 2, name: 'Hematology tests' },
-        { id: 3, name: 'Hormone tests' },
-        { id: 4, name: 'Immunological tests' },
-        { id: 5, name: 'Infectious serology tests' },
-        { id: 6, name: 'Microbiological tests' },
+    //     // Other hospital objects
+    //   ];
+      // const Speciality = [
+      //   { id: 1, name: 'Genetic tests' },
+      //   { id: 2, name: 'Hematology tests' },
+      //   { id: 3, name: 'Hormone tests' },
+      //   { id: 4, name: 'Immunological tests' },
+      //   { id: 5, name: 'Infectious serology tests' },
+      //   { id: 6, name: 'Microbiological tests' },
       
         
-        // Other hospital objects
-      ];
+      //   // Other hospital objects
+      // ];
 
   
     const [open1, setOpen1] = useState(true);
@@ -47,29 +96,29 @@ function Laboratorypage() {
     const [laboratoryshowMore, laboratorysetShowMore] = useState(false); 
     const [populartestshowMore, populartestsetShowMore] = useState(false); 
 
-    const location = [
-      "Alkapuri",
-      "Bhayli",
-      "Harni",
-      "Vasna",
-      "Karelibaug",
-      "Alkapuri",
-    ];
-    const laboratoryname = [
-      "Dr. Soni Laboratory",
-      "Khushbu Pathology Laboratory",
-      "Gayatri Pathological Laboratory",
-      "Desai Urological & Maternity Hospital",
-      "Divine Lab",
-    ];
-    const populartest = [
-      "Microbiological tests",
-      "Infectious serology tests",
-      "Immunological tests",
-      "Hormone tests",
-      "Hematology tests",
-      "Genetic tests",
-    ];
+    // const location = [
+    //   "Alkapuri",
+    //   "Bhayli",
+    //   "Harni",
+    //   "Vasna",
+    //   "Karelibaug",
+    //   "Alkapuri",
+    // ];
+    // const laboratoryname = [
+    //   "Dr. Soni Laboratory",
+    //   "Khushbu Pathology Laboratory",
+    //   "Gayatri Pathological Laboratory",
+    //   "Desai Urological & Maternity Hospital",
+    //   "Divine Lab",
+    // ];
+    // const populartest = [
+    //   "Microbiological tests",
+    //   "Infectious serology tests",
+    //   "Immunological tests",
+    //   "Hormone tests",
+    //   "Hematology tests",
+    //   "Genetic tests",
+    // ];
 
     const toggleShowMore = (event) => {
       event.preventDefault();
@@ -143,13 +192,13 @@ navigatelink="/laboratory-login"
                   <Hospitalsearch />
                 </form>
                 <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
-                {location.map((label, index) => (
-                <Hospitallable key={index} label={label} size="6" />
+                {loc?.map((city) => (
+                <Hospitallable label={city.Name} size="6" />
               ))}
                  {/* Render additional labels only if showMore is true */}
                  
-          {showMore && location.map((label, index) => (
-            <Hospitallable key={index} label={label} size="6" />
+          {showMore && loc?.map((city) => (
+            <Hospitallable label={city.Name} size="6" />
           ))}
                 
                 {showMore ? (
@@ -172,13 +221,13 @@ navigatelink="/laboratory-login"
                  <Hospitalsearch />
                 </form>
                 <div className="row mt-3" style={{ maxHeight: '170px', overflowY: 'auto' }}>
-                {laboratoryname.map((label, index) => (
-                <Hospitallable key={index} label={label} size="12" />
+                {lab?.map((labo) => (
+                <Hospitallable  label={labo.LabName} size="12" />
               ))}
                  {/* Render additional labels only if showMore is true */}
                  
-          {laboratoryshowMore && laboratoryname.map((label, index) => (
-            <Hospitallable key={index} label={label} size="12" />
+          {laboratoryshowMore && lab?.map((labo) => (
+            <Hospitallable label={labo.LabName} size="12" />
           ))}
                 
                 {laboratoryshowMore ? (
@@ -200,13 +249,13 @@ navigatelink="/laboratory-login"
                 <Hospitalsearch />
                 </form>
                 <div className="row mt-3" style={{ maxHeight: '200px', overflowY: 'auto' }}>
-                {populartest.map((label, index) => (
-                <Hospitallable key={index} label={label} size="12" />
+                {labtest?.map((laboratorytest) => (
+                <Hospitallable label={laboratorytest.TestName} size="12" />
               ))}
                  {/* Render additional labels only if showMore is true */}
                  
-          {populartestshowMore && populartest.map((label, index) => (
-            <Hospitallable key={index} label={label} size="12" />
+          {populartestshowMore && labtest?.map((laboratorytest) => (
+            <Hospitallable label={laboratorytest.TestName} size="12" />
           ))}
                 
                 {populartestshowMore ? (

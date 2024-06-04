@@ -3,7 +3,6 @@ import './App.css';
 import Home from './home/Home';
 import ScrollToTop from "react-scroll-to-top";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-
 import Footer from './footer/Footer';
 import Patientlogin from './patients/Patientlogin';
 import Patientsignup from './patients/Patientsignup';
@@ -21,6 +20,17 @@ import Pharmacy from './pharmacy/Pharmacy';
 import Doctor from './doctor/Doctor';
 import Forgotpass from './forgotpassword/Forgotpass';
 import Scrolltop from './scrolltop/Scrolltop';
+import About from './about/About';
+import Contact from './contact/Contact';
+import Registration from './registration/Registration';
+import Signup from './registration/Signup';
+import Privacy from './privacy/Privacy';
+import Terms from './privacy/Terms';
+
+
+
+
+
 
 
 function App() {
@@ -48,6 +58,16 @@ function App() {
   <Route path='/pharmacy' element={<Pharmacy />} />
   <Route path='/doctor' element={<Doctor />} />
   <Route path='/forgotpassword' element={<Forgotpass />} />
+  <Route path='/about' element={<About />} />
+  <Route path='/contact' element={<Contact />} />
+  <Route path='/registration' element={<Registration />} />
+  <Route path='/sign-up' element={<Signup />} />
+  <Route path='/privacy-policies' element={<Privacy />} />
+  <Route path='/terms-condition' element={<Terms />} />
+  
+  
+  
+
   
 
  

@@ -1243,6 +1243,7 @@ transform: translateZ(0);
   
   .about-our-company-inner {
     margin-top: 120px;
+    margin-bottom: 60px;
     z-index: 1;
     position: relative;
     background-color: #ffffff;
@@ -2116,6 +2117,7 @@ transform: translateZ(0);
     z-index: 1;
     padding-top: 50px;
     padding-bottom: 50px;
+    top: 55px;
   }
   
   .funfacts-area::before {
@@ -4495,6 +4497,7 @@ transform: translateZ(0);
     border: 1px solid #dadada;
     border-radius: 50%;
     color: #aba5a5;
+    margin-bottom: -10px;
   }
   
   .contact-info .contact-info-content .social li a i {
@@ -6556,3 +6559,23 @@ display: block;
 }
 
 
+.headingspan
+{
+  font-size: 14px !important;
+  background: none !important;
+  color: black !important;
+  padding: 0 !important;
+}
+
+.about-company-content .about-features-list
+{
+  margin-bottom: 0;
+    padding-left: 0;
+    list-style-type: none;
+    display: flex;
+    /* flex-wrap: wrap; */
+    margin-right: -15px;
+    margin-left: -15px;
+    margin-top: 10px;
+    flex: 0 0 50% !important;
+}

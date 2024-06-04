@@ -2,6 +2,7 @@ import React from 'react'
 import { Container, Row, Col, Image,Form } from 'react-bootstrap';
 
 
+
 function Hospitallable(props) {
   return (
    <>

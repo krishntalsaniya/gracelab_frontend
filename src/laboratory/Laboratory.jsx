@@ -9,10 +9,7 @@ import { RxSlash } from "react-icons/rx";
 function Laboratory() {
   return (
     <>
-    <Modalnavigationbar 
-    navigatelink=""
-    
-    />
+    <Modalnavigationbar  navigatelink=""/>
 
     <div className="page-title-area">
     <Pagetitle 

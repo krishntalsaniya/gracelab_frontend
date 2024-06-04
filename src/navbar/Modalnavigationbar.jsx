@@ -247,7 +247,7 @@ function Modalnavigationbar(props) {
                 <Link to="/hospital" className='mobile-link'>Hospital</Link>
                 <Link to="/patient-login" className='mobile-link'>Patients</Link>
               </NavDropdown>
-              <Link to="/" className='mobile-link'>Registration</Link>
+              <Link to="/Registration" className='mobile-link'>Registration</Link>
               <Link to="/" className='mobile-link'>Contact</Link>
               <Link to={props.navigatelink} className="btn btn-secondary ms-3 btn-login" onClick={(e) => e.currentTarget.getAttribute('href') === '/' ? handleShow() : handleClose()}>Login / Sign Up</Link>
 
@@ -305,7 +305,7 @@ function Modalnavigationbar(props) {
               <div className="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
                 <ul className="navbar-nav">
                   <li className="nav-item"><Link to="/" className="nav-link active">Home</Link></li>
-                  <li className="nav-item"><Link to="/" className="nav-link">About Us</Link></li>
+                  <li className="nav-item"><Link to="/about" className="nav-link">About Us</Link></li>
                   <li className="nav-item"><Link to="/" className="nav-link">Network <FaAngleDown /></Link>
                     <ul className="dropdown-menu">
                       <li className="nav-item"><Link to="/laboratory" className="nav-link">Laboratory</Link></li>
@@ -315,8 +315,8 @@ function Modalnavigationbar(props) {
                       <li className="nav-item"><Link to="/patient-login" className="nav-link">Patients</Link></li>
                     </ul>
                   </li>
-                  <li className="nav-item"><Link to="/" className="nav-link">Registration</Link></li>
-                  <li className="nav-item"><Link to="/" className="nav-link">Contact</Link></li>
+                  <li className="nav-item"><Link to="/Registration" className="nav-link">Registration</Link></li>
+                  <li className="nav-item"><Link to="/contact" className="nav-link">Contact</Link></li>
                 </ul>
                 <Link to={props.navigatelink} className="btn btn-secondary ms-3 btn-login" onClick={(e) => e.currentTarget.getAttribute('href') === '/' ? handleShow() : handleClose()}>Login / Sign Up</Link>
 
