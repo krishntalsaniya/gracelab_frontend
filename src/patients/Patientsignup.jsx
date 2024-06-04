@@ -1,47 +1,70 @@
 import React, { useState } from 'react';
 import Pagetitle from './Pagetitle';
 import { Container, Row, Col, Form, Button, Modal } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import network from '../img/network.jpg';
 import Modalnavigationbar from '../navbar/Modalnavigationbar';
 import { RxSlash } from "react-icons/rx";
-import { useFormik } from 'formik';
+import Formik from 'formik';
+import Swal from 'sweetalert2';
+import axios from 'axios';
 import * as Yup from 'yup';
 
 function Patientsignup() {
+
+  const SignupSchema = Yup.object().shape({
+    name: Yup.string().required('Name is required'),
+   
+    email: Yup.string()
+      .matches(
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+        'Invalid email address'
+      )
+      .required('Email is required'),
+    contact: Yup.string()
+      .matches(/^\d+$/, 'Contact No. must contain only digits')
+      .length(10, 'Contact No. must be exactly 10 digits')
+      .required('Contact No. is required'),
+    password: Yup.string().required('Password is required'),
+  });
   const [showModal, setShowModal] = useState(false);
 
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
 
-  const formik = useFormik({
-    initialValues: {
-      name: '',
-      email: '',
-      contact: '',
-      password: '',
-      terms: false
-    },
-    validationSchema: Yup.object({
-      name: Yup.string().required('Name is required'),
-      email: Yup.string()
-  .matches(
-    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-    'Invalid email address'
-  )
-  .required('Email is required'),
-      contact: Yup.string()
-      .matches(/^\d+$/, 'Contact No. must contain only digits')
-      .length(10, 'Contact No. must be exactly 10 digits')
-      .required('Contact No. is required'),
-      password: Yup.string().required('Password is required'),
-      terms: Yup.boolean().oneOf([true], 'You must accept the terms and conditions')
-    }),
-    onSubmit: values => {
-      console.log(values);
-      // Handle form submission
+  const navigate = useNavigate();
+  const handleSubmit = async (values) => {
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createPharmacy`, {
+        PharmacyName: values.name,
+        PharmacyOwnerName: values.ownername,
+        Email: values.email,
+        ContactNo: values.contact,
+        Password: values.password,
+        LicenseNo: values.licenceno,
+        LicenseDate: values.licencedate,
+        Pincode: values.pincode,
+        Address: values.address,
+        isActive: true,
+      });
+
+      console.log('Pharmacy created successfully:', response.data);
+
+      Swal.fire({
+        title: "Success!",
+        text: "Pharmacy registered successfully",
+        icon: "success",
+        confirmButtonText: "OK"
+      }).then(() => {
+        // Redirect to '/laboratory-login' using useHistory hook
+        navigate('/pharmacy-login');
+      });
+      // Redirect or show success message here
+    } catch (error) {
+      console.error('Error creating laboratory:', error);
+      // Show error message here
     }
-  });
+  };
 
 
   return (
@@ -70,83 +93,94 @@ function Patientsignup() {
                       <p className="mb-4">please sign up to your account</p>
                     </div>
                   </div>
-                  <Form className="signin-form" onSubmit={formik.handleSubmit}>
-                    <Form.Group className="mb-3" controlId="formName">
-                      <Form.Label>Name</Form.Label>
-                      <Form.Control
-                        type="text"
-                        placeholder="Name"
-                        {...formik.getFieldProps('name')}
-                        isInvalid={formik.touched.name && formik.errors.name}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {formik.errors.name}
-                      </Form.Control.Feedback>
-                    </Form.Group>
+                  <Formik
+                  initialValues={{
+                    name: '',
+                    email: '',
+                    contact: '',
+                    password: ''
+                  }}
+                  validationSchema={SignupSchema}
+                  onSubmit={handleSubmit}
+                >
+
+{({
+                    values,
+                    errors,
+                    touched,
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                  }) => (
+                  <Form className="signin-form" onSubmit={handleSubmit}>
+                  <Form.Group className="mb-3" controlId="formName">
+                            <Form.Label>Name</Form.Label>
+                            <Form.Control
+                              type="text"
+                              name="name"
+                              placeholder="Laboratory Name"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.name}
+                              isInvalid={touched.name && errors.name}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
+</Form.Group>
+
 
                     <Form.Group className="mb-3" controlId="formEmail">
-                      <Form.Label>Email id/username</Form.Label>
-                      <Form.Control
-                        type="email"
-                        placeholder="Email Id/username"
-                        {...formik.getFieldProps('email')}
-                        isInvalid={formik.touched.email && formik.errors.email}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {formik.errors.email}
-                      </Form.Control.Feedback>
-                    </Form.Group>
+  <Form.Label>Email id/username</Form.Label>
+  <Form.Control
+                              type="text"
+                              name="email"
+                              placeholder="Laboratory Name"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.email}
+                              isInvalid={touched.email && errors.email}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
+</Form.Group>
+
 
 
                     <Form.Group className="mb-3" controlId="formContact">
-                      <Form.Label>Contact no</Form.Label>
-                      <Form.Control
-                        type="text"
-                        placeholder="Contact no"
-                        {...formik.getFieldProps('contact')}
-                        isInvalid={formik.touched.contact && formik.errors.contact}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {formik.errors.contact}
-                      </Form.Control.Feedback>
-                    </Form.Group>
+  <Form.Label>Contact no</Form.Label>
+  <Form.Control
+                              type="text"
+                              name="contact"
+                              placeholder="Laboratory Name"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.contact}
+                              isInvalid={touched.contact && errors.contact}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.contact}</Form.Control.Feedback>
+</Form.Group>
+
+
 
                     <Form.Group className="mb-3" controlId="formPassword">
-                      <Form.Label>Password</Form.Label>
-                      <Form.Control
-                        type="password"
-                        placeholder="Password"
-                        {...formik.getFieldProps('password')}
-                        isInvalid={formik.touched.password && formik.errors.password}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {formik.errors.password}
-                      </Form.Control.Feedback>
-                    </Form.Group>
+  <Form.Label>Password</Form.Label>
+  <Form.Control
+                              type="text"
+                              name="password"
+                              placeholder="Laboratory Name"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.password}
+                              isInvalid={touched.password && errors.password}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+</Form.Group>
 
-                    <Form.Group className="mb-3" controlId="formTerms">
-                      <Form.Check
-                        type="checkbox"
-                        label={
-                          <span>
-                            I agree all statements in{' '}
-                            <Link to="#" className="d-inline-block">
-                              Terms of service
-                            </Link>
-                          </span>
-                        }
-                        {...formik.getFieldProps('terms')}
-                        isInvalid={formik.touched.terms && formik.errors.terms}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {formik.errors.terms}
-                      </Form.Control.Feedback>
-                    </Form.Group>
 
-                    <Button type="submit" className="form-control btn btn-sign-in rounded submit px-3">
-                     Submit Now
-                    </Button>
+
+
+<Button type="button" onClick={handleSubmit} className="form-control btn btn-sign-in rounded submit px-3">Submit Now</Button>
                   </Form>
+                   )}
+                   </Formik>
                   <p className="text-center accounttop">
                     Already have an account?{' '}
                     <Link to="/patient-login" className="d-inline-block">

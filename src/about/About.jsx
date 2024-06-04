@@ -11,11 +11,15 @@ import CountUp from 'react-countup';
 import { IoCheckmarkDoneSharp} from "react-icons/io5";
 import { Link } from 'react-router-dom';
 
+
+
 function About() {
+
+  
   return (
     <>
     
-<Modalnavigationbar />
+<Modalnavigationbar navigatelink="/sign-up" />
     <div className="page-title-area">
     <Pagetitle  
     heading="About Us"
@@ -90,14 +94,6 @@ function About() {
     </section>
 
 
-    {/* counter section start */}
-
-    
-
-
-
-
-    
     </>
   )
 }

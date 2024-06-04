@@ -45,7 +45,9 @@ function Contact() {
       });
   return (
     <>
-    <Modalnavigationbar />
+    <Modalnavigationbar 
+    
+    navigatelink="/sign-up" />
     <div className="page-title-area">
     <Pagetitle heading="Contact Us" pagetitlelink="/" title1="Home" title2="Contact" IconComponent={MdArrowForwardIos} />
 </div>

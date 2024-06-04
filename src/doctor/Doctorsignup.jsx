@@ -2,14 +2,42 @@ import React, { useEffect, useState } from 'react';
 import Modalnavigationbar from '../navbar/Modalnavigationbar';
 import Pagetitle from '../patients/Pagetitle';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import doctorlogin from '../img/doctor-login.jpg';
 import { RxSlash } from 'react-icons/rx';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { Puff } from 'react-loader-spinner';
+import axios from 'axios';
+import Swal from 'sweetalert2';
+
+
 
 function Doctorsignup() {
+
+  // const [specialties, setSpecialties] = useState([]);
+
+  // useEffect(() => {
+  //   const Doctorlocation = async () => {
+  //     try {
+  //       const location = await axios.get(
+  //         `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list/DoctorSpeciality`
+  //       );
+  //       setSpecialties(location.data);
+  //       console.log("Doctor Dropdownlist", location.data);
+  //     } catch (error) {
+  //       console.log("Error : ", error);
+  //     }
+  //   };
+  //   Doctorlocation();
+  
+    
+  // }, [])
+
+  
+  
+ 
+
+
   const SignupSchema = Yup.object().shape({
     doctorsName: Yup.string().required('Name is required'),
     hospitalName: Yup.string().required('Hospital name is required'),
@@ -29,39 +57,55 @@ function Doctorsignup() {
     confirmPassword: Yup.string()
       .oneOf([Yup.ref('password'), null], 'Passwords must match')
       .required('Confirm Password is required'),
-    specialty: Yup.string().required('Specialty is required'),
-    education: Yup.string().required('Education is required'),
+      education: Yup.string().required('Education is required'),
     pincode: Yup.string()
       .matches(/^[0-9]+$/, 'Must be only digits')
       .required('Pincode is required'),
     address: Yup.string().required('Address is required'),
-    agreeTerms: Yup.boolean()
-      .oneOf([true], 'Must agree to terms')
-      .required('Terms and Condition'),
+    // agreeTerms: Yup.boolean()
+    //   .oneOf([true], 'Must agree to terms')
+    //   .required('Terms and Condition'),
   });
 
-  // const [isLoading, setIsLoading] = useState(true);
 
-  // useEffect(() => {
-  //   const delay = 1000;
-  //   setTimeout(() => {
-  //     setIsLoading(false);
-  //   }, delay);
-  // }, []);
+  const navigate = useNavigate();
+  const handleSubmit = async (values) => {
+    console.log("okokokook")
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createDoctor`, {
+        DoctorName: values.doctorsName,
+        HospitalName: values.hospitalName,
+        EmailClinic: values.email,
+        ContactNo: values.contactNo,
+        Password: values.password,
+        Confirmpassword: values.confirmPassword,
+        Education: values.education,
+        Pincode: values.pincode,
+        Address: values.address,
+        isActive: true,
+      });
+
+      console.log('Pharmacy created successfully:', response.data);
+
+      Swal.fire({
+        title: "Success!",
+        text: "Pharmacy registered successfully",
+        icon: "success",
+        confirmButtonText: "OK"
+      }).then(() => {
+        // Redirect to '/laboratory-login' using useHistory hook
+        navigate('/doctor-login');
+      });
+      // Redirect or show success message here
+    } catch (error) {
+      console.error('Error creating laboratory:', error);
+      // Show error message here
+    }
+  };
 
   return (
     <>
-      {/* {isLoading ? (
-        // <div className="loader-container">
-        //   <Puff
-        //     color="#c7a17a"
-        //     height={50}
-        //     width={50}
-        //     timeout={0} // 0 means no timeout, loader will be displayed until setIsLoading(false) is called
-        //   />
-        // </div>
-      ) : (
-        <> */}
+     
           <Modalnavigationbar />
 
           <div className="page-title-area">
@@ -103,16 +147,13 @@ function Doctorsignup() {
                           contactNo: '',
                           password: '',
                           confirmPassword: '',
-                          specialty: '',
                           education: '',
                           pincode: '',
                           address: '',
-                          agreeTerms: false,
+                          
                         }}
                         validationSchema={SignupSchema}
-                        onSubmit={(values) => {
-                          console.log(values);
-                        }}
+                        onSubmit={handleSubmit}
                       >
                         {({
                           values,
@@ -122,11 +163,7 @@ function Doctorsignup() {
                           handleBlur,
                           handleSubmit,
                         }) => (
-                          <Form
-                            action="#"
-                            className="signin-form row"
-                            onSubmit={handleSubmit}
-                          >
+                          <Form className="signin-form row" onSubmit={handleSubmit} >
                             <div className="step-1 d-block">
                               <Row className="justify-content-center">
                               <Col lg={6} className="form-group mb-3">
@@ -217,27 +254,23 @@ function Doctorsignup() {
                             </Col>
 
 
-                            <Col lg={6} className="form-group mb-3">
+                            {/* <Col lg={6} className="form-group mb-3">
                               <Form.Label>Specialty</Form.Label>
                               <Form.Control
-                                as="select"
-                                name="specialty"
-                                placeholder='Specialty'
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.specialty}
-                                isInvalid={touched.specialty && errors.specialty}
-                              >
-                                <option value="" disabled hidden>Select an option</option>
-                                <option value={5}>Viral Infections</option>
-                                <option value={1}>Skin infection</option>
-                                <option value={2}>ENT</option>
-                                <option value={0}>Gynaecologist</option>
-                                <option value={3}>Surgery</option>
-                                <option value={4}>Pediatrics</option>
-                              </Form.Control>
+                                  as="select"
+                                  name="specialty"
+                                  placeholder="Specialty"
+                                  onChange={handleChange}
+                                  value={specialties}
+      >
+        <option value="" disabled hidden>Select an option</option>
+        {specialties.map(specialty => (
+          <option key={specialty.id} value={specialty.id}>{specialty.Details
+          }</option>
+        ))}
+      </Form.Control>
                               <Form.Control.Feedback type="invalid">{errors.specialty}</Form.Control.Feedback>
-                              </Col>
+                              </Col> */}
 
 
                               <Col lg={6} className="form-group mb-3">
@@ -270,7 +303,7 @@ function Doctorsignup() {
                             </Col>
 
 
-                            <Col lg={6} className="form-group mb-3">
+                            <Col lg={12} className="form-group mb-3">
                               <Form.Label>Address</Form.Label>
                               <Form.Control
                                 type="text"
@@ -284,29 +317,13 @@ function Doctorsignup() {
                               <Form.Control.Feedback type="invalid">{errors.address}</Form.Control.Feedback>
                             </Col>
 
-
-                            <Col lg={12} className="form-group mb-3">
-                              
-                              <Form.Check
-                                type="checkbox"
-                                name="agreeTerms"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                label="I agree all statements in Terms of service"
-                                value={values.agreeTerms}
-                                isInvalid={touched.agreeTerms && errors.agreeTerms}
-                              />
-                              <Form.Control.Feedback type="invalid">{errors.agreeTerms}</Form.Control.Feedback>
-                            </Col>
-
-
-{/* <Col lg={12} className="form-group d-md-flex mb-4">
+ <Col lg={12} className="form-group d-md-flex mb-4">
                         <div className="w-100 text-start">
                           <Form.Check type="checkbox" label="I agree all statements in Terms of service" />
                         </div>
-                      </Col> */}
+                      </Col> 
                       <Col lg={6} className="form-group">
-                        <Button type="submit" className="form-control btn btn-sign-in rounded submit px-3">Submit Now</Button>
+                      <Button type="submit"  className="form-control btn btn-sign-in rounded submit px-3">Submit Now</Button>
                       </Col>
 
 

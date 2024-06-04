@@ -236,7 +236,7 @@ function Modalnavigationbar(props) {
           <Offcanvas.Body>
             <Nav className="justify-content-end flex-grow-1 pe-3">
               <Link to="/" className='mobile-link'>Home</Link>
-              <Link to="/" className='mobile-link'>About us</Link>
+              <Link to="/about" className='mobile-link'>About us</Link>
               <NavDropdown className='mobile-link'
                 title="Network"
                 id={`offcanvasNavbarDropdown-expand-${expand}`}
@@ -248,8 +248,8 @@ function Modalnavigationbar(props) {
                 <Link to="/patient-login" className='mobile-link'>Patients</Link>
               </NavDropdown>
               <Link to="/Registration" className='mobile-link'>Registration</Link>
-              <Link to="/" className='mobile-link'>Contact</Link>
-              <Link to={props.navigatelink} className="btn btn-secondary ms-3 btn-login" onClick={(e) => e.currentTarget.getAttribute('href') === '/' ? handleShow() : handleClose()}>Login / Sign Up</Link>
+              <Link to="/contact" className='mobile-link'>Contact</Link>
+              <Link to={props.navigatelink} className="btn btn-secondary ms-3 btn-login" onClick={(e) => e.currentTarget.getAttribute('href') === '/'|| '/Registration' ? handleShow() : handleClose()}>Login / Sign Up</Link>
 
 <Modal show={showModal} onHide={handleClose} centered size="lg">
   <Modal.Header closeButton>
