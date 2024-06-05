@@ -187,7 +187,8 @@ function Registration() {
                         onBlur={handleBlur}
                         value={values.licencedate}
                         isInvalid={touched.licencedate && errors.licencedate}
-                      />
+               
+                        />
                       <Form.Control.Feedback type="invalid">{errors.licencedate}</Form.Control.Feedback>
                     </Col> */}
                     <Col lg={6} className="form-group mb-3">
