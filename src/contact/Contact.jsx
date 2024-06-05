@@ -144,7 +144,7 @@ function Contact() {
                             <Form.Control
                               type="text"
                               name="email"
-                              placeholder="Your Contact no"
+                              placeholder="Your Email"
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.email}
