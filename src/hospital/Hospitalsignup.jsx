@@ -181,7 +181,7 @@ function Hospitalsignup() {
                             <Form.Control
                               type="text"
                               name="name"
-                              placeholder="Laboratory Name"
+                              placeholder="Hospital Name"
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.name}
@@ -259,7 +259,7 @@ function Hospitalsignup() {
                             <Form.Control
                               type="text"
                               name="licenceno"
-                              placeholder="Laboratory Licence No."
+                              placeholder="Hospital Licence No."
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.licenceno}
@@ -323,7 +323,7 @@ function Hospitalsignup() {
                     </Form>
                   )}
                 </Formik>
-                <p className="text-center">Already have an account? <Link to='/laboratory-login' className="d-inline-block">Sign In</Link></p>
+                <p className="text-center">Already have an account? <Link to='/hospital-login' className="d-inline-block">Sign In</Link></p>
               </div>
             </div>
           </Row>

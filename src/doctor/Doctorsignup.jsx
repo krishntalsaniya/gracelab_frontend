@@ -227,7 +227,7 @@ function Doctorsignup() {
                             <Col lg={6} className="form-group mb-3">
                               <Form.Label>Password</Form.Label>
                               <Form.Control
-                                type="text"
+                                type="password"
                                 name="password"
                                 placeholder='Password'
                                 onChange={handleChange}
@@ -242,7 +242,7 @@ function Doctorsignup() {
                             <Col lg={6} className="form-group mb-3">
                               <Form.Label>Confirm password</Form.Label>
                               <Form.Control
-                                type="text"
+                                type="password"
                                 name="confirmPassword"
                                 placeholder='Confirm Password'
                                 onChange={handleChange}

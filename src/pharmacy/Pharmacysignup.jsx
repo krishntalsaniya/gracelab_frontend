@@ -183,7 +183,7 @@ function Pharmacysignup() {
                             <Form.Control
                               type="text"
                               name="name"
-                              placeholder="Laboratory Name"
+                              placeholder="Pharmacy Name"
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.name}
@@ -261,7 +261,7 @@ function Pharmacysignup() {
                             <Form.Control
                               type="text"
                               name="licenceno"
-                              placeholder="Laboratory Licence No."
+                              placeholder="Pharmacy Licence No."
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.licenceno}

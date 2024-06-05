@@ -158,7 +158,7 @@ function Patientsignup() {
                     <Form.Group className="mb-3" controlId="formPassword">
   <Form.Label>Password</Form.Label>
   <Form.Control
-                              type="text"
+                              type="password"
                               name="password"
                               placeholder="Password"
                               onChange={handleChange}
