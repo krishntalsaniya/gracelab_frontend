@@ -5,7 +5,7 @@ import { Link,useNavigate } from 'react-router-dom';
 import network from '../img/network.jpg';
 import Modalnavigationbar from '../navbar/Modalnavigationbar';
 import { RxSlash } from "react-icons/rx";
-import Formik from 'formik';
+import {Formik} from 'formik';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import * as Yup from 'yup';
@@ -35,29 +35,24 @@ function Patientsignup() {
   const navigate = useNavigate();
   const handleSubmit = async (values) => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createPharmacy`, {
-        PharmacyName: values.name,
-        PharmacyOwnerName: values.ownername,
+      const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createPatient`, {
+        PatientName: values.name,
         Email: values.email,
         ContactNo: values.contact,
         Password: values.password,
-        LicenseNo: values.licenceno,
-        LicenseDate: values.licencedate,
-        Pincode: values.pincode,
-        Address: values.address,
         isActive: true,
       });
 
-      console.log('Pharmacy created successfully:', response.data);
+      console.log('Patient created successfully:', response.data);
 
       Swal.fire({
         title: "Success!",
-        text: "Pharmacy registered successfully",
+        text: "Patient registered successfully",
         icon: "success",
         confirmButtonText: "OK"
       }).then(() => {
         // Redirect to '/laboratory-login' using useHistory hook
-        navigate('/pharmacy-login');
+        navigate('/patient-login');
       });
       // Redirect or show success message here
     } catch (error) {
@@ -118,7 +113,7 @@ function Patientsignup() {
                             <Form.Control
                               type="text"
                               name="name"
-                              placeholder="Laboratory Name"
+                              placeholder="Patient Name"
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.name}
@@ -133,7 +128,7 @@ function Patientsignup() {
   <Form.Control
                               type="text"
                               name="email"
-                              placeholder="Laboratory Name"
+                              placeholder="Patient Email"
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.email}
@@ -149,7 +144,7 @@ function Patientsignup() {
   <Form.Control
                               type="text"
                               name="contact"
-                              placeholder="Laboratory Name"
+                              placeholder="Patient Contact"
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.contact}
@@ -165,7 +160,7 @@ function Patientsignup() {
   <Form.Control
                               type="text"
                               name="password"
-                              placeholder="Laboratory Name"
+                              placeholder="Password"
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.password}

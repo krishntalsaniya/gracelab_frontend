@@ -89,7 +89,7 @@ function Doctorsignup() {
 
       Swal.fire({
         title: "Success!",
-        text: "Pharmacy registered successfully",
+        text: "Doctor registered successfully",
         icon: "success",
         confirmButtonText: "OK"
       }).then(() => {
