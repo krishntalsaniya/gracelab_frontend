@@ -10,6 +10,14 @@ import Counter from './Counter';
 import CountUp from 'react-countup';
 import { IoCheckmarkDoneSharp} from "react-icons/io5";
 import { Link } from 'react-router-dom';
+import Program from '../home/Program';
+import Network from '../home/Network';
+import icon1 from '../img/icon1.png'
+import icon2 from '../img/icon2.png'
+import icon3 from '../img/icon3.png'
+import icon4 from '../img/icon4.png'
+import icon5 from '../img/icon5.png'
+
 
 
 
@@ -62,7 +70,7 @@ function About() {
         </Row>
       </Container>
 
-      <div className="funfacts-area">
+      {/* <div className="funfacts-area">
       <Container>
         <Row>
           <Counter count = {<CountUp end={28} duration={10}/>} title='Stars Comfort' />
@@ -72,7 +80,51 @@ function About() {
         </Row>
       </Container>
       <div className="map-box1"><img src={counterimage} alt="Counter Image" /></div>
-    </div>
+    </div> */}
+
+
+    {/* counter section start */}
+    <section className="services-area ptb-70 pb-5 bg-fff7f4">
+      <Container>
+        <Program
+          title="Network"
+          heading="Join Our Network"
+          headinglinktitle="Tell Us More"
+          headinglink="/"
+        />
+        <Row className="justify-content-center" id="homeindustry">
+          <Network
+            networkimage={icon1}
+            networktitle="Laboratory"
+            networklink="/laboratory-login"
+          />
+          <Network
+            networkimage={icon2}
+            networktitle="Pharmacy"
+            networklink="/Pharmacy-login"
+          />
+          <Network
+            networkimage={icon3}
+            networktitle="Doctors"
+            networklink="/doctor-login"
+          />
+          <Network
+            networkimage={icon4}
+            networktitle="Hospitals"
+            networklink="/hospital-login"
+          />
+          <Network
+            networkimage={icon5}
+            networktitle="Patients"
+            networklink="/patient-login"
+          />
+        </Row>
+      </Container>
+    </section>
+
+
+
+
       <div className="about-our-company-inner">
         <Container>
           <Row className="align-items-center">
