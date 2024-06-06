@@ -26,6 +26,8 @@ import Registration from './registration/Registration';
 import Signup from './registration/Signup';
 import Privacy from './privacy/Privacy';
 import Terms from './privacy/Terms';
+import Sterling from './hospitalpages/Sterling';
+
 
 
 
@@ -64,6 +66,7 @@ function App() {
   <Route path='/sign-up' element={<Signup />} />
   <Route path='/privacy-policies' element={<Privacy />} />
   <Route path='/terms-condition' element={<Terms />} />
+  <Route path='/sterling-hospital' element={<Sterling />} />
   
   
   

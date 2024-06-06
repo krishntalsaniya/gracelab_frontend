@@ -4793,6 +4793,11 @@ fieldset:disabled .btn {
     flex: 0 0 auto;
     width: 20%;
   }
+  .sterling_icon
+  {
+    flex: 0 0 auto;
+    width: 25%;
+  }
 }
 
 @media (min-width:1200px) {

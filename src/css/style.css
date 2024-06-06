@@ -4976,7 +4976,7 @@ transform: translateZ(0);
     font-weight: 700;
     font-size: 14px;
   }
-  
+
   .products-details-tab .tabs li a .dot {
     position: absolute;
     top: 50%;
@@ -6578,4 +6578,88 @@ display: block;
     margin-left: -15px;
     margin-top: 10px;
     flex: 0 0 50% !important;
+}
+
+/* TabsStyles.css */
+.react-tabs__tab .react-tabs__tab-list .react-tabs__tab--selected {
+  background-color: pink !important;
+  border-radius: 1px !important;
+}
+.react-tabs__tab {
+  padding: 10px !important;
+  margin: 5px !important;
+  background: #ececec;
+}
+.react-tabs__tab:hover {
+ background-color: #e52489  !important;
+ border-radius: 8px !important;
+ transition: .5s !important;
+ color: white;
+}
+.react-tabs__tab--selected
+{
+  background-color: #ea268f !important;
+  border-radius: 8px !important;
+  color: white !important;
+
+}
+.react-tabs__tab-list
+{
+  border-bottom: none !important;
+}
+
+.tab_icon
+{
+  display: inline-flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+}
+
+.react-tabs .react-tabs__tab-list li
+{
+  display: inline-flex !important;
+  gap: 8px !important;
+}
+
+.products-details-tab-content h3.title
+{
+  font-size: 20px !important;
+    margin-bottom: 10px !important;
+    color: #eb268f !important;
+}
+
+.about-features-list li
+{
+  font-weight: 500;
+    color: #666666;
+    padding-right: 15px;
+    /* padding-left: 15px; */
+    padding-top: 10px;
+    text-align: justify;
+    list-style: none;
+}
+
+.products-details-tab-content ul.about-features-list li i {
+  margin-right: 5px;
+}
+.products-details-tab-content .product-review-form .review-comments .review-item
+{
+  border: 0 !important;
+    margin: 0 0 20px 0 !important;
+    /* padding-right: 90px !important;
+    padding-top: 30px !important; */
+    padding: 30px !important;
+    background-color: #ffe9f5 !important;
+    border-radius: 25px !important;
+}
+
+.review-item .bg-pink
+{
+  padding: 26px !important;
+    border-radius: 15px !important;
+    background: #ffe9f5 !important;
+}
+ .treatment h3
+{
+  color: #eb268f !important;
 }

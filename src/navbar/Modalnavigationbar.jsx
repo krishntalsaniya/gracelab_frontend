@@ -315,7 +315,7 @@ function Modalnavigationbar(props) {
                       <li className="nav-item"><Link to="/patient-login" className="nav-link">Patients</Link></li>
                     </ul>
                   </li>
-                  <li className="nav-item"><Link to="/Registration" className="nav-link">Registration</Link></li>
+                  <li className="nav-item"><Link to="/sterling-hospital" className="nav-link">Registration</Link></li>
                   <li className="nav-item"><Link to="/contact" className="nav-link">Contact</Link></li>
                 </ul>
                 <Link to={props.navigatelink} className="btn btn-secondary ms-3 btn-login" onClick={(e) => e.currentTarget.getAttribute('href') === '/' ? handleShow() : handleClose()}>Login / Sign Up</Link>
