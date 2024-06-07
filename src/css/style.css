@@ -5918,6 +5918,7 @@ transform: translateZ(0);
     margin-bottom: 23px;
     font-size: 17px;
     font-weight: 700;
+    color: #e8278e;
   }
   
   .single-footer-widget .useful-links-list {
@@ -5979,6 +5980,8 @@ transform: translateZ(0);
     position: relative;
     margin-bottom: 20px;
     font-size: 14px;
+    display: flex;
+    flex-wrap: wrap;
     /* padding-left: 22px; */
   }
   
@@ -5989,9 +5992,10 @@ transform: translateZ(0);
     color: #323232;
   }
   
-  .single-footer-widget .footer-contact-info li a {
+  .single-footer-widget .footer-contact-info li a , .single-footer-widget .footer-contact-info li span {
     display: inline-block;
     color: #666666;
+    flex-basis: 80%;
   }
   
   .single-footer-widget .footer-contact-info li a:hover {
@@ -6433,11 +6437,12 @@ transform: translateZ(0);
  
   .single-footer-widget .footer-contact-info li .location
   {
-    position: absolute;
+    /* position: absolute; */
     left: 0;
     top: 0;
-    color: #323232;
+    color: #eb268f;
     font-size: 18px;
+    flex-basis: 15%;
   }
   
   .scroll-to-top:hover
@@ -6695,6 +6700,8 @@ display: block;
   padding: 26px !important;
     border-radius: 15px !important;
     background: #ffe9f5 !important;
+    display: flex;
+    gap: 5px;
 }
 .products-details-tab-content .content
 {
@@ -6705,9 +6712,9 @@ display: block;
 }
 .products-details-tab-content .content span
 {
-  color: #eb268f;
-    font-weight: bold;
-    display: block;
+  color: #eb268f !important;
+    font-weight: bold !important;
+    display: block !important;
 }
 
 .contact
@@ -6716,12 +6723,7 @@ display: block;
     font-weight: 600;
     color: #000;
 }
-.single-footer-widget h3
-{
-  margin-bottom: 20px;
-    font-size: 20px;
-    color: #eb268f;
-}
+
 .phone_icon
 {
   color: #eb268f;
@@ -6743,4 +6745,39 @@ display: block;
 {
   color: #3f3f3f !important;
   font-weight: 600;
+}
+
+
+
+.details .btn-login {
+  padding: 8px 13px;
+  display: flex;
+  width: 195px;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.details .btn-login img {
+  width: 20px;
+  height: 20px;
+}
+
+.details .btn-login:hover img {
+  filter: invert(27%) sepia(99%) saturate(7137%) hue-rotate(324deg) brightness(96%) contrast(81%);
+}
+
+.sterling_title
+{
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+}
+.steling_p
+{
+  margin-left: 30px;
+}
+
+.sterling_icon1
+{
+  margin-right: 15px;
+  color: #eb268f;
 }

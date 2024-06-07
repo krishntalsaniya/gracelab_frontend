@@ -65,7 +65,7 @@ function Sterling() {
             <Hospitalad hospitaladimage={hospitalad} />
 
             <div class="col-lg-10 col-md-12">
-              <div class="services-sidebar laboratory-detail">
+              <div class="services-sidebar laboratory-detail details">
                 <div class="services-list">
                   <div class="hospital-part">
                     <div class="row align-items-center">
@@ -89,7 +89,7 @@ function Sterling() {
                       </div>
                       <div class="col-md-3">
                         <div class="hospital-action">
-                          <a href="#">
+                          <a href="#" className="btn btn-secondary btn-login">
                             {" "}
                             <img
                               src={rightarrow}
@@ -97,7 +97,7 @@ function Sterling() {
                             />{" "}
                             Get Directions
                           </a>
-                          <a href="#">
+                          <a href="#" className="btn btn-secondary btn-login">
                             {" "}
                             <img
                               src={calander}
@@ -112,7 +112,7 @@ function Sterling() {
                 </div>
               </div>
 
-              <Tabs>
+              <Tabs className='hospital-detail'>
                 <TabList>
                   <Tab>
                     <FaSquare className="tab_icon" /> Overview
@@ -172,7 +172,7 @@ function Sterling() {
                       care of the patient in an empathetic manner.
                     </p>
                     <h3 className="title">Salient Features:</h3>
-                    <ul className="about-features-list">
+                    <ul className="about-features-list" style={{padding:0}}>
                       <li>
                         <FaCheck style={{ color: "#eb268f" }} /> First corporate
                         hospital to be accredited with NABH in South Gujarat.
@@ -387,13 +387,13 @@ function Sterling() {
 
                             <ul class="footer-contact-info">
                               <li>
+                             
                                 
-                                
-                                <h5 className="contact">
-                                <span><FaLocationDot /></span>
+                                <h5 className="sterling_title">
+                                <FaLocationDot className="sterling_icon1" />
                                   Sterling Addlife India Private Limited
                                 </h5>
-                                <p>
+                                <p className="steling_p">
                                   <span>Registered Office:</span>
                                   Sterling Hospital, Sterling Hospital Road,
                                   Memnagar, Ahmedabad-380052, Gujarat, India
