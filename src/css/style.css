@@ -5979,7 +5979,7 @@ transform: translateZ(0);
     position: relative;
     margin-bottom: 20px;
     font-size: 14px;
-    padding-left: 22px;
+    /* padding-left: 22px; */
   }
   
   .single-footer-widget .footer-contact-info li i {
@@ -6613,6 +6613,13 @@ display: block;
   display: inline-flex !important;
     align-items: center !important;
     gap: 10px !important;
+    border: 1px solid #666666 !important;
+    padding: 1px;
+    color: #666666;
+}
+
+.react-tabs__tab--selected .tab_icon {
+  color: white !important;
 }
 
 .react-tabs .react-tabs__tab-list li
@@ -6662,6 +6669,13 @@ display: block;
  .treatment h3
 {
   color: #eb268f !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+}
+
+.treatment p
+{
+  padding: 5px;
 }
 
 .features-box
@@ -6712,4 +6726,21 @@ display: block;
 {
   color: #eb268f;
   margin: 6px;
+  font-size: 17px;
+}
+
+.hospital-name
+{
+  font-weight: 600;
+}
+.hospital-types
+{
+  /* font-weight: 600 !important; */
+  /* color: #3f3f3f !important; */
+  line-height: 0 !important;
+}
+.hospital-info .hospital-location
+{
+  color: #3f3f3f !important;
+  font-weight: 600;
 }

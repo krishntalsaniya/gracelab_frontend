@@ -35,7 +35,7 @@ function Patientsignup() {
   const navigate = useNavigate();
   const handleSubmit = async (values) => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createPatient`, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createPatient1`, {
         PatientName: values.name,
         Email: values.email,
         ContactNo: values.contact,

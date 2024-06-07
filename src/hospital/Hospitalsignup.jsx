@@ -92,7 +92,7 @@ function Hospitalsignup() {
   const navigate = useNavigate();
   const handleSubmit = async (values) => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createPharmacy`, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createPharmacy1`, {
         PharmacyName: values.name,
         PharmacyOwnerName: values.ownername,
         Email: values.email,

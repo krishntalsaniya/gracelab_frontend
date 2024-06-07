@@ -7,7 +7,7 @@ function Common() {
     <>
       <div class="review-item bg-pink treatment">
         <h3>Treatment Name</h3>
-        <p>
+        <p className="treatment_p">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
           minim veniam, quis nostrud exercitation.

@@ -16,10 +16,17 @@ import { Tabs, TabList, Tab, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { FaRegSquare } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa";
-import { FaLocationDot } from "react-icons/fa6";
+import { FaSquare } from "react-icons/fa6";
 import Doctorsec from "../doctor/Doctorsec";
 import drimage from "../img/drimage.jpg";
-import { Common, Gallary, Joinournetwoek, Joinournetwork, Morehospital, Sterlingicon } from "./Common";
+import {
+  Common,
+  Gallary,
+  Joinournetwoek,
+  Joinournetwork,
+  Morehospital,
+  Sterlingicon,
+} from "./Common";
 import aminities from "../img/aminities.png";
 import { TbDeviceImacCode, TbWorldWww } from "react-icons/tb";
 import { MdBloodtype } from "react-icons/md";
@@ -27,14 +34,15 @@ import { HiOutlineComputerDesktop } from "react-icons/hi2";
 import { FaPhoneAlt } from "react-icons/fa";
 import { IoIosMailUnread } from "react-icons/io";
 import doctorimage from "../img/doctorimage.jpg";
-import icon1 from '../img/icon1.png'
-import icon2 from '../img/icon2.png'
-import icon3 from '../img/icon3.png'
-import icon4 from '../img/icon4.png'
-import icon5 from '../img/icon5.png'
-import tricolor from '../img/tricolor.jpg'
-import zydus from '../img/zydus.jpg'
-import gujrat from '../img/gujara-hospital.jpg'
+import icon1 from "../img/icon1.png";
+import icon2 from "../img/icon2.png";
+import icon3 from "../img/icon3.png";
+import icon4 from "../img/icon4.png";
+import icon5 from "../img/icon5.png";
+import tricolor from "../img/tricolor.jpg";
+import zydus from "../img/zydus.jpg";
+import gujrat from "../img/gujara-hospital.jpg";
+import { FaLocationDot } from "react-icons/fa6";
 
 function Sterling() {
   return (
@@ -107,22 +115,22 @@ function Sterling() {
               <Tabs>
                 <TabList>
                   <Tab>
-                    <FaRegSquare className="tab_icon" /> Overview
+                    <FaSquare className="tab_icon" /> Overview
                   </Tab>
                   <Tab>
-                    <FaRegSquare className="tab_icon" /> Doctors
+                    <FaSquare className="tab_icon" /> Doctors
                   </Tab>
                   <Tab>
-                    <FaRegSquare className="tab_icon" /> Treatments
+                    <FaSquare className="tab_icon" /> Treatments
                   </Tab>
                   <Tab>
-                    <FaRegSquare className="tab_icon" /> Amenities
+                    <FaSquare className="tab_icon" /> Amenities
                   </Tab>
                   <Tab>
-                    <FaRegSquare className="tab_icon" /> Contact
+                    <FaSquare className="tab_icon" /> Contact
                   </Tab>
                   <Tab>
-                    <FaRegSquare className="tab_icon" /> Gallery
+                    <FaSquare className="tab_icon" /> Gallery
                   </Tab>
                 </TabList>
 
@@ -379,7 +387,10 @@ function Sterling() {
 
                             <ul class="footer-contact-info">
                               <li>
+                                
+                                
                                 <h5 className="contact">
+                                <span><FaLocationDot /></span>
                                   Sterling Addlife India Private Limited
                                 </h5>
                                 <p>
@@ -409,49 +420,81 @@ function Sterling() {
             </div>
 
             <div class="col-lg-2 col-md-12">
-                <div style={{position:'sticky',top:0}}>
-                  <div class="my-3">
-                    <h5
-                      style={{  fontSize:17,textAlign:"center",fontWeight:600}}
-                    >
-                      Join Our Network
-                    </h5>
-                  </div>
+              <div style={{ position: "sticky", top: 0 }}>
+                <div class="my-3">
+                  <h5
+                    style={{
+                      fontSize: 17,
+                      textAlign: "center",
+                      fontWeight: 600,
+                    }}
+                  >
+                    Join Our Network
+                  </h5>
+                </div>
 
-                  <div class="row justify-content-center" id="details-pages">
-                    <Joinournetwork network={icon1} title="Laboratory" joinnetworklink='/laboratory' />
-                    <Joinournetwork network={icon2} title="Pharmacy" joinnetworklink='/pharmacy'  />
-                    <Joinournetwork network={icon3} title="Doctors" joinnetworklink='/doctor' />
-                    <Joinournetwork network={icon4} title="Hospital" joinnetworklink='/hospital' />
-                    <Joinournetwork network={icon5} title="Patient" joinnetworklink='/patient-login' />
-                  </div>
+                <div class="row justify-content-center" id="details-pages">
+                  <Joinournetwork
+                    network={icon1}
+                    title="Laboratory"
+                    joinnetworklink="/laboratory"
+                  />
+                  <Joinournetwork
+                    network={icon2}
+                    title="Pharmacy"
+                    joinnetworklink="/pharmacy"
+                  />
+                  <Joinournetwork
+                    network={icon3}
+                    title="Doctors"
+                    joinnetworklink="/doctor"
+                  />
+                  <Joinournetwork
+                    network={icon4}
+                    title="Hospital"
+                    joinnetworklink="/hospital"
+                  />
+                  <Joinournetwork
+                    network={icon5}
+                    title="Patient"
+                    joinnetworklink="/patient-login"
+                  />
                 </div>
               </div>
+            </div>
           </Row>
 
           <div className="col-lg-12 col-12">
-  <div className="related-project">
-    <div className="container">
-      <div className="section-title text-center">
-        <span>More Hospital</span>
-        <h2>Nearby  Hospital</h2>
-      </div>
-      <div className="row justify-content-center">
-        <div className="col-lg-4 col-md-6 col-12">
-          <Morehospital morehospitalimage={zydus} morehospitaltitle="Zydus Hospital"/>
-        </div>
-        <div className="col-lg-4 col-md-6 col-12">
-        <Morehospital morehospitalimage={tricolor} morehospitaltitle="Tricolors Hospital"/>
-        </div>
-        <div className="col-lg-4 col-md-6 col-12">
-        <Morehospital morehospitalimage={gujrat} morehospitaltitle="Gujrat Hospital"/>
-        </div>
-      </div>
-      </div>
-      </div>
-      </div>
+            <div className="related-project">
+              <div className="container">
+                <div className="section-title text-center">
+                  <span>More Hospital</span>
+                  <h2>Nearby Hospital</h2>
+                </div>
+                <div className="row justify-content-center">
+                  <div className="col-lg-4 col-md-6 col-12">
+                    <Morehospital
+                      morehospitalimage={zydus}
+                      morehospitaltitle="Zydus Hospital"
+                    />
+                  </div>
+                  <div className="col-lg-4 col-md-6 col-12">
+                    <Morehospital
+                      morehospitalimage={tricolor}
+                      morehospitaltitle="Tricolors Hospital"
+                    />
+                  </div>
+                  <div className="col-lg-4 col-md-6 col-12">
+                    <Morehospital
+                      morehospitalimage={gujrat}
+                      morehospitaltitle="Gujrat Hospital"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </Container>
-
       </section>
     </>
   );

@@ -99,7 +99,7 @@ function Laboratorysignup() {
   const navigate = useNavigate();
   const handleSubmit = async (values) => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createLaboratery`, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createLaboratery1`, {
         LabName: values.name,
         OwnerName: values.ownername,
         Email: values.email,
