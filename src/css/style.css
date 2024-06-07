@@ -6663,3 +6663,53 @@ display: block;
 {
   color: #eb268f !important;
 }
+
+.features-box
+{
+  margin-bottom: 20px !important;
+    text-align: center !important;
+    border-radius: 7px !important;
+}
+
+.icon svg
+{
+  font-size: 45px !important;
+}
+
+.products-details-tab-content .contact
+{
+  padding: 26px !important;
+    border-radius: 15px !important;
+    background: #ffe9f5 !important;
+}
+.products-details-tab-content .content
+{
+  padding: 16px !important;
+    border-radius: 15px !important;
+    background: #ffe9f5 !important;
+    font-size: 15px
+}
+.products-details-tab-content .content span
+{
+  color: #eb268f;
+    font-weight: bold;
+    display: block;
+}
+
+.contact
+{
+  font-size: 15px;
+    font-weight: 600;
+    color: #000;
+}
+.single-footer-widget h3
+{
+  margin-bottom: 20px;
+    font-size: 20px;
+    color: #eb268f;
+}
+.phone_icon
+{
+  color: #eb268f;
+  margin: 6px;
+}
