@@ -6,11 +6,6 @@ import {Button, Collapse} from 'react-bootstrap'
 import { FiPlus ,FiMinus} from "react-icons/fi";
 import { Link } from 'react-router-dom';
 import Modalnavigationbar from '../navbar/Modalnavigationbar';
-import medkart from '../img/medkart.jpg'
-import patelpharmacy from '../img/patel-pharmacy.jpg'
-import adhyamaheshwar from '../img/adhyamaheshwar-medical.jpg'
-import apollo from '../img/apollo-pharmacy.jpg'
-
 import { Hospitalad,Hospitallable,Hospitalname } from '../hospital/Hospitallable';
 import Hospitalsearch from '../hospital/Hospitalsearch';
 import Hospitaldesc from '../hospital/Hospitaldesc';
@@ -23,6 +18,7 @@ import axios from 'axios';
 function Pharmacy() {
   const [pharmacylist, setpharmacylist] = useState(null)
   const [pharmacylocation, setpharmacylocation] = useState(null)
+  const [pharmacylaballlist, setpharmacylaballlist] = useState([]);
 
   useEffect(() => {
     
@@ -55,6 +51,22 @@ function Pharmacy() {
     }
   };
   Pharmacylocation();
+
+  const Pharmacylistall = async () =>{
+
+    try {
+      const pharmacylist = await axios.get(
+        `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listPharmacies`
+      )
+      setpharmacylaballlist(pharmacylist.data)
+      console.log('Pharmacy Location: ',pharmacylist.data)
+
+      
+    } catch (error) {
+      console.log('Error :', error)
+    }
+  };
+  Pharmacylistall();
    
   }, [])
   
@@ -203,35 +215,40 @@ navigatelink="/pharmacy-login"
 
   <div className="col-lg-8 col-md-12">
   <div className="row mt-3">
-    <div className="col-lg-6 col-md-6 col-12">
-      <Hospitaldesc
-      hospitalimage={medkart}
-      mainheading="Medkart Pharmacy"
-      headings={['Alkapuri', 'Gotri']} 
-      />
-    </div>
-    <div className="col-lg-6 col-md-6 col-12">
+  {pharmacylaballlist.map((lab, index) => (
+  <div key={index} className="col-lg-6 col-md-6 col-12">
+    <Hospitaldesc
+      hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${lab.Pharmacyphoto}`}
+      mainheading={lab.PharmacyName}
+      headings={lab.address}
+      starttime={lab.PharmacyStartTime1}
+      endtime={lab.PharmacyEndTime1}
+    />
+  </div>
+))}
+    {/* <div className="col-lg-6 col-md-6 col-12">
 <Hospitaldesc
 
   hospitalimage={patelpharmacy}
         mainheading="Patel Pharmacy"
         headings={['Alkapuri', 'Karelibaug']} 
 />
-    </div>
-    <div className="col-lg-6 col-md-6 col-12">
+    </div> */}
+    {/* <div className="col-lg-6 col-md-6 col-12">
       <Hospitaldesc
       hospitalimage={adhyamaheshwar}
       mainheading="Adhyamaheshawar Medical"
       headings={['Alkapuri', 'Karelibaug']}
+     
       />
-    </div>
-    <div className="col-lg-6 col-md-6 col-12">
+    </div> */}
+    {/* <div className="col-lg-6 col-md-6 col-12">
     <Hospitaldesc
       hospitalimage={apollo}
       mainheading="Apollo Pharmacy"
       headings={['Alkapuri', 'Karelibaug']} 
       />
-    </div>
+    </div> */}
   </div>
 </div>
 

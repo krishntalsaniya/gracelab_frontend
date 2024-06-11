@@ -1,5 +1,6 @@
 import React from 'react'
 import { FaMapMarker } from "react-icons/fa";
+import { IoMdTimer } from "react-icons/io";
 import { Link } from 'react-router-dom';
 import { Card, Image } from 'react-bootstrap';
 
@@ -16,9 +17,10 @@ function Hospitaldesc(props) {
         <h3><Link to="#">{props.mainheading}</Link></h3>
         
         <div className="location-marker-section">
-  {Array.isArray(props.headings) && props.headings.map((heading, index) => (
-    <h5 key={index} className="mt-3 d-inline-block me-2"><FaMapMarker className='map-color' /> {heading}</h5>
-  ))}
+    <h5 className="mt-3 d-inline-block me-2"><FaMapMarker className='map-color' /> {props.headings}</h5>
+</div>
+<div className="location-marker-section">
+    <h5 className="mt-3 d-inline-block me-2"><IoMdTimer className='map-color' /> Start Time : {props.starttime}  End Time :  {props.endtime}</h5>
 </div>
       </Card.Body>
     </Card>

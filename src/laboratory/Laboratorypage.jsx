@@ -6,10 +6,6 @@ import {Button, Collapse} from 'react-bootstrap'
 import { FiPlus ,FiMinus} from "react-icons/fi";
 import { Link } from 'react-router-dom';
 import Modalnavigationbar from '../navbar/Modalnavigationbar';
-import devinelab from '../img/devinelab.jpg'
-import baordalab from '../img/barodalab.jpg'
-import topranilab from '../img/topranilab.jpg'
-import khushbulab from '../img/khushbulab.jpg'
 import { Hospitalad,Hospitallable,Hospitalname } from '../hospital/Hospitallable';
 import Hospitalsearch from '../hospital/Hospitalsearch';
 import Hospitaldesc from '../hospital/Hospitaldesc';
@@ -20,6 +16,8 @@ function Laboratorypage() {
   const [loc, setloc] = useState(null)
   const [lab, setlab] = useState(null)
   const [labtest, setlabtest] = useState(null)
+  const [hospitalData, setHospitalData] = useState([]);
+  const [lablistall, setLablistall] = useState([]);
   useEffect(() => {
     const fetchAllLocations = async () => {
       try {
@@ -27,7 +25,7 @@ function Laboratorypage() {
           `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/location/city`
         );
         setloc(location.data);
-        console.log("all", location.data);
+        // console.log("all", location.data);
       } catch (error) {
         console.log("Error : ", error);
       }
@@ -40,7 +38,7 @@ function Laboratorypage() {
           `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listLaborateries`
         );
         setlab(laboratory.data);
-        console.log("laboratory", laboratory.data);
+        // console.log("laboratory", laboratory.data);
       } catch (error) {
         console.log("Error : ", error);
       }
@@ -54,7 +52,7 @@ function Laboratorypage() {
           `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/get/getAllLabTests`
         )
         setlabtest(test.data)
-        console.log("labtest",test.data)
+        // console.log("labtest",test.data)
       }catch (error)
       {
         console.log("errors: ",error)
@@ -62,32 +60,23 @@ function Laboratorypage() {
     }
     fetchLaboratorytest();
 
-    
+
+    const lablist = async  () => {
+
+      try{
+        const labt = await axios.get(
+          `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listLaborateries`
+        )
+        setLablistall(labt.data)
+        console.log("lablistactivelab",labt.data)
+      }catch (error)
+      {
+        console.log("errors: ",error)
+      }
+    }
+    lablist();
   
   }, []);
-
-    // const hospitals = [
-    //     { id: 1, name: 'Divine Lab' },
-    //     { id: 2, name: 'Baroda Laboratory' },
-    //     { id: 3, name: 'Desai Urological & Maternity Hospital' },
-    //     { id: 4, name: 'Gayatri Pathological Laboratory' },
-    //     { id: 5, name: 'Khushbu Pathology Laboratory' },
-    //     { id: 6, name: 'Dr. Soni Laboratory' },
-        
-    //     // Other hospital objects
-    //   ];
-      // const Speciality = [
-      //   { id: 1, name: 'Genetic tests' },
-      //   { id: 2, name: 'Hematology tests' },
-      //   { id: 3, name: 'Hormone tests' },
-      //   { id: 4, name: 'Immunological tests' },
-      //   { id: 5, name: 'Infectious serology tests' },
-      //   { id: 6, name: 'Microbiological tests' },
-      
-        
-      //   // Other hospital objects
-      // ];
-
   
     const [open1, setOpen1] = useState(true);
     const [open2, setOpen2] = useState(true);
@@ -96,29 +85,6 @@ function Laboratorypage() {
     const [laboratoryshowMore, laboratorysetShowMore] = useState(false); 
     const [populartestshowMore, populartestsetShowMore] = useState(false); 
 
-    // const location = [
-    //   "Alkapuri",
-    //   "Bhayli",
-    //   "Harni",
-    //   "Vasna",
-    //   "Karelibaug",
-    //   "Alkapuri",
-    // ];
-    // const laboratoryname = [
-    //   "Dr. Soni Laboratory",
-    //   "Khushbu Pathology Laboratory",
-    //   "Gayatri Pathological Laboratory",
-    //   "Desai Urological & Maternity Hospital",
-    //   "Divine Lab",
-    // ];
-    // const populartest = [
-    //   "Microbiological tests",
-    //   "Infectious serology tests",
-    //   "Immunological tests",
-    //   "Hormone tests",
-    //   "Hematology tests",
-    //   "Genetic tests",
-    // ];
 
     const toggleShowMore = (event) => {
       event.preventDefault();
@@ -195,8 +161,7 @@ navigatelink="/laboratory-login"
                 {loc?.map((city) => (
                 <Hospitallable label={city.Name} size="6" />
               ))}
-                 {/* Render additional labels only if showMore is true */}
-                 
+                    
           {showMore && loc?.map((city) => (
             <Hospitallable label={city.Name} size="6" />
           ))}
@@ -224,8 +189,7 @@ navigatelink="/laboratory-login"
                 {lab?.map((labo) => (
                 <Hospitallable  label={labo.LabName} size="12" />
               ))}
-                 {/* Render additional labels only if showMore is true */}
-                 
+                  
           {laboratoryshowMore && lab?.map((labo) => (
             <Hospitallable label={labo.LabName} size="12" />
           ))}
@@ -252,8 +216,7 @@ navigatelink="/laboratory-login"
                 {labtest?.map((laboratorytest) => (
                 <Hospitallable label={laboratorytest.TestName} size="12" />
               ))}
-                 {/* Render additional labels only if showMore is true */}
-                 
+                  
           {populartestshowMore && labtest?.map((laboratorytest) => (
             <Hospitallable label={laboratorytest.TestName} size="12" />
           ))}
@@ -275,39 +238,21 @@ navigatelink="/laboratory-login"
   
   </div>
 
-  {/* secound section start */}
-
   <div className="col-lg-8 col-md-12">
   <div className="row mt-3">
-    <div className="col-lg-6 col-md-6 col-12">
-      <Hospitaldesc
-      hospitalimage={devinelab}
-      mainheading="Devine Lab"
-      headings={['Alkapuri', 'Gotri']} 
-      />
-    </div>
-    <div className="col-lg-6 col-md-6 col-12">
-<Hospitaldesc
-
-  hospitalimage={baordalab}
-        mainheading="Baroda Laboratory"
-        headings={['Alkapuri', 'Karelibaug']} 
-/>
-    </div>
-    <div className="col-lg-6 col-md-6 col-12">
-      <Hospitaldesc
-      hospitalimage={topranilab}
-      mainheading="Toprani Advanced Lab Systems"
-      headings={['Chakli circle', 'Karelibaug','Nizampura']}
-      />
-    </div>
-    <div className="col-lg-6 col-md-6 col-12">
+  {lablistall.map((lab, index) => (
+  <div key={index} className="col-lg-6 col-md-6 col-12">
     <Hospitaldesc
-      hospitalimage={khushbulab}
-      mainheading="Gayatri Pathological Laboratory"
-      headings={['Alkapuri', 'Karelibaug']} 
-      />
-    </div>
+      hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${lab.Labphoto}`}
+      mainheading={lab.LabName}
+      headings={lab.address}
+      starttime={lab.LabStartTime1}
+      endtime={lab.LabEndTime1}
+    />
+  </div>
+))}
+
+
   </div>
 </div>
 

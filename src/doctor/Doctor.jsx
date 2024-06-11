@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Pagetitle from '../patients/Pagetitle'
 import hospitalad from '../img/hospitalad.jpg';
 import { Container, Row, Col, Image } from 'react-bootstrap';
@@ -11,28 +11,10 @@ import Hospitalsearch from '../hospital/Hospitalsearch';
 import drimage from '../img/drimage.jpg';
 import Doctorsec from './Doctorsec';
 import { MdArrowForwardIos } from "react-icons/md";
+import axios from 'axios';
 
 function Doctor() {
-  const Speciality = [
-    'Viral Infections' ,
-    'Skin infection' ,
-    'ENT' ,
-    'Gynaecologist' ,
-  
-    
-    // Other hospital objects
-  ];
-  const Symptom = [
-    'Fever' ,
-    'Paresthesia' ,
-    'Chills' ,
-    'Coughing' ,
-  
-    
-    // Other hospital objects
-  ];
 
-  
     const [open1, setOpen1] = useState(true);
     const [open2, setOpen2] = useState(true);
     const [open3, setOpen3] = useState(true);
@@ -41,15 +23,11 @@ function Doctor() {
     const [hospitalshowMore, hospitalsetShowMore] = useState(false); 
     const [specialityshowMore, specialitysetShowMore] = useState(false); 
     const [symptomshowMore, symptomsetShowMore] = useState(false); 
+    const [location, setlocation] = useState(null)
+    const [doctorspecialist, setdoctorspecialist] = useState(null)
+    const [symptomwise, setsymptomwise] = useState(null)
+    const [doctorlist, setdoctorlist] = useState([])
 
-    const location = [
-      "Alkapuri",
-      "Bhayli",
-      "Harni",
-      "Vasna",
-      "Karelibaug",
-      "Alkapuri",
-    ];
     const hospitalname = [
       "Sterling Multispeciality Hospital",
       "Zydus Hospital",
@@ -58,6 +36,76 @@ function Doctor() {
       "Sterling Hospital",
     ];
 
+    useEffect(() => {
+    
+      const Locationfetch = async() => 
+        {
+          try {
+            const locationcity = await axios.get
+            (
+              `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/location/city`
+            )
+            setlocation(locationcity.data);
+            // console.log("doctor list : ",locationcity.data);
+          } catch (error) {
+            console.log("doctor error :", error)
+          }
+        }
+        Locationfetch();
+
+        const Doctorspecilist = async() =>
+          {
+           try {
+            const Specilitydoctor = await axios.get
+            (
+              `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list/DoctorSpeciality`
+            )
+            setdoctorspecialist(Specilitydoctor.data)
+            // console.log("Doctor Speciality :",Specilitydoctor.data)
+           } catch (error) {
+            console.log("Doctor Speciality error  :", error)
+           }
+            
+          }
+          Doctorspecilist();
+          
+          const Doctorsymptom = async() =>
+            {
+              try {
+                
+                const Symptom = await axios.get
+                (
+                  `${process.env.REACT_APP_API_URL_GRACELAB}/api//auth/list/DiseasesSymptoms`
+                )
+                setsymptomwise(Symptom.data)
+                // console.log("Symptom wise data : ",Symptom.data)
+              } catch (error) {
+                console.log("Symptom wise data error : ", error)
+              }
+            }
+            Doctorsymptom();
+
+    const Doctorlist = async() =>
+      {
+        try {
+          const alldoctorlist =  await axios.get
+        (
+          `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listDoctors`
+        )
+        setdoctorlist(alldoctorlist.data);
+        console.log("All doctor list :",alldoctorlist.data);
+        } catch (error) {
+          console.log("All doctor list error :",error)
+        }
+
+      }
+      Doctorlist();
+
+
+    
+     
+    }, [])
+    
 
 
 
@@ -136,13 +184,13 @@ navigatelink="/doctor-login"
                   <Hospitalsearch />
                 </form>
                 <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
-                            {location.map((label, index) => (
-                <Hospitallable key={index} label={label} size="6" />
+                            {location?.map((city) => (
+                <Hospitallable label={city.Name} size="6" />
               ))}
                  {/* Render additional labels only if showMore is true */}
                  
-          {showMore && location.map((label, index) => (
-            <Hospitallable key={index} label={label} size="6" />
+          {showMore && location?.map((city) => (
+            <Hospitallable label={city.Name} size="6" />
           ))}
                 
                 {showMore ? (
@@ -193,12 +241,12 @@ navigatelink="/doctor-login"
                 <Hospitalsearch />
                 </form>
                 <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
-                {Speciality.map((label, index) => (
-              <Hospitallable key={index} label={label} size="12" />
+                {doctorspecialist?.map((special) => (
+              <Hospitallable label={special.Speciality} size="12" />
             ))}
                   
-                  {specialityshowMore && Speciality.map((label, index) => (
-                          <Hospitallable key={index} label={label} />
+                  {specialityshowMore && doctorspecialist?.map((special) => (
+                          <Hospitallable label={special.Speciality} />
                         ))}
                 
                 {specialityshowMore ? (
@@ -221,12 +269,12 @@ navigatelink="/doctor-login"
                 <Hospitalsearch />
                 </form>
                 <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
-                {Symptom.map((label, index) => (
-              <Hospitallable key={index} label={label} size="12" />
+                {symptomwise?.map((allsymptom) => (
+              <Hospitallable label={allsymptom.Symptom} size="12" />
             ))}
                   
-                  {symptomshowMore && Symptom.map((label, index) => (
-                          <Hospitallable key={index} label={label} />
+                  {symptomshowMore && symptomwise?.map((allsymptom) => (
+                          <Hospitallable label={allsymptom.Symptom} />
                         ))}
                 
                 {symptomshowMore ? (
@@ -249,42 +297,43 @@ navigatelink="/doctor-login"
 
   {/* secound section start */}
 
-  {/* doctor section start */}
-
   <div className="col-lg-8 col-md-12">
   <div className="row">
-    <div className="col-lg-4 col-md-6 col-12">
-      <Doctorsec
-      drimage={drimage}
-      drname="Dr. Name"
-      drlocation=" Zydus Hospital"
-      location="Alkapuri"
-      />
-    </div>
-    <div className="col-lg-4 col-md-6 col-12">
+  {doctorlist.map((doc, index) => (
+  <div key={index} className="col-lg-6 col-md-6 col-12">
+    <Doctorsec
+      drimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${doc.Doctorphoto}`}
+      drname={doc.DoctorName}
+      drlocation={doc.area}
+      location={doc.address}
+     
+    />
+  </div>
+))}
+    {/* <div className="col-lg-4 col-md-6 col-12">
     <Doctorsec
       drimage={drimage}
       drname="Dr. Name"
       drlocation="ENT Speciality, Sterling Hospital"
       location="Alkapuri"
       />
-    </div>
-    <div className="col-lg-4 col-md-6 col-12">
+    </div> */}
+    {/* <div className="col-lg-4 col-md-6 col-12">
     <Doctorsec
       drimage={drimage}
       drname="Dr. Name"
       drlocation="Gynaecologist, Zydus Hospital"
       location="Alkapuri"
       />
-    </div>
-    <div className="col-lg-4 col-md-6 col-12">
+    </div> */}
+    {/* <div className="col-lg-4 col-md-6 col-12">
     <Doctorsec
       drimage={drimage}
       drname="Dr. Name"
       drlocation="ENT Speciality, Sterling Hospital"
       location="Alkapuri"
       />
-    </div>
+    </div> */}
   </div>
 </div>
 

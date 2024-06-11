@@ -3623,6 +3623,8 @@ transform: translateZ(0);
     -webkit-transition: 0.5s;
     transition: 0.5s;
     border-radius:10px 10px 0px 0px;
+    width: 100% !important;
+    /* height: 300px !important; */
   }
   
   .single-research-box .research-content {
