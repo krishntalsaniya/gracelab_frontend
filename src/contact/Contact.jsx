@@ -169,21 +169,7 @@ function Contact() {
                             <Form.Control.Feedback type="invalid">{errors.message}</Form.Control.Feedback>
                             </Form.Group>
             </Col> 
-            <Col lg={12} md={12}>
-          <Form.Group controlId="formName">
-                            <Form.Label className='text-start w-100'>Message</Form.Label>
-                            <Form.Control
-                              type="text"
-                              name="textarea"
-                              placeholder="Your Message"
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.textarea}
-                              isInvalid={touched.textarea && errors.textarea}
-                            />
-                            <Form.Control.Feedback type="invalid">{errors.textarea}</Form.Control.Feedback>
-                            </Form.Group>
-            </Col> 
+          
             <Col lg={12} md={12}>
           <Form.Group controlId="formName">
           <Button  type="button" onClick={handleSubmit}>Send Message</Button>
