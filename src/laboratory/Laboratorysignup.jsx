@@ -95,6 +95,7 @@ const SignupSchema = Yup.object().shape({
 });
 
 function Laboratorysignup() {
+  
 
   const navigate = useNavigate();
   const handleSubmit = async (values) => {

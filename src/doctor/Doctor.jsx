@@ -44,8 +44,12 @@ function Doctor() {
             const locationcity = await axios.get
             (
               `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/location/city`
-            )
-            setlocation(locationcity.data);
+            );
+            const docotorlocation = locationcity.data.filter(
+              (doctorisactive) => doctorisactive.IsActive
+            );
+
+            setlocation(docotorlocation);
             // console.log("doctor list : ",locationcity.data);
           } catch (error) {
             console.log("doctor error :", error)
@@ -59,9 +63,12 @@ function Doctor() {
             const Specilitydoctor = await axios.get
             (
               `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list/DoctorSpeciality`
-            )
-            setdoctorspecialist(Specilitydoctor.data)
-            // console.log("Doctor Speciality :",Specilitydoctor.data)
+            );
+
+            const specilityisactive = Specilitydoctor.data.filter(
+              (specialityisactive) => specialityisactive.IsActive
+            );          
+            setdoctorspecialist(specilityisactive)
            } catch (error) {
             console.log("Doctor Speciality error  :", error)
            }
@@ -76,8 +83,11 @@ function Doctor() {
                 const Symptom = await axios.get
                 (
                   `${process.env.REACT_APP_API_URL_GRACELAB}/api//auth/list/DiseasesSymptoms`
-                )
-                setsymptomwise(Symptom.data)
+                );
+                const symptomisactive = Symptom.data.filter(
+                  (symptomisactivefetch) => symptomisactivefetch.IsActive
+                );  
+                setsymptomwise(symptomisactive)
                 // console.log("Symptom wise data : ",Symptom.data)
               } catch (error) {
                 console.log("Symptom wise data error : ", error)
@@ -91,8 +101,11 @@ function Doctor() {
           const alldoctorlist =  await axios.get
         (
           `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listDoctors`
-        )
-        setdoctorlist(alldoctorlist.data);
+        );
+        const alldoctorlistisactive = alldoctorlist.data.filter(
+          (alldoctorlistactive) => alldoctorlistactive.isActive
+        );  
+        setdoctorlist(alldoctorlistisactive);
         console.log("All doctor list :",alldoctorlist.data);
         } catch (error) {
           console.log("All doctor list error :",error)
@@ -127,16 +140,20 @@ function Doctor() {
     };
 
 
-    const toggleAccordion1 = () => {
+    const toggleAccordion1 = (event) => {
+      event.preventDefault();
         setOpen1(!open1);
       };
-    const toggleAccordion2 = () => {
+    const toggleAccordion2 = (event) => {
+      event.preventDefault();
         setOpen2(!open2);
       };
-    const toggleAccordion3 = () => {
+    const toggleAccordion3 = (event) => {
+      event.preventDefault();
         setOpen3(!open3);
       };
-    const toggleAccordion4 = () => {
+    const toggleAccordion4 = (event) => {
+      event.preventDefault();
         setOpen4(!open4);
       };
   return (
@@ -300,7 +317,7 @@ navigatelink="/doctor-login"
   <div className="col-lg-8 col-md-12">
   <div className="row">
   {doctorlist.map((doc, index) => (
-  <div key={index} className="col-lg-6 col-md-6 col-12">
+  <div key={index} className="col-lg-4 col-md-6 col-12">
     <Doctorsec
       drimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${doc.Doctorphoto}`}
       drname={doc.DoctorName}

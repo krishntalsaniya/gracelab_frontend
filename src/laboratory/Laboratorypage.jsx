@@ -24,7 +24,10 @@ function Laboratorypage() {
         const location = await axios.get(
           `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/location/city`
         );
-        setloc(location.data);
+        const locationdata = location.data.filter(
+(inactivelocation) =>inactivelocation.IsActive
+        );
+        setloc(locationdata);
         // console.log("all", location.data);
       } catch (error) {
         console.log("Error : ", error);
@@ -37,7 +40,12 @@ function Laboratorypage() {
         const laboratory = await axios.get(
           `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listLaborateries`
         );
-        setlab(laboratory.data);
+        
+        const laboratoryname = laboratory.data.filter(
+          (laboratorylistfetch)=> laboratorylistfetch.isActive
+        );
+        
+        setlab(laboratoryname);
         // console.log("laboratory", laboratory.data);
       } catch (error) {
         console.log("Error : ", error);
@@ -50,8 +58,12 @@ function Laboratorypage() {
       try{
         const test = await axios.get(
           `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/get/getAllLabTests`
-        )
-        setlabtest(test.data)
+        );
+        const laboratorytest = test.data.filter(
+
+          (laboratorytestactive) => laboratorytestactive.IsActive
+        );
+        setlabtest(laboratorytest)
         // console.log("labtest",test.data)
       }catch (error)
       {
@@ -103,13 +115,16 @@ function Laboratorypage() {
 
 
 
-    const toggleAccordion1 = () => {
+    const toggleAccordion1 = (event) => {
+      event.preventDefault();
         setOpen1(!open1);
       };
-    const toggleAccordion2 = () => {
+    const toggleAccordion2 = (event) => {
+      event.preventDefault();
         setOpen2(!open2);
       };
-    const toggleAccordion3 = () => {
+    const toggleAccordion3 = (event) => {
+      event.preventDefault();
         setOpen3(!open3);
       };
   return (
@@ -134,10 +149,15 @@ navigatelink="/laboratory-login"
 <section className="services-details-area ptb-50 main-laboratory-section">
 <Container>
       <Row>
-        <Hospitalad
-        hospitaladimage={hospitalad}
-
-        />
+      <Col lg={12} md={12} xs={12} className="mb-20">
+          <div className="ad-image position-relative">
+            <Image src={hospitalad} fluid />
+            <div className="span-title">
+              <span>Ad</span>
+            </div>
+          </div>
+        </Col>
+   
 
         {/* left side section start */}
 

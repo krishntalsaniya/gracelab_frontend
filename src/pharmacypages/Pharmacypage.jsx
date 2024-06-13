@@ -2,14 +2,10 @@ import React from "react";
 import Modalnavigationbar from "../navbar/Modalnavigationbar";
 import Pagetitle from "../patients/Pagetitle";
 import { MdArrowForwardIos } from "react-icons/md";
-import {
-  Hospitalad,
-  Hospitallable,
-  Hospitalname,
-} from "../hospital/Hospitallable";
+import {Hospitalad} from "../hospital/Hospitallable";
 import hospitalad from "../img/hospitalad.jpg";
 import { Container, Row, Col, Image } from "react-bootstrap";
-import sterling from "../img/sterling_logo.jpg";
+import om from "../img/om.jpeg";
 import direction from "../img/direction.png";
 import calander from "../img/calendar.svg";
 import { Tabs, TabList, Tab, TabPanel } from "react-tabs";
@@ -19,14 +15,15 @@ import { FaCheck } from "react-icons/fa";
 import { FaSquare } from "react-icons/fa6";
 import Doctorsec from "../doctor/Doctorsec";
 import drimage from "../img/drimage.jpg";
-import {
-  Common,
-  Gallary,
-  Joinournetwoek,
-  Joinournetwork,
-  Morehospital,
-  Sterlingicon,
-} from "./Common";
+// import {
+//   Common,
+//   Gallary,
+//   Joinournetwoek,
+//   Joinournetwork,
+//   Morehospital,
+//   Sterlingicon,
+// } from "./Common";
+
 import aminities from "../img/aminities.png";
 import { TbDeviceImacCode, TbWorldWww } from "react-icons/tb";
 import { MdBloodtype } from "react-icons/md";
@@ -43,17 +40,19 @@ import tricolor from "../img/tricolor.jpg";
 import zydus from "../img/zydus.jpg";
 import gujrat from "../img/gujara-hospital.jpg";
 import { FaLocationDot } from "react-icons/fa6";
+import { Common ,Sterlingicon,Morehospital,Joinournetwork,Gallary} from "../hospitalpages/Common";
 
-function Sterling() {
+
+function Pharmacypage() {
   return (
     <>
       <Modalnavigationbar navigatelink="" />
       <div className="page-title-area">
         <Pagetitle
-          heading="STERLING HOSPITAL"
+          heading="OM CHEMIST AND SUPERSTORE"
           pagetitlelink="/"
           title1="Home"
-          title2="Hospital"
+          title2="Pharmacy"
           IconComponent={MdArrowForwardIos}
         />
       </div>
@@ -68,16 +67,17 @@ function Sterling() {
               <div class="services-sidebar laboratory-detail details">
                 <div class="services-list">
                   <div class="hospital-part">
-                    <div class="row align-items-center">
+                    <div class="row align-items-center">    
                       <div class="col-md-3">
                         <div class="hospital-logo">
-                          <img src={sterling} class="img-fluid" />
+                          <img src={om} class="img-fluid" />
                         </div>
                       </div>
+                      
                       <div class="col-md-6">
                         <div class="hospital-info">
-                          <h5 class="hospital-name"> Sterling Hospital</h5>
-                          <p class="hospital-location">Racecourse, Vadodara</p>
+                          <h5 class="hospital-name">Om Chemist And Super Store</h5>
+                          <p class="hospital-location">Nizampura, Vadodara</p>
                           <p class="hospital-types">
                             Multi-Speciality Hospital •{" "}
                             <span class="text-success fw-bold">
@@ -118,16 +118,7 @@ function Sterling() {
                     <FaSquare className="tab_icon" /> Overview
                   </Tab>
                   <Tab>
-                    <FaSquare className="tab_icon" /> Doctors
-                  </Tab>
-                  <Tab>
-                    <FaSquare className="tab_icon" /> Treatments
-                  </Tab>
-                  <Tab>
-                    <FaSquare className="tab_icon" /> Amenities
-                  </Tab>
-                  <Tab>
-                    <FaSquare className="tab_icon" /> Contact
+                    <FaSquare className="tab_icon" /> Location
                   </Tab>
                   <Tab>
                     <FaSquare className="tab_icon" /> Gallery
@@ -219,192 +210,96 @@ function Sterling() {
                   </div>
                 </TabPanel>
 
+                
+
+              
+
+          
                 <TabPanel>
-                  <div class="row">
-                    <div class="col-lg-4 col-md-6 col-12">
-                      <Doctorsec
-                        drimage={drimage}
-                        drname="Dr. Name"
-                        drlocation=" Gynaecologist, Zydus Hospital"
-                        location="Alkapuri"
-                      />
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-12">
-                      <Doctorsec
-                        drimage={drimage}
-                        drname="Dr. Name"
-                        drlocation="ENT Speciality, Sterling Hospital"
-                        location="Alkapuri"
-                      />
-                    </div>
-                  </div>
-                </TabPanel>
+                <div class="row">
+                                            <div class="col-lg-6 col-12 ">
+                                                <div class="products-details-tab-content contact">
+                                                    <div class="single-footer-widget">
+                                                        <h3>Nizampura</h3>
 
-                <TabPanel>
-                  <div class="products-details-tab-content">
-                    <div class="product-review-form">
-                      <div class="review-comments row">
-                        <div class="col-lg-6 col-12">
-                          <Common />
-                        </div>
-                        <div class="col-lg-6 col-12">
-                          <Common />
-                        </div>
-                        <div class="col-lg-6 col-12">
-                          <Common />
-                        </div>
-                        <div class="col-lg-6 col-12">
-                          <Common />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </TabPanel>
+                                                        <ul class="footer-contact-info">
+                                                            <li><FaLocationDot className="sterling_icon1" />
+                                                                <h5>Om Chemist And Super Store</h5>
+                                                                <p><span>Registered Office:</span>
+                                                                    Gf-29 Deluxe Society, Delux Cross Road, Nizampura,
+                                                                    Vadodara - 390002 (Opposite Devdeep Complex)
+                                                                </p>
+                                                            </li>
+                                                            <li><FaPhoneAlt className="phone_icon" /> <a
+                                                                    href="tel:+91 95122 24477">+91 95122 24477</a></li>
+                                                                    <li><FaPhoneAlt className="phone_icon" /> <a
+                                                                        href="tel: +91 87582 24477"> +91 87582 24477</a></li>
+                                                            <li><IoIosMailUnread className="phone_icon" /> <a
+                                                                    href="mailto:omchemist.superstore1@gmail.com">omchemist.superstore1@gmail.com</a>
+                                                            </li>
+                                                            <li><TbWorldWww className="phone_icon" /> <a
+                                                                    href="www.omchemistandsuperstore.com"
+                                                                    target="_blank">www.omchemistandsuperstore.com</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                </div>
 
-                <TabPanel>
-                  <div class="products-details-tab-content">
-                    <div class="col-lg-12 col-md-12">
-                      <div class="research-details-features">
-                        <div class="row">
-                          <div class="col-lg-3 col-md-6 col-sm-6 sterling_icon">
-                            <Sterlingicon
-                              image={aminities}
-                              icons={<TbDeviceImacCode />}
-                            />
-                          </div>
-                          <div class="col-lg-3 col-md-6 col-sm-6 sterling_icon">
-                            <Sterlingicon
-                              image={aminities}
-                              icons={<MdBloodtype />}
-                            />
-                          </div>
+                                                <div class="col-lg-6 col-12 ">
+                                                <div class="products-details-tab-content contact">
+                                                    <div class="single-footer-widget">
+                                                        <h3>GOTRI</h3>
 
-                          <div class="col-lg-3 col-md-6 col-sm-6 sterling_icon">
-                            <Sterlingicon
-                              image={aminities}
-                              icons={<HiOutlineComputerDesktop />}
-                            />
-                          </div>
-                          <div class="col-lg-3 col-md-6 col-sm-6 sterling_icon">
-                            <Sterlingicon
-                              image={aminities}
-                              icons={<TbDeviceImacCode />}
-                            />
-                          </div>
+                                                        <ul class="footer-contact-info">
+                                                            <li><FaLocationDot className="sterling_icon1" />
+                                                                <h5>Om Chemist And Super Store</h5>
+                                                                <p><span>Registered Office:</span>
+                                                                    Gf-GF-A/1, Gayatrukruoa Society, Opp. Iscon Heights, Gotri Main Road, Vadodara - 390021
+                                                                </p>
+                                                            </li>
+                                                            <li><FaPhoneAlt className="phone_icon" /> <a
+                                                                    href="tel:+91 95122 24477">+91 91 82384 45588</a></li>
+                                                                    <li><FaPhoneAlt className="phone_icon" /> <a
+                                                                        href="tel: +91 87582 24477"> +91 91 82384 45599</a></li>
+                                                            <li><IoIosMailUnread className="phone_icon" /> <a
+                                                                    href="mailto:omchemist.superstore1@gmail.com">omchemist.superstore1@gmail.com</a>
+                                                            </li>
+                                                            <li><TbWorldWww className="phone_icon" /> <a
+                                                                    href="www.omchemistandsuperstore.com"
+                                                                    target="_blank">www.omchemistandsuperstore.com</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                </div>
 
-                          <div class="col-lg-3 col-md-6 col-sm-6 sterling_icon">
-                            <Sterlingicon
-                              image={aminities}
-                              icons={<MdBloodtype />}
-                            />
-                          </div>
+                                                <div class="col-lg-6 col-12 ">
+                                                <div class="products-details-tab-content contact">
+                                                    <div class="single-footer-widget">
+                                                        <h3>MANJALPUR</h3>
 
-                          <div class="col-lg-3 col-md-6 col-sm-6 sterling_icon">
-                            <Sterlingicon
-                              image={aminities}
-                              icons={<HiOutlineComputerDesktop />}
-                            />
-                          </div>
-                          <div class="col-lg-3 col-md-6 col-sm-6 sterling_icon">
-                            <Sterlingicon
-                              image={aminities}
-                              icons={<TbDeviceImacCode />}
-                            />
-                          </div>
-
-                          <div class="col-lg-3 col-md-6 col-sm-6 sterling_icon">
-                            <Sterlingicon
-                              image={aminities}
-                              icons={<MdBloodtype />}
-                            />
-                          </div>
-                          <div class="col-lg-3 col-md-6 col-sm-6 sterling_icon">
-                            <Sterlingicon
-                              image={aminities}
-                              icons={<HiOutlineComputerDesktop />}
-                            />
-                          </div>
-
-                          <div class="col-lg-3 col-md-6 col-sm-6 sterling_icon">
-                            <Sterlingicon
-                              image={aminities}
-                              icons={<TbDeviceImacCode />}
-                            />
-                          </div>
-
-                          <div class="col-lg-3 col-md-6 col-sm-6 sterling_icon">
-                            <Sterlingicon
-                              image={aminities}
-                              icons={<MdBloodtype />}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </TabPanel>
-
-                <TabPanel>
-                  <dic class="row">
-                    <div class="col-lg-6 col-12">
-                      <div class="products-details-tab-content">
-                        <div className="contact">
-                          <div class="single-footer-widget">
-                            <h3>Contact Info</h3>
-
-                            <ul class="footer-contact-info">
-                              <li>
-                                <FaPhoneAlt className="phone_icon" />
-                                <a href="tel:+91 90169 50768">
-                                  +91 90169 50768
-                                </a>
-                              </li>
-                              <li>
-                                <IoIosMailUnread className="phone_icon" />
-                                <a href="mailto:info@gracelaboratory.com">
-                                  info@gracelaboratory.com
-                                </a>
-                              </li>
-                              <li>
-                                <TbWorldWww className="phone_icon" />
-                                <a
-                                  href="www.sterlinghospitals.com"
-                                  target="_blank"
-                                >
-                                  www.sterlinghospitals.com
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-lg-6 col-12">
-                      <div class="products-details-tab-content">
-                        <div className="content">
-                          <div class="single-footer-widget">
-                            <h3>Our Location</h3>
-
-                            <ul class="footer-contact-info">
-                              <li>
-                             
-                                
-                                <h5 className="sterling_title">
-                                <FaLocationDot className="sterling_icon1" />
-                                  Sterling Addlife India Private Limited
-                                </h5>
-                                <p className="steling_p">
-                                  <span>Registered Office:</span>
-                                  Sterling Hospital, Sterling Hospital Road,
-                                  Memnagar, Ahmedabad-380052, Gujarat, India
-                                </p>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </dic>
+                                                        <ul class="footer-contact-info">
+                                                            <li><FaLocationDot className="sterling_icon1" />
+                                                                <h5>Om Chemist And Super Store</h5>
+                                                                <p><span>Registered Office:</span>
+                                                                    Gf-29 Deluxe Society, Delux Cross Road, Nizampura,
+                                                                    Vadodara - 390002 (Opposite Devdeep Complex)
+                                                                </p>
+                                                            </li>
+                                                            <li><FaPhoneAlt className="phone_icon" /> <a
+                                                                    href="tel:+91 95122 24477">+91 95122 24477</a></li>
+                                                                    <li><FaPhoneAlt className="phone_icon" /> <a
+                                                                        href="tel: +91 87582 24477"> +91 87582 24477</a></li>
+                                                            <li><IoIosMailUnread className="phone_icon" /> <a
+                                                                    href="mailto:omchemist.superstore1@gmail.com">omchemist.superstore1@gmail.com</a>
+                                                            </li>
+                                                            <li><TbWorldWww className="phone_icon" /> <a
+                                                                    href="www.omchemistandsuperstore.com"
+                                                                    target="_blank">www.omchemistandsuperstore.com</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                                </div>
                 </TabPanel>
 
                 <TabPanel>
@@ -500,4 +395,4 @@ function Sterling() {
   );
 }
 
-export default Sterling;
+export default Pharmacypage;

@@ -27,22 +27,29 @@ function Pharmacy() {
       const pharmactl = await axios.get(
         `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listPharmacies`
       )
-      setpharmacylist(pharmactl.data)
+      const isactivepharmacylist = pharmactl.data.filter(
+        (pharmacylistac) => pharmacylistac.isActive
+      );
+
+      setpharmacylist(isactivepharmacylist)
       console.log("Pharmacy list : ",pharmactl.data)
 
     } catch (error) {
       console.log('Error Show : ',error)
     }
   };
-  Pharmacylist ();
+  Pharmacylist();
 
   const Pharmacylocation = async () =>{
 
     try {
       const locationp = await axios.get(
         `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/location/city`
-      )
-      setpharmacylocation(locationp.data)
+      );
+      const pharmacylocation = locationp.data.filter(
+        (pharmacylocationfetch) => pharmacylocationfetch.IsActive
+      );
+      setpharmacylocation(pharmacylocation)
       console.log('Pharmacy Location: ',locationp.data)
 
       
@@ -57,8 +64,13 @@ function Pharmacy() {
     try {
       const pharmacylist = await axios.get(
         `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listPharmacies`
-      )
-      setpharmacylaballlist(pharmacylist.data)
+      );
+      // console.log("pha",pharmacylist)
+      const Allisactivepharmacy = pharmacylist.data.filter(
+        (post) =>post.isActive
+      );
+      
+      setpharmacylaballlist(Allisactivepharmacy)
       console.log('Pharmacy Location: ',pharmacylist.data)
 
       
@@ -70,22 +82,6 @@ function Pharmacy() {
    
   }, [])
   
-  const location = [
-    "Alkapuri",
-    "Bhayli",
-    "Harni",
-    "Vasna",
-    "Karelibaug",
-    "Alkapuri",
-  ];
-
-    const pharmacyname = [
-        'Medkart Pharmacy' ,
-        'Patel Pharmacy' ,
-        'Adhyamaheshwar Medical' ,
-        'Apollo Pharmacy' ,
-      ];
-   
       const [open1, setOpen1] = useState(true);
     const [open2, setOpen2] = useState(true);
     const [showMore, setShowMore] = useState(false); 
@@ -104,10 +100,12 @@ function Pharmacy() {
     };
 
 
-    const toggleAccordion1 = () => {
+    const toggleAccordion1 = (event) => {
+      event.preventDefault();
         setOpen1(!open1);
       };
-    const toggleAccordion2 = () => {
+    const toggleAccordion2 = (event) => {
+       event.preventDefault();
         setOpen2(!open2);
       };
  
@@ -161,7 +159,7 @@ navigatelink="/pharmacy-login"
               ))}
                  {/* Render additional labels only if showMore is true */}
                  
-          {showMore && location.map((label, index) => (
+          {/* {showMore && location.map((label, index) => (
             <Hospitallable key={index} label={label} size="6" />
           ))}
                 
@@ -169,7 +167,7 @@ navigatelink="/pharmacy-login"
         <Link onClick={toggleShowMore} className='view-more'>View Less</Link>
       ) : (
         <Link onClick={toggleShowMore} className='view-more'>View More</Link>
-      )}
+      )} */}
        </div>
               </div>
 
@@ -190,7 +188,7 @@ navigatelink="/pharmacy-login"
               ))}
                  {/* Render additional labels only if showMore is true */}
                  
-          {pharmacyshowMore && pharmacyname.map((label, index) => (
+          {/* {pharmacyshowMore && pharmacyname.map((label, index) => (
             <Hospitallable key={index} label={label} size="12" />
           ))}
                 
@@ -198,7 +196,7 @@ navigatelink="/pharmacy-login"
         <Link onClick={pharmacytoggleShowMore} className='view-more'>View Less</Link>
       ) : (
         <Link onClick={pharmacytoggleShowMore} className='view-more'>View More</Link>
-      )}
+      )} */}
                  </div>
               </div>
             </div>

@@ -27,11 +27,9 @@ import Signup from './registration/Signup';
 import Privacy from './privacy/Privacy';
 import Terms from './privacy/Terms';
 import Sterling from './hospitalpages/Sterling';
-
-
-
-
-
+import Pharmacypage from './pharmacypages/Pharmacypage';
+import Doctorpage from './doctorpages/Doctorpage';
+import Labpage from './laboraotrypage/Labpage';
 
 
 
@@ -67,14 +65,10 @@ function App() {
   <Route path='/privacy-policies' element={<Privacy />} />
   <Route path='/terms-condition' element={<Terms />} />
   <Route path='/sterling-hospital' element={<Sterling />} />
-  
-  
-  
-
-  
-
+  <Route path='/pharmacy-page' element={<Pharmacypage />} />
+  <Route path='/doctor-page' element={<Doctorpage />} />
+  <Route path='/lab-page' element={<Labpage />} />
  
-
 </Routes> 
     <Footer />
 </Router>

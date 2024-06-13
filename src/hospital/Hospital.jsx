@@ -97,13 +97,16 @@ function Hospital() {
     };
 
 
-    const toggleAccordion1 = () => {
+    const toggleAccordion1 = (event) => {
+      event.preventDefault();
         setOpen1(!open1);
       };
-    const toggleAccordion2 = () => {
+    const toggleAccordion2 = (event) => {
+      event.preventDefault();
         setOpen2(!open2);
       };
-    const toggleAccordion3 = () => {
+    const toggleAccordion3 = (event) => {
+      event.preventDefault();
         setOpen3(!open3);
       };
   return (
