@@ -317,12 +317,18 @@ navigatelink="/doctor-login"
   <div className="col-lg-8 col-md-12">
   <div className="row">
   {doctorlist.map((doc, index) => (
-  <div key={index} className="col-lg-4 col-md-6 col-12">
+  <div key={index} className="col-lg-12 col-md-6 col-12">
     <Doctorsec
       drimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${doc.Doctorphoto}`}
       drname={doc.DoctorName}
       drlocation={doc.area}
       location={doc.address}
+      starttime1={doc.OPD1StartTime}
+      endtime1={doc.OPD1EndTime}
+      starttime2={doc.OPD2StartTime}
+      endtime2={doc.OPD2EndTime}
+      starttime3={doc.OPD3StartTime}
+      endtime3={doc.OPD3EndTime}
      
     />
   </div>

@@ -245,7 +245,7 @@ navigatelink="/hospital-login"
   <div className="row mt-3">
  
       {hospitalData.map((hospital, index) => (
-        <div className="col-lg-6 col-md-6 col-12" key={index}>
+        <div className="col-lg-12 col-md-6 col-12" key={index}>
           <Hospitaldesc
             hospitalimage={hospital.mainheading === 'Sterling Hospital' ? sterling : sterling} // Example logic for assigning images
             mainheading={hospital.mainheading}

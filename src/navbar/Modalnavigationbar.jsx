@@ -247,7 +247,7 @@ function Modalnavigationbar(props) {
                 <Link to="/hospital" className='mobile-link'>Hospital</Link>
                 <Link to="/patient-login" className='mobile-link'>Patients</Link>
               </NavDropdown>
-              <Link to="/Registration" className='mobile-link'>Registration</Link>
+              {/* <Link to="/Registration" className='mobile-link'>Registration</Link> */}
               <Link to="/contact" className='mobile-link'>Contact</Link>
               <Link to={props.navigatelink} className="btn btn-secondary ms-3 btn-login" onClick={(e) => e.currentTarget.getAttribute('href') === '/'|| '/Registration' ? handleShow() : handleClose()}>Login / Sign Up</Link>
 
@@ -315,7 +315,7 @@ function Modalnavigationbar(props) {
                       <li className="nav-item"><Link to="/patient-login" className="nav-link">Patients</Link></li>
                     </ul>
                   </li>
-                  <li className="nav-item"><Link to="/sterling-hospital" className="nav-link">hospital</Link></li>
+                  {/* <li className="nav-item"><Link to="/sterling-hospital" className="nav-link">hospital</Link></li> */}
                   <li className="nav-item"><Link to="/contact" className="nav-link">Contact</Link></li>
                 </ul>
                 <Link to={props.navigatelink} className="btn btn-secondary ms-3 btn-login" onClick={(e) => e.currentTarget.getAttribute('href') === '/' ? handleShow() : handleClose()}>Login / Sign Up</Link>

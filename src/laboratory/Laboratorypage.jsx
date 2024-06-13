@@ -78,8 +78,12 @@ function Laboratorypage() {
       try{
         const labt = await axios.get(
           `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listLaborateries`
-        )
-        setLablistall(labt.data)
+        );
+
+        const alllablistisactive = labt.data.filter(
+          (laboratoruisactive)=> laboratoruisactive.isActive
+        );
+        setLablistall(alllablistisactive)
         console.log("lablistactivelab",labt.data)
       }catch (error)
       {
@@ -261,13 +265,18 @@ navigatelink="/laboratory-login"
   <div className="col-lg-8 col-md-12">
   <div className="row mt-3">
   {lablistall.map((lab, index) => (
-  <div key={index} className="col-lg-6 col-md-6 col-12">
+  <div key={index} className="col-lg-12 col-md-12 col-12">
     <Hospitaldesc
       hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${lab.Labphoto}`}
       mainheading={lab.LabName}
       headings={lab.address}
-      starttime={lab.LabStartTime1}
-      endtime={lab.LabEndTime1}
+      starttime1={lab.LabStartTime1}
+      endtime1={lab.LabEndTime1}
+      starttime2={lab.LabStartTime2}
+      endtime2={lab.LabEndTime2}
+      starttime3={lab.LabStartTime3}
+      endtime3={lab.LabEndTime3}
+      
     />
   </div>
 ))}

@@ -214,13 +214,17 @@ navigatelink="/pharmacy-login"
   <div className="col-lg-8 col-md-12">
   <div className="row mt-3">
   {pharmacylaballlist.map((lab, index) => (
-  <div key={index} className="col-lg-6 col-md-6 col-12">
+  <div key={index} className="col-lg-12 col-md-6 col-12">
     <Hospitaldesc
       hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${lab.Pharmacyphoto}`}
       mainheading={lab.PharmacyName}
       headings={lab.address}
-      starttime={lab.PharmacyStartTime1}
-      endtime={lab.PharmacyEndTime1}
+      starttime1={lab.PharmacyStartTime1}
+      endtime1={lab.PharmacyEndTime1}
+      starttime2={lab.PharmacyStartTime2}
+      endtime2={lab.PharmacyEndTime2}
+      starttime3={lab.PharmacyStartTime3}
+      endtime3={lab.PharmacyEndTime3}
     />
   </div>
 ))}
