@@ -1,12 +1,14 @@
 import React,{useState} from 'react'
 import { IoIosArrowForward } from "react-icons/io";
 import { Link } from 'react-router-dom';
-import { Container, Row, Col, Form, InputGroup, Button, Checkbox ,Modal} from 'react-bootstrap';
+import { Container, Row, Col, Form, InputGroup, Button, Checkbox ,Modal,Alert} from 'react-bootstrap';
 // import { Modal } from 'react-bootstrap';
 import network from '../img/network.jpg';
 import Pagetitle from './Pagetitle';
 import Modalnavigationbar from '../navbar/Modalnavigationbar';
 import { MdArrowForwardIos } from "react-icons/md";
+import axios from 'axios';
+
 
 
 
@@ -14,6 +16,41 @@ import { MdArrowForwardIos } from "react-icons/md";
 function Patientlogin() {
 
     const [showModal, setShowModal] = useState(false);
+    const [email, setemail] = useState('')
+    const [password, setpassword] = useState('')
+    const [error, seterror] = useState('')
+    const [loading, setloading] = useState(false)
+
+    const handlechange = async(e) =>
+      {
+        e.preventDefault();
+        setloading(true);
+        seterror('');
+
+        try {
+          const patientlogin = await axios.post(
+            `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/userLoginPatient`,
+            {
+                    email:email,
+                    password:password
+            }
+          )
+
+          const patientresult = (patientlogin.data)
+
+          if (patientresult.isOk) {
+            window.open('http://PatientGracelab.barodaweb.in','_blank');
+          } else {
+            seterror(patientresult.message);
+          }
+          
+        } catch (err) {
+          console.error(err);
+          seterror('An error occurred while logging in.');
+        } finally {
+          setloading(false);
+        }
+      };
 
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
@@ -44,14 +81,23 @@ function Patientlogin() {
                     <p className="mb-4">Please login to your account</p>
                   </div>
                 </div>
-                <Form className="signin-form">
+                {error && <Alert variant="danger">{error}</Alert>}
+                <Form className="signin-form" onSubmit={handlechange}>
                   <Form.Group className="mb-3" controlId="formUsername">
                     <Form.Label>Username</Form.Label>
-                    <Form.Control type="text" placeholder="Username" required />
+                    <Form.Control type="text"
+                     placeholder="Username" 
+                     required
+                     value={email}
+                     onChange={(e) => setemail(e.target.value)} />
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="formPassword">
                     <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password" required />
+                    <Form.Control type="password"
+                     placeholder="Password"
+                      required
+                      value={password}
+                      onChange={(e)=>setpassword(e.target.value)} />
                   </Form.Group>
                   <Row className="mb-4">
                     <Col className="text-start" xs={6}>
@@ -62,7 +108,9 @@ function Patientlogin() {
                       <Link to="/forgotpassword">Forgot Password?</Link>
                     </Col>
                   </Row>
-                  <Button type="submit"  className="form-control btn btn-sign-in rounded submit px-3">Sign In</Button>
+                  <Button type="submit" className="form-control btn btn-sign-in rounded submit px-3" disabled={loading}>
+                      {loading ? 'Signing In...' : 'Sign In'}
+                    </Button>
                 </Form>
                 <p className="text-center accounttop">Don't have an account? <Link to="/patient-signup" className="d-inline-block">Register here</Link></p>
                 <p className="text-center fw-bold">

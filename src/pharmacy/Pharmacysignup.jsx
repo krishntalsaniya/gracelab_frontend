@@ -325,7 +325,7 @@ function Pharmacysignup() {
                     </Form>
                   )}
                 </Formik>
-                <p className="text-center">Already have an account? <Link to='/laboratory-login' className="d-inline-block">Sign In</Link></p>
+                <p className="text-center">Already have an account? <Link to='/pharmacy-login' className="d-inline-block">Sign In</Link></p>
               </div>
             </div>
           </Row>

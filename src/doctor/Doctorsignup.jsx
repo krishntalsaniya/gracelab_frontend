@@ -70,7 +70,6 @@ function Doctorsignup() {
 
   const navigate = useNavigate();
   const handleSubmit = async (values) => {
-    console.log("okokokook")
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createDoctor1`, {
         DoctorName: values.doctorsName,
