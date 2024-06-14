@@ -1,70 +1,8 @@
-// import React from 'react'
-// import Modalnavigationbar from '../navbar/Modalnavigationbar'
-// import Pagetitle from '../patients/Pagetitle'
-// import { Container, Row, Col, Form, Button, InputGroup } from 'react-bootstrap';
-// import Signup from '../hospital/Signup';
-// import laboratory from '../img/laboratory-login.jpg'
-// import { RxSlash } from "react-icons/rx";
-
-// function Laboratorysignup() {
-//   return (
-//     <>
-
-// <Modalnavigationbar/>
-
-// <div className="page-title-area">
-// <Pagetitle 
-// heading="JOIN OUR LABORATORY NETWORK"
-// pagetitlelink="/"
-// title1="Login"
-// title2="Signup"
-// IconComponent={RxSlash}
-// />
-// </div>
-
-
-
-// <section className="services-area ptb-70 pb-5">
-//       <Container>
-//         <Row className="justify-content-center" id="signupPanel">
-//           <Signup
-//           signupimage={laboratory}
-//           name="Laboratory Name"
-//           namep="Laboratory Name"
-//           ownername="Owner Name"
-//           email="Email Address"
-//           contact="Contact No."
-//           password="Password"
-//           confirmpass="confirm password"
-//           licenceno="Laboratory Licence No."
-//           licencep="Laboratory Licence No."
-//           licencedate="Laboratory Licence Date."
-//           pincode="Pincode"
-//           address="Registered Address"
-//           signup='/laboratory-login'
-//           />
-//         </Row>
-//       </Container>
-//     </section>
-    
-    
-//     </>
-//   )
-// }
-
-// export default Laboratorysignup
-
-
-
-// binding
-
-
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import Modalnavigationbar from '../navbar/Modalnavigationbar';
 import Pagetitle from '../patients/Pagetitle';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
-import Signup from '../hospital/Signup';
 import laboratoryimage from '../img/laboratory-login.jpg';
 import { RxSlash } from "react-icons/rx";
 import { Formik } from 'formik';
@@ -95,23 +33,32 @@ const SignupSchema = Yup.object().shape({
 });
 
 function Laboratorysignup() {
-  
-
   const navigate = useNavigate();
+  const [file, setFile] = useState(null);
+
+  const handleFileChange = (event) => {
+    setFile(event.currentTarget.files[0]);
+  };
+
   const handleSubmit = async (values) => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createLaboratery1`, {
-        LabName: values.name,
-        OwnerName: values.ownername,
-        Email: values.email,
-        ContactNo: values.contact,
-        Password: values.password,
-        LicenseNo: values.licenceno,
-        LicenseDate: values.licencedate,
-        Pincode: values.pincode,
-        Address: values.address,
-        
-        isActive: true,
+      const formData = new FormData();
+      formData.append('LabName', values.name);
+      formData.append('OwnerName', values.ownername);
+      formData.append('EmailLab', values.email);
+      formData.append('mobileNumber', values.contact);
+      formData.append('Password', values.password);
+      formData.append('LabLicenseNumber', values.licenceno);
+      formData.append('LabLicenseDate', values.licencedate);
+      formData.append('Pincode', values.pincode);
+      formData.append('address', values.address);
+      formData.append('photo', file); // Append the file
+      formData.append('isActive', true); 
+
+      const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createLaboratery`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
 
       console.log('Laboratory created successfully:', response.data);
@@ -122,13 +69,16 @@ function Laboratorysignup() {
         icon: "success",
         confirmButtonText: "OK"
       }).then(() => {
-        // Redirect to '/laboratory-login' using useHistory hook
         navigate('/laboratory-login');
       });
-      // Redirect or show success message here
     } catch (error) {
       console.error('Error creating laboratory:', error);
-      // Show error message here
+      Swal.fire({
+        title: "Error!",
+        text: "An error occurred while registering the laboratory",
+        icon: "error",
+        confirmButtonText: "OK"
+      });
     }
   };
 
@@ -315,18 +265,33 @@ function Laboratorysignup() {
                             />
                             <Form.Control.Feedback type="invalid">{errors.address}</Form.Control.Feedback>
                           </Col>
+
+                          <Col lg={6} className="form-group mb-3">
+                            <Form.Label>Upload Photo</Form.Label>
+                            <Form.Control
+                              type='file'
+                              name="photo"
+                              onChange={(event) => {
+                                handleFileChange(event);
+                                handleChange(event);
+                              }}
+                              onBlur={handleBlur}
+                              isInvalid={touched.photo && errors.photo}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.photo}</Form.Control.Feedback>
+                          </Col>
                           
                           <Col lg={12} className="form-group d-md-flex mb-4">
-                      <div className="w-100 text-start">
-                      <label class="checkbox-wrap checkbox-primary mb-0">
-                       <input type="checkbox" />
-                         <span class="checkmark"></span> I agree all statements in <a href="#" class="d-inline-block">Terms of service</a>
-                                                    </label>
-                      </div>
-                    </Col>
-                    <Col lg={6} className="form-group">
-                    <Button type="button" onClick={handleSubmit} className="form-control btn btn-sign-in rounded submit px-3">Submit Now</Button>
-                    </Col>
+                            <div className="w-100 text-start">
+                              <label className="checkbox-wrap checkbox-primary mb-0">
+                                <input type="checkbox" />
+                                <span className="checkmark"></span> I agree to all statements in <a href="#" className="d-inline-block">Terms of service</a>
+                              </label>
+                            </div>
+                          </Col>
+                          <Col lg={6} className="form-group">
+                            <Button type="submit" className="form-control btn btn-sign-in rounded submit px-3">Submit Now</Button>
+                          </Col>
                         </Row>
                       </div>
                     </Form>

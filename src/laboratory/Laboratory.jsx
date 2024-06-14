@@ -26,8 +26,8 @@ function Laboratory() {
       const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/LabLogin`, 
         
       {
-        email: email,
-        password: password,
+        email,
+        password,
       });
 
       const result = response.data;

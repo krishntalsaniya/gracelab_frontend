@@ -69,19 +69,29 @@ function Doctorsignup() {
 
 
   const navigate = useNavigate();
+  const [file, setFile] = useState(null);
+
+  const handleFileChange = (event) => {
+    setFile(event.currentTarget.files[0]);
+  };
   const handleSubmit = async (values) => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createDoctor1`, {
-        DoctorName: values.doctorsName,
-        HospitalName: values.hospitalName,
-        EmailClinic: values.email,
-        ContactNo: values.contactNo,
-        Password: values.password,
-        Confirmpassword: values.confirmPassword,
-        Education: values.education,
-        Pincode: values.pincode,
-        Address: values.address,
-        isActive: true,
+      const formData = new FormData();
+      formData.append('DoctorName', values.doctorsName);
+      formData.append('HospitalName', values.hospitalName);
+      formData.append('EmailClinic', values.email);
+      formData.append('mobileNumber', values.contactNo);
+      formData.append('Password',values.password);
+      formData.append('Confirmpassword', values.confirmPassword);
+      formData.append('Education', values.education);
+      formData.append('Pincode', values.pincode);
+      formData.append('address', values.address);
+      formData.append('photo', file);
+      formData.append('isActive', true); 
+      const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createDoctor`,formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
 
       console.log('Pharmacy created successfully:', response.data);
@@ -315,6 +325,17 @@ function Doctorsignup() {
                               />
                               <Form.Control.Feedback type="invalid">{errors.address}</Form.Control.Feedback>
                             </Col>
+
+                            <Col lg={6} className="form-group mb-3">
+                            <Form.Label>Upload Doctor Image</Form.Label>
+                            <Form.Control
+                              type="file"
+                              name="photo"
+                              onChange={handleFileChange}
+                              isInvalid={touched.photo && errors.photo}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.photo}</Form.Control.Feedback>
+                          </Col>
 
  <Col lg={12} className="form-group d-md-flex mb-4">
                         <div className="w-100 text-start">

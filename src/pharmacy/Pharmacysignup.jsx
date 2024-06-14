@@ -1,72 +1,14 @@
-// import React from 'react'
-// import Modalnavigationbar from '../navbar/Modalnavigationbar'
-// import Pagetitle from '../patients/Pagetitle'
-// import { Container, Row, Col, Form, Button, InputGroup } from 'react-bootstrap';
-// import Signup from '../hospital/Signup';
-// import pharmacylogin from '../img/pharmacy-login.jpg'
-// import { RxSlash } from "react-icons/rx";
-
-// function Pharmacysignup() {
-//   return (
-//     <>
-//      <Modalnavigationbar />
-
-// <div className="page-title-area">
-// <Pagetitle 
-// heading="JOIN OUR PHARMACY NETWORK"
-// pagetitlelink="/"
-// title1="Login"
-// title2="Signup"
-// IconComponent={RxSlash}
-// />
-// </div>
-
-
-// <section className="services-area ptb-70 pb-5">
-//       <Container>
-//         <Row className="justify-content-center" id="signupPanel">
-//           <Signup
-//           signupimage={pharmacylogin}
-//           name="Pharmacy Name"
-//           namep="Pharmacy Name"
-//           ownername="Owner Name"
-//           email="Email Address / Username"
-//           contact="Contact No."
-//           password="Password"
-//           confirmpass="confirm password"
-//           licenceno="Pharmacy Licence No."
-//           licencep="Pharmacy Licence No."
-//           licencedate="Pharmacy Licence Date."
-//           pincode="Pincode"
-//           address="Registered Address"
-//           signup='/pharmacy-login'
-//           />
-//         </Row>
-//       </Container>
-//     </section>
-    
-//     </>
-//   )
-// }
-
-// export default Pharmacysignup
-
-// binding
-
-
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import Modalnavigationbar from '../navbar/Modalnavigationbar';
 import Pagetitle from '../patients/Pagetitle';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
-import Signup from '../hospital/Signup';
-import pharmacylogin from '../img/pharmacy-login.jpg'
+import pharmacylogin from '../img/pharmacy-login.jpg';
 import { RxSlash } from "react-icons/rx";
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Swal from 'sweetalert2';
 import { Link, useNavigate } from 'react-router-dom';
-
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string().required('Name is required'),
@@ -90,21 +32,32 @@ const SignupSchema = Yup.object().shape({
 });
 
 function Pharmacysignup() {
-
   const navigate = useNavigate();
+  const [file, setFile] = useState(null);
+
+  const handleFileChange = (event) => {
+    setFile(event.currentTarget.files[0]);
+  };
+
   const handleSubmit = async (values) => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createPharmacy1`, {
-        PharmacyName: values.name,
-        PharmacyOwnerName: values.ownername,
-        Email: values.email,
-        ContactNo: values.contact,
-        Password: values.password,
-        LicenseNo: values.licenceno,
-        LicenseDate: values.licencedate,
-        Pincode: values.pincode,
-        Address: values.address,
-        isActive: true,
+      const formData = new FormData();
+      formData.append('PharmacyName', values.name);
+      formData.append('PharmacyOwnerName', values.ownername); // Include the owner name
+      formData.append('EmailClinic', values.email);
+      formData.append('mobileNumber', values.contact);
+      formData.append('Password', values.password);
+      formData.append('PharmacyLicenseNumber', values.licenceno);
+      formData.append('PharmacyLicenseDate', values.licencedate);
+      formData.append('Pincode', values.pincode); // Include pincode
+      formData.append('address', values.address);
+      formData.append('photo', file);
+      formData.append('isActive', true); 
+
+      const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createPharmacy`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
 
       console.log('Pharmacy created successfully:', response.data);
@@ -115,13 +68,16 @@ function Pharmacysignup() {
         icon: "success",
         confirmButtonText: "OK"
       }).then(() => {
-        // Redirect to '/laboratory-login' using useHistory hook
         navigate('/pharmacy-login');
       });
-      // Redirect or show success message here
     } catch (error) {
-      console.error('Error creating laboratory:', error);
-      // Show error message here
+      console.error('Error creating pharmacy:', error);
+      Swal.fire({
+        title: "Error!",
+        text: "There was an error registering the pharmacy",
+        icon: "error",
+        confirmButtonText: "OK"
+      });
     }
   };
 
@@ -274,6 +230,7 @@ function Pharmacysignup() {
                             <Form.Control
                               type="date"
                               name="licencedate"
+                              placeholder="Pharmacy Licence Date"
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.licencedate}
@@ -297,8 +254,7 @@ function Pharmacysignup() {
                           <Col lg={6} className="form-group mb-3">
                             <Form.Label>Address</Form.Label>
                             <Form.Control
-                              as="textarea"
-                              rows={3}
+                              type="text"
                               name="address"
                               placeholder="Address"
                               onChange={handleChange}
@@ -308,24 +264,29 @@ function Pharmacysignup() {
                             />
                             <Form.Control.Feedback type="invalid">{errors.address}</Form.Control.Feedback>
                           </Col>
-                          
-                          <Col lg={12} className="form-group d-md-flex mb-4">
-                      <div className="w-100 text-start">
-                      <label class="checkbox-wrap checkbox-primary mb-0">
-                       <input type="checkbox" />
-                         <span class="checkmark"></span> I agree all statements in <a href="#" class="d-inline-block">Terms of service</a>
-                                                    </label>
-                      </div>
-                    </Col>
-                    <Col lg={6} className="form-group">
-                    <Button type="button" onClick={handleSubmit} className="form-control btn btn-sign-in rounded submit px-3">Submit Now</Button>
-                    </Col>
+                          <Col lg={6} className="form-group mb-3">
+                            <Form.Label>Upload License Image</Form.Label>
+                            <Form.Control
+                              type="file"
+                              name="photo"
+                              onChange={handleFileChange}
+                              isInvalid={touched.photo && errors.photo}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.photo}</Form.Control.Feedback>
+                          </Col>
+                          <Col lg={12} className="form-group mb-3 text-center">
+                            <Button type="submit" className="btn btn-primary">Signup</Button>
+                          </Col>
                         </Row>
                       </div>
                     </Form>
                   )}
                 </Formik>
-                <p className="text-center">Already have an account? <Link to='/pharmacy-login' className="d-inline-block">Sign In</Link></p>
+                <div className="w-100 text-center mt-4">
+                  <p className="mb-0">
+                    <Link className="btn btn-link" to="/pharmacy-login">Already a member?</Link>
+                  </p>
+                </div>
               </div>
             </div>
           </Row>

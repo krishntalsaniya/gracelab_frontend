@@ -26,8 +26,8 @@ function Doctorlogin() {
       const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/userLoginDoctor`, 
         
         {
-        email: email,
-        password: password,
+        email,
+        password,
       });
 
       const result = response.data;
