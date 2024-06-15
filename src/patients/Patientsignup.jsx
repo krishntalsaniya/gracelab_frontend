@@ -33,14 +33,25 @@ function Patientsignup() {
   const handleShow = () => setShowModal(true);
 
   const navigate = useNavigate();
+  const [file, setFile] = useState(null);
+
+  const handleFileChange = (event) => {
+    setFile(event.currentTarget.files[0]);
+  };
   const handleSubmit = async (values) => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createPatient1`, {
-        PatientName: values.name,
-        Email: values.email,
-        ContactNo: values.contact,
-        Password: values.password,
-        isActive: true,
+      const formData = new FormData();
+      formData.append('PatientName', values.name);
+      formData.append('personalEmail', values.email);
+      formData.append('ContactNo', values.contact);
+      formData.append('Password', values.password);
+      formData.append('isActive', true,);
+      formData.append('photo', file);
+
+      const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createPatient`,formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
 
       console.log('Patient created successfully:', response.data);
@@ -167,6 +178,16 @@ function Patientsignup() {
                               isInvalid={touched.password && errors.password}
                             />
                             <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+</Form.Group>
+                    <Form.Group className="mb-3" controlId="formPassword">
+                    <Form.Label>Upload Doctor Image</Form.Label>
+                    <Form.Control
+                              type="file"
+                              name="photo"
+                              onChange={handleFileChange}
+                              isInvalid={touched.photo && errors.photo}
+                            />
+                             <Form.Control.Feedback type="invalid">{errors.photo}</Form.Control.Feedback>
 </Form.Group>
 
 

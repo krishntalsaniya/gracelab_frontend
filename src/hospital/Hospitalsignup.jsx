@@ -52,13 +52,13 @@
 // binding
 
 
-import React from 'react';
+import React,{useState} from 'react';
 import axios from 'axios';
 import Modalnavigationbar from '../navbar/Modalnavigationbar';
 import Pagetitle from '../patients/Pagetitle';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import Signup from '../hospital/Signup';
-import pharmacylogin from '../img/pharmacy-login.jpg'
+import hospitallogin from '../img/hospital-login.jpg'
 import { RxSlash } from "react-icons/rx";
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -90,19 +90,31 @@ const SignupSchema = Yup.object().shape({
 function Hospitalsignup() {
 
   const navigate = useNavigate();
+
+  const [file, setFile] = useState(null);
+
+  const handleFileChange = (event) => {
+    setFile(event.currentTarget.files[0]);
+  };
   const handleSubmit = async (values) => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createPharmacy1`, {
-        PharmacyName: values.name,
-        PharmacyOwnerName: values.ownername,
-        Email: values.email,
-        ContactNo: values.contact,
-        Password: values.password,
-        LicenseNo: values.licenceno,
-        LicenseDate: values.licencedate,
-        Pincode: values.pincode,
-        Address: values.address,
-        isActive: true,
+
+      const formData = new FormData();
+      formData.append('HospitalName', values.name);
+      formData.append('PharmacyOwnerName', values.ownername);
+      formData.append('EmailHospital', values.email);
+      formData.append('mobileNumber', values.contact);
+      formData.append( 'Password', values.password);
+      formData.append('HospitalLicenseNumber', values.licenceno);
+      formData.append('HospitalLicenseDate', values.licencedate);
+      formData.append('Pincode', values.pincode);
+      formData.append('address', values.address);
+      formData.append('isActive', true);
+      formData.append('photo', file);
+      const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createHospital`,formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
 
       console.log('Pharmacy created successfully:', response.data);
@@ -114,7 +126,7 @@ function Hospitalsignup() {
         confirmButtonText: "OK"
       }).then(() => {
         // Redirect to '/laboratory-login' using useHistory hook
-        navigate('/pharmacy-login');
+        navigate('/hospital-login');
       });
       // Redirect or show success message here
     } catch (error) {
@@ -141,7 +153,7 @@ function Hospitalsignup() {
         <Container>
           <Row className="justify-content-center" id="signupPanel">
             <div className="wrap d-md-flex">
-              <div className="img" style={{ backgroundImage: `url(${pharmacylogin})` }}></div>
+              <div className="img" style={{ backgroundImage: `url(${hospitallogin})` }}></div>
               <div className="login-wrap p-4 p-md-5">
                 <div className="d-block">
                   <div className="w-100 text-center">
@@ -305,6 +317,16 @@ function Hospitalsignup() {
                               isInvalid={touched.address && errors.address}
                             />
                             <Form.Control.Feedback type="invalid">{errors.address}</Form.Control.Feedback>
+                          </Col>
+                          <Col lg={6} className="form-group mb-3">
+                            <Form.Label>Upload License Image</Form.Label>
+                            <Form.Control
+                              type="file"
+                              name="photo"
+                              onChange={handleFileChange}
+                              isInvalid={touched.photo && errors.photo}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.photo}</Form.Control.Feedback>
                           </Col>
                           
                           <Col lg={12} className="form-group d-md-flex mb-4">

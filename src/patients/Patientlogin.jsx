@@ -31,8 +31,8 @@ function Patientlogin() {
           const patientlogin = await axios.post(
             `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/userLoginPatient`,
             {
-                    email:email,
-                    password:password
+                    email,
+                    password,
             }
           )
 
