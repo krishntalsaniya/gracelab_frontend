@@ -10,10 +10,8 @@ import * as Yup from 'yup';
 import Swal from 'sweetalert2';
 import { Link, useNavigate } from 'react-router-dom';
 
-
 const SignupSchema = Yup.object().shape({
   name: Yup.string().required('Name is required'),
-  ownername: Yup.string().required('Owner Name is required'),
   email: Yup.string()
     .matches(
       /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
@@ -28,6 +26,7 @@ const SignupSchema = Yup.object().shape({
   confirmpass: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required('Confirm Password is required'),
   licenceno: Yup.string().required('License No. is required'),
   licencedate: Yup.date().required('License Date is required'),
+  labStartTime1: Yup.string().required('Time Slot is required'), // Adding validation for time slot
   pincode: Yup.string().required('Pincode is required'),
   address: Yup.string().required('Address is required'),
 });
@@ -44,12 +43,12 @@ function Laboratorysignup() {
     try {
       const formData = new FormData();
       formData.append('LabName', values.name);
-      formData.append('OwnerName', values.ownername);
       formData.append('EmailLab', values.email);
       formData.append('mobileNumber', values.contact);
       formData.append('Password', values.password);
       formData.append('LabLicenseNumber', values.licenceno);
       formData.append('LabLicenseDate', values.licencedate);
+      formData.append('LabStartTime1', values.labStartTime1); // Appending the time slot
       formData.append('Pincode', values.pincode);
       formData.append('address', values.address);
       formData.append('photo', file); // Append the file
@@ -111,13 +110,13 @@ function Laboratorysignup() {
                 <Formik
                   initialValues={{
                     name: '',
-                    ownername: '',
                     email: '',
                     contact: '',
                     password: '',
                     confirmpass: '',
                     licenceno: '',
                     licencedate: '',
+                    labStartTime1: '',
                     pincode: '',
                     address: '',
                   }}
@@ -148,7 +147,7 @@ function Laboratorysignup() {
                             />
                             <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
                           </Col>
-                          <Col lg={6} className="form-group mb-3">
+                          {/* <Col lg={6} className="form-group mb-3">
                             <Form.Label>Owner Name</Form.Label>
                             <Form.Control
                               type="text"
@@ -160,7 +159,8 @@ function Laboratorysignup() {
                               isInvalid={touched.ownername && errors.ownername}
                             />
                             <Form.Control.Feedback type="invalid">{errors.ownername}</Form.Control.Feedback>
-                          </Col>
+                          </Col> */}
+
                           <Col lg={6} className="form-group mb-3">
                             <Form.Label>Email Address</Form.Label>
                             <Form.Control
@@ -238,6 +238,21 @@ function Laboratorysignup() {
                             />
                             <Form.Control.Feedback type="invalid">{errors.licencedate}</Form.Control.Feedback>
                           </Col>
+                          <Col lg={6} className="form-group mb-3">
+                            <Form.Label>Lab Start time 1</Form.Label>
+                            <Form.Control
+                              type="time"
+                              name="labStartTime1"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.labStartTime1}
+                              isInvalid={touched.labStartTime1 && errors.labStartTime1}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.labStartTime1}</Form.Control.Feedback>
+                          </Col>
+
+                          
+                          
                           <Col lg={6} className="form-group mb-3">
                             <Form.Label>Pincode</Form.Label>
                             <Form.Control

@@ -104,7 +104,7 @@ function Hospital() {
                   `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listHospital`
                 );
                 sethospitalalllist(hospitalnamelist.data)
-                console.log("Hospital all list active : ",hospitalnamelist.data)
+                console.log("Hospital all list active : ",hospitalnamelist)
               } catch (error) {
                 console.log("Hospital all list active : ", error)
               }
