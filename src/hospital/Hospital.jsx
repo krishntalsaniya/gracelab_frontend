@@ -26,6 +26,8 @@ function Hospital() {
     const [doctorspecialist, setdoctorspecialist] = useState(null)
     const [symptomwise, setsymptomwise] = useState(null)
    const [hospitalalllist, sethospitalalllist] = useState(null)
+   const [query, setQuery] = useState("");
+   const [hospitalallparms, sethospitalallparms] = useState([])
  
     useEffect(() => {
     
@@ -102,9 +104,52 @@ function Hospital() {
               }
             }
             Hospitalname();
+
+
+          const Hospitalparms = async() =>
+            {
+              try {
+                // Define parameters for pagination, sorting, and filtering
+                const pageNo = 1; // Example page number
+                const perPage = 10; // Example number of items per page
+                const column = 'LabName'; // Example column to sort on
+                const sortDirection = 'asc'; // Example sort direction
+               
+                const filter = true; // Example filter for active laboratories
+        
+                const skip = (pageNo - 1) * perPage;
+        
+                const response = await axios.post(
+                  `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listHospitalByParams`,
+                  {
+                    skip: skip,
+                    per_page: perPage,
+                    sorton: column,
+                    sortdir: sortDirection,
+                    match: query,
+                    isActive: filter,
+                  }
+                );
+        
+                // Assuming the response contains an array of laboratories
+                const laboratories = response.data[0];
+                console.log("labbbbbb",laboratories);
+                const labdata = laboratories.data
+        
+                console.log("lab data ",labdata)
+        
+                // Filter active laboratories (if needed)
+                const activeLaboratories = labdata.filter(lab => lab.isActive);
+        
+                sethospitalallparms(activeLaboratories);
+              } catch (error) {
+                console.error('Error fetching laboratories:', error);
+              }
+            }
+            Hospitalparms();
     
      
-    }, [])
+    }, [query])
     
 
 
@@ -135,6 +180,24 @@ function Hospital() {
     const toggleAccordion3 = (event) => {
       event.preventDefault();
         setOpen3(!open3);
+      };
+      const handleInputChange = (e) => {
+        const inputValue = e.target.value;
+        setQuery(inputValue); // Update query state on every input change
+      };
+
+      const [selectedLabs, setSelectedLabs] = useState([]);
+  
+      const handleCheckboxChange = (e, labo) => {
+        const isChecked = e.target.checked;
+    
+        if (isChecked) {
+          // Add labo to selectedLabs if checked
+          setSelectedLabs([...selectedLabs, labo]);
+        } else {
+          // Remove labo from selectedLabs if unchecked
+          setSelectedLabs(selectedLabs.filter(lab => lab._id !== labo._id));
+        }
       };
   
       return (
@@ -205,11 +268,32 @@ function Hospital() {
                               <div className="widget-area">
                                 <div className="widget widget_search">
                                   <form className="search-form">
-                                    <Hospitalsearch />
+                                  <label>
+                    <span className="screen-reader-text"></span>
+                    <input type="search"
+                     className="search-field"
+                      placeholder="Search..." 
+                      onChange={handleInputChange} 
+                      
+                      />
+                  </label>
                                   </form>
                                   <div className="row mt-3" style={{ maxHeight: '170px', overflowY: 'auto' }}>
-                                    {hospitalalllist?.map((hospital) => (
-                                      <Hospitallable key={hospital._id} label={hospital.HospitalName} size="12" />
+                                    {hospitalallparms?.map((labo) => (
+                                      <Col lg={12} md={12} xs={12} key={labo._id}>
+                                      <div className="form-check">
+                                        <input 
+                                          type="checkbox" 
+                                          className="form-check-input" 
+                                          id={`lab-checkbox-${labo.id}`} 
+                                          checked={selectedLabs.some(lab => lab._id === labo._id)} // Check if labo is in selectedLabs
+                                          onChange={(e) => handleCheckboxChange(e, labo)} 
+                                        />
+                                        <label className="form-check-label" htmlFor={`lab-checkbox-${labo.id}`}>
+                                          {labo.HospitalName}
+                                        </label>
+                                      </div>
+                                    </Col>
                                     ))}
                                     {hospitalshowMore ? (
                                       <Link onClick={hospitaltoggleShowMore} className='view-more'>View Less</Link>
@@ -259,25 +343,44 @@ function Hospital() {
                 </div>
     
                 <div className="col-lg-8 col-md-12">
-                  <div className="row">
-                    {hospitalalllist?.map((hospital, index) => (
-                      <div key={index} className="col-lg-12 col-md-6 col-12">
-                        <Doctorsec
-                          drimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${hospital.Hospitalphoto}`}
-                          drname={hospital?.HospitalName}
-                          drlocation={hospital?.area} // Adjust this based on your API response structure
-                          location={hospital?.address} // Adjust this based on your API response structure
-                          starttime1={hospital?.OPD1StartTime} // Adjust this based on your API response structure
-                          endtime1={hospital?.OPD1EndTime} // Adjust this based on your API response structure
-                          starttime2={hospital?.OPD2StartTime} // Adjust this based on your API response structure
-                          endtime2={hospital?.OPD2EndTime} // Adjust this based on your API response structure
-                          starttime3={hospital?.OPD3StartTime} // Adjust this based on your API response structure
-                          endtime3={hospital?.OPD3EndTime} // Adjust this based on your API response structure
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
+  {selectedLabs.length > 0 ? (
+    <div className="selected-labs">
+      <h4>Selected Laboratories</h4>
+      {selectedLabs?.map((hospital) => (
+       <Doctorsec
+       drimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${hospital.Hospitalphoto}`}
+       drname={hospital.HospitalName}
+       drlocation={hospital.area} // Adjust this based on your API response structure
+       location={hospital.address} // Adjust this based on your API response structure
+       starttime1={hospital.OPD1StartTime} // Adjust this based on your API response structure
+       endtime1={hospital.OPD1EndTime} // Adjust this based on your API response structure
+       starttime2={hospital.OPD2StartTime} // Adjust this based on your API response structure
+       endtime2={hospital.OPD2EndTime} // Adjust this based on your API response structure
+       starttime3={hospital.OPD3StartTime} // Adjust this based on your API response structure
+       endtime3={hospital.OPD3EndTime} // Adjust this based on your API response structure
+     />
+      ))}
+    </div>
+  ) : (
+    <div className="all-labs">
+      <h4>All Laboratories</h4>
+      {hospitalalllist?.map((hospital) => (
+        <Doctorsec
+        drimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${hospital.Hospitalphoto}`}
+        drname={hospital?.HospitalName}
+        drlocation={hospital?.area} // Adjust this based on your API response structure
+        location={hospital?.address} // Adjust this based on your API response structure
+        starttime1={hospital?.OPD1StartTime} // Adjust this based on your API response structure
+        endtime1={hospital?.OPD1EndTime} // Adjust this based on your API response structure
+        starttime2={hospital?.OPD2StartTime} // Adjust this based on your API response structure
+        endtime2={hospital?.OPD2EndTime} // Adjust this based on your API response structure
+        starttime3={hospital?.OPD3StartTime} // Adjust this based on your API response structure
+        endtime3={hospital?.OPD3EndTime} // Adjust this based on your API response structure
+      />
+      ))}
+    </div>
+  )}
+</div>
     
               </Row>
             </Container>
