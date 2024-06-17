@@ -16,7 +16,7 @@ import axios from 'axios';
 
 
 function Pharmacy() {
-  const [pharmacylist, setpharmacylist] = useState(null)
+  const [pharmacylist, setpharmacylist] = useState([])
   const [pharmacylocation, setpharmacylocation] = useState(null)
   const [pharmacylaballlist, setpharmacylaballlist] = useState([]);
   const [PharmacyList, setPharmacyList] = useState([])
@@ -65,6 +65,26 @@ function Pharmacy() {
   };
   Pharmacylist();
 
+  
+  const lablist = async  () => {
+
+    try{
+      const labt = await axios.get(
+        `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listPharmacies`
+      );
+
+      const alllablistisactive = labt.data.filter(
+        (laboratoruisactive)=> laboratoruisactive.isActive
+      );
+      setpharmacylist(alllablistisactive)
+      console.log("lablistactivelab",labt.data)
+    }catch (error)
+    {
+      console.log("errors: ",error)
+    }
+  }
+  lablist();
+
   const Pharmacylocation = async () =>{
 
     try {
@@ -104,6 +124,8 @@ function Pharmacy() {
     }
   };
   Pharmacylistall();
+
+
    
   }, [query])
   
@@ -137,6 +159,19 @@ function Pharmacy() {
       const handleInputChange = (e) => {
         const inputValue = e.target.value;
         setQuery(inputValue); // Update query state on every input change
+      };
+      const [selectedLabs, setSelectedLabs] = useState([]);
+  
+      const handleCheckboxChange = (e, labo) => {
+        const isChecked = e.target.checked;
+    
+        if (isChecked) {
+          // Add labo to selectedLabs if checked
+          setSelectedLabs([...selectedLabs, labo]);
+        } else {
+          // Remove labo from selectedLabs if unchecked
+          setSelectedLabs(selectedLabs.filter(lab => lab._id !== labo._id));
+        }
       };
  
   return (
@@ -221,8 +256,21 @@ navigatelink="/pharmacy-login"
                   </label>
                 </form>
                 <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
-                {PharmacyList?.map((listshow) => (
-                <Hospitallable label={listshow.PharmacyName} size="12" />
+                {PharmacyList?.map((labo) => (
+               <Col lg={12} md={12} xs={12} key={labo._id}>
+               <div className="form-check">
+                 <input 
+                   type="checkbox" 
+                   className="form-check-input" 
+                   id={`lab-checkbox-${labo.id}`} 
+                   checked={selectedLabs.some(lab => lab._id === labo._id)} // Check if labo is in selectedLabs
+                   onChange={(e) => handleCheckboxChange(e, labo)} 
+                 />
+                 <label className="form-check-label" htmlFor={`lab-checkbox-${labo.id}`}>
+                   {labo.PharmacyName}
+                 </label>
+               </div>
+             </Col>
               ))}
                  {/* Render additional labels only if showMore is true */}
                  
@@ -248,48 +296,44 @@ navigatelink="/pharmacy-login"
   </div>
 
   {/* secound section start */}
-
   <div className="col-lg-8 col-md-12">
-  <div className="row mt-3">
-  {PharmacyList.map((lab, index) => (
-  <div key={index} className="col-lg-12 col-md-6 col-12">
-    <Hospitaldesc
-      hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${lab.Pharmacyphoto}`}
-      mainheading={lab.PharmacyName}
-      headings={lab.address}
-      starttime1={lab.PharmacyStartTime1}
-      endtime1={lab.PharmacyEndTime1}
-      starttime2={lab.PharmacyStartTime2}
-      endtime2={lab.PharmacyEndTime2}
-      starttime3={lab.PharmacyStartTime3}
-      endtime3={lab.PharmacyEndTime3}
-    />
-  </div>
-))}
-    {/* <div className="col-lg-6 col-md-6 col-12">
-<Hospitaldesc
-
-  hospitalimage={patelpharmacy}
-        mainheading="Patel Pharmacy"
-        headings={['Alkapuri', 'Karelibaug']} 
-/>
-    </div> */}
-    {/* <div className="col-lg-6 col-md-6 col-12">
-      <Hospitaldesc
-      hospitalimage={adhyamaheshwar}
-      mainheading="Adhyamaheshawar Medical"
-      headings={['Alkapuri', 'Karelibaug']}
-     
-      />
-    </div> */}
-    {/* <div className="col-lg-6 col-md-6 col-12">
-    <Hospitaldesc
-      hospitalimage={apollo}
-      mainheading="Apollo Pharmacy"
-      headings={['Alkapuri', 'Karelibaug']} 
-      />
-    </div> */}
-  </div>
+  {selectedLabs.length > 0 ? (
+    <div className="selected-labs">
+      <h4>Selected Laboratories</h4>
+      {selectedLabs.map((lab) => (
+        <Hospitaldesc
+          key={lab.id}
+          hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${lab.Pharmacyphoto}`}
+          mainheading={lab.PharmacyName}
+          headings={lab.address}
+          starttime1={lab.PharmacyStartTime1}
+          endtime1={lab.PharmacyEndTime1}
+          starttime2={lab.PharmacyStartTime2}
+          endtime2={lab.PharmacyEndTime2}
+          starttime3={lab.PharmacyStartTime3}
+          endtime3={lab.PharmacyEndTime3}
+        />
+      ))}
+    </div>
+  ) : (
+    <div className="all-labs">
+      <h4>All Laboratories</h4>
+      {pharmacylist.map((lab) => (
+         <Hospitaldesc
+         key={lab.id}
+         hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${lab.Pharmacyphoto}`}
+         mainheading={lab.PharmacyName}
+         headings={lab.address}
+         starttime1={lab.PharmacyStartTime1}
+         endtime1={lab.PharmacyEndTime1}
+         starttime2={lab.PharmacyStartTime2}
+         endtime2={lab.PharmacyEndTime2}
+         starttime3={lab.PharmacyStartTime3}
+         endtime3={lab.PharmacyEndTime3}
+       />
+      ))}
+    </div>
+  )}
 </div>
 
       </Row>

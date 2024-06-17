@@ -107,24 +107,24 @@ const [pageNo, setPageNo] = useState(0);
     fetchLaboratorytest();
 
 
-    // const lablist = async  () => {
+    const lablist = async  () => {
 
-    //   try{
-    //     const labt = await axios.get(
-    //       `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listLaborateries`
-    //     );
+      try{
+        const labt = await axios.get(
+          `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listLaborateries`
+        );
 
-    //     const alllablistisactive = labt.data.filter(
-    //       (laboratoruisactive)=> laboratoruisactive.isActive
-    //     );
-    //     setLablistall(alllablistisactive)
-    //     console.log("lablistactivelab",labt.data)
-    //   }catch (error)
-    //   {
-    //     console.log("errors: ",error)
-    //   }
-    // }
-    // lablist();
+        const alllablistisactive = labt.data.filter(
+          (laboratoruisactive)=> laboratoruisactive.isActive
+        );
+        setLablistall(alllablistisactive)
+        console.log("lablistactivelab",labt.data)
+      }catch (error)
+      {
+        console.log("errors: ",error)
+      }
+    }
+    lablist();
   
   }, [query]);
   
@@ -136,8 +136,6 @@ const [pageNo, setPageNo] = useState(0);
     const [populartestshowMore, populartestsetShowMore] = useState(false); 
     const [currentPage, setCurrentPage] = useState(1);
    
-
-
     const toggleShowMore = (event) => {
       event.preventDefault();
       setShowMore(!showMore);
@@ -172,6 +170,20 @@ const [pageNo, setPageNo] = useState(0);
         const inputValue = e.target.value;
         setQuery(inputValue); // Update query state on every input change
       };
+      const [selectedLabs, setSelectedLabs] = useState([]);
+  
+      const handleCheckboxChange = (e, labo) => {
+        const isChecked = e.target.checked;
+    
+        if (isChecked) {
+          // Add labo to selectedLabs if checked
+          setSelectedLabs([...selectedLabs, labo]);
+        } else {
+          // Remove labo from selectedLabs if unchecked
+          setSelectedLabs(selectedLabs.filter(lab => lab._id !== labo._id));
+        }
+      };
+   
 
   return (
     <>
@@ -262,9 +274,22 @@ navigatelink="/laboratory-login"
                 </form>
                 <div className="row mt-3" style={{ maxHeight: '170px', overflowY: 'auto' }}>
                 {labList?.map((labo) => (
-                <Hospitallable  label={labo.LabName} size="12" />
-              ))}
-                  
+  <Col lg={12} md={12} xs={12} key={labo._id}>
+    <div className="form-check">
+      <input 
+        type="checkbox" 
+        className="form-check-input" 
+        id={`lab-checkbox-${labo.id}`} 
+        checked={selectedLabs.some(lab => lab._id === labo._id)} // Check if labo is in selectedLabs
+        onChange={(e) => handleCheckboxChange(e, labo)} 
+      />
+      <label className="form-check-label" htmlFor={`lab-checkbox-${labo.id}`}>
+        {labo.LabName}
+      </label>
+    </div>
+  </Col>
+))}
+
           {laboratoryshowMore && labList?.map((labo) => (
             <Hospitallable label={labo.LabName} size="12" />
           ))}
@@ -314,28 +339,45 @@ navigatelink="/laboratory-login"
   </div>
 
   <div className="col-lg-8 col-md-12">
-  <div className="row mt-3">
-  {labList.map((lab, index) => (
-              <div key={index} className="col-lg-12 col-md-12 col-12">
-                <Hospitaldesc
-                  hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${lab.Labphoto}`}
-                  mainheading={lab.LabName}
-                  headings={lab.address}
-                  starttime1={lab.LabStartTime1}
-                  endtime1={lab.LabEndTime1}
-                  starttime2={lab.LabStartTime2}
-                  endtime2={lab.LabEndTime2}
-                  starttime3={lab.LabStartTime3}
-                  endtime3={lab.LabEndTime3}
-                />
-              </div>
-            ))}
-         
-
-
-    
-  </div>
+  {selectedLabs.length > 0 ? (
+    <div className="selected-labs">
+      <h4>Selected Laboratories</h4>
+      {selectedLabs.map((lab) => (
+        <Hospitaldesc
+          key={lab.id}
+          hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${lab.Labphoto}`}
+          mainheading={lab.LabName}
+          headings={lab.address}
+          starttime1={lab.LabStartTime1}
+          endtime1={lab.LabEndTime1}
+          starttime2={lab.LabStartTime2}
+          endtime2={lab.LabEndTime2}
+          starttime3={lab.LabStartTime3}
+          endtime3={lab.LabEndTime3}
+        />
+      ))}
+    </div>
+  ) : (
+    <div className="all-labs">
+      <h4>All Laboratories</h4>
+      {lablistall.map((lab) => (
+        <Hospitaldesc
+          key={lab.id}
+          hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${lab.Labphoto}`}
+          mainheading={lab.LabName}
+          headings={lab.address}
+          starttime1={lab.LabStartTime1}
+          endtime1={lab.LabEndTime1}
+          starttime2={lab.LabStartTime2}
+          endtime2={lab.LabEndTime2}
+          starttime3={lab.LabStartTime3}
+          endtime3={lab.LabEndTime3}
+        />
+      ))}
+    </div>
+  )}
 </div>
+
 
       </Row>
 

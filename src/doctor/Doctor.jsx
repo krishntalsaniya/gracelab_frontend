@@ -27,14 +27,9 @@ function Doctor() {
     const [doctorspecialist, setdoctorspecialist] = useState(null)
     const [symptomwise, setsymptomwise] = useState(null)
     const [doctorlist, setdoctorlist] = useState([])
+    const [DoctorAllList, setDoctorAllList] = useState([])
+    const [query, setQuery] = useState("");
 
-    const hospitalname = [
-      "Sterling Multispeciality Hospital",
-      "Zydus Hospital",
-      "Tricolour Hospital",
-      "Aadicura Superspeciality Hospital",
-      "Sterling Hospital",
-    ];
 
     useEffect(() => {
     
@@ -95,29 +90,70 @@ function Doctor() {
             }
             Doctorsymptom();
 
+          const Doctorlistall = async() =>
+            {
+              try {
+                
+                const Symptom = await axios.get
+                (
+                  `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listDoctors`
+                );
+                
+                setdoctorlist(Symptom.data)
+                // console.log("Symptom wise data : ",Symptom.data)
+              } catch (error) {
+                console.log("Symptom wise data error : ", error)
+              }
+            }
+            Doctorlistall();
+
     const Doctorlist = async() =>
       {
         try {
-          const alldoctorlist =  await axios.get
-        (
-          `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listDoctors`
-        );
-        const alldoctorlistisactive = alldoctorlist.data.filter(
-          (alldoctorlistactive) => alldoctorlistactive.isActive
-        );  
-        setdoctorlist(alldoctorlistisactive);
-        console.log("All doctor list :",alldoctorlist.data);
+          // Define parameters for pagination, sorting, and filtering
+          const pageNo = 1; // Example page number
+          const perPage = 10; // Example number of items per page
+          const column = 'LabName'; // Example column to sort on
+          const sortDirection = 'asc'; // Example sort direction
+         
+          const filter = true; // Example filter for active laboratories
+    
+          const skip = (pageNo - 1) * perPage;
+    
+          const response = await axios.post(
+            `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listDoctorsByParams`,
+            {
+              skip: skip,
+              per_page: perPage,
+              sorton: column,
+              sortdir: sortDirection,
+              match: query,
+              isActive: filter,
+            }
+          );
+    
+          // Assuming the response contains an array of laboratories
+          const laboratories = response.data[0];
+          console.log("pharmacy_data : ",laboratories);
+          const labdata = laboratories.data
+    
+          console.log("lab data ",labdata)
+    
+          // Filter active laboratories (if needed)
+          const activeLaboratories = labdata.filter(lab => lab.isActive);
+    
+          setDoctorAllList(activeLaboratories);
         } catch (error) {
-          console.log("All doctor list error :",error)
+          console.error('Error fetching laboratories:', error);
         }
 
       }
-      Doctorlist();
+      Doctorlist(); 
 
-
-    
-     
-    }, [])
+ 
+      
+      
+    }, [query])
     
 
 
@@ -155,6 +191,25 @@ function Doctor() {
     const toggleAccordion4 = (event) => {
       event.preventDefault();
         setOpen4(!open4);
+      };
+
+      const handleInputChange = (e) => {
+        const inputValue = e.target.value;
+        setQuery(inputValue); // Update query state on every input change
+      };
+
+      const [selectedLabs, setSelectedLabs] = useState([]);
+  
+      const handleCheckboxChange = (e, labo) => {
+        const isChecked = e.target.checked;
+    
+        if (isChecked) {
+          // Add labo to selectedLabs if checked
+          setSelectedLabs([...selectedLabs, labo]);
+        } else {
+          // Remove labo from selectedLabs if unchecked
+          setSelectedLabs(selectedLabs.filter(lab => lab._id !== labo._id));
+        }
       };
   return (
     <>
@@ -223,18 +278,39 @@ navigatelink="/doctor-login"
              </Collapse>
           </li>
           <li className="accordion-item">
-          <Link className="accordion-title" onClick={toggleAccordion2}> Hospital Name{open2 ? <FiMinus className='hospital-icon' /> : <FiPlus className='hospital-icon' />}</Link>
+          <Link className="accordion-title" onClick={toggleAccordion2}> Doctor Name{open2 ? <FiMinus className='hospital-icon' /> : <FiPlus className='hospital-icon' />}</Link>
             <Collapse in={open2}>
             <div className="widget-area">
               <div className="widget widget_search">
                 <form className="search-form">
-                 <Hospitalsearch />
+                <label>
+                    <span className="screen-reader-text"></span>
+                    <input type="search"
+                     className="search-field"
+                      placeholder="Search..." 
+                      onChange={handleInputChange} 
+                      
+                      />
+                  </label>
                 </form>
                 <div className="row mt-3" style={{ maxHeight: '170px', overflowY: 'auto' }}>
-                          {hospitalname.map((label, index) => (
-              <Hospitallable key={index} label={label} size="12" />
+                          {DoctorAllList?.map((labo) => (
+              <Col lg={12} md={12} xs={12} key={labo._id}>
+              <div className="form-check">
+                <input 
+                  type="checkbox" 
+                  className="form-check-input" 
+                  id={`lab-checkbox-${labo.id}`} 
+                  checked={selectedLabs.some(lab => lab._id === labo._id)} // Check if labo is in selectedLabs
+                  onChange={(e) => handleCheckboxChange(e, labo)} 
+                />
+                <label className="form-check-label" htmlFor={`lab-checkbox-${labo.id}`}>
+                  {labo.DoctorName}
+                </label>
+              </div>
+            </Col>
             ))}
-              {hospitalshowMore && hospitalname.map((label, index) => (
+              {/* {hospitalshowMore && DoctorAllList.map((label, index) => (
                           <Hospitallable key={index} label={label} />
                         ))}
                 
@@ -242,7 +318,7 @@ navigatelink="/doctor-login"
         <Link onClick={hospitaltoggleShowMore} className='view-more'>View Less</Link>
       ) : (
         <Link onClick={hospitaltoggleShowMore} className='view-more'>View More</Link>
-      )}
+      )} */}
 
                  </div>
               </div>
@@ -314,50 +390,48 @@ navigatelink="/doctor-login"
 
   {/* secound section start */}
 
-  <div className="col-lg-8 col-md-12">
-  <div className="row">
-  {doctorlist.map((doc, index) => (
-  <div key={index} className="col-lg-12 col-md-6 col-12">
-    <Doctorsec
-      drimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${doc.Doctorphoto}`}
-      drname={doc.DoctorName}
-      drlocation={doc.area}
-      location={doc.address}
-      starttime1={doc.OPD1StartTime}
-      endtime1={doc.OPD1EndTime}
-      starttime2={doc.OPD2StartTime}
-      endtime2={doc.OPD2EndTime}
-      starttime3={doc.OPD3StartTime}
-      endtime3={doc.OPD3EndTime}
-     
-    />
-  </div>
-))}
-    {/* <div className="col-lg-4 col-md-6 col-12">
-    <Doctorsec
-      drimage={drimage}
-      drname="Dr. Name"
-      drlocation="ENT Speciality, Sterling Hospital"
-      location="Alkapuri"
+ <div className="col-lg-8 col-md-12">
+  {selectedLabs.length > 0 ? (
+    <div className="selected-labs">
+      <h4>Selected Laboratories</h4>
+      {selectedLabs.map((doc) => (
+       <Doctorsec
+       key={doc.id}
+       drimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${doc.Doctorphoto}`}
+       drname={doc.DoctorName}
+       drlocation={doc.area}
+       location={doc.address}
+       starttime1={doc.OPD1StartTime}
+       endtime1={doc.OPD1EndTime}
+       starttime2={doc.OPD2StartTime}
+       endtime2={doc.OPD2EndTime}
+       starttime3={doc.OPD3StartTime}
+       endtime3={doc.OPD3EndTime}
+      
+     />
+      ))}
+    </div>
+  ) : (
+    <div className="all-labs">
+      <h4>All Laboratories</h4>
+      {doctorlist.map((doc) => (
+        <Doctorsec
+        key={doc.id}
+        drimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${doc.Doctorphoto}`}
+        drname={doc.DoctorName}
+        drlocation={doc.area}
+        location={doc.address}
+        starttime1={doc.OPD1StartTime}
+        endtime1={doc.OPD1EndTime}
+        starttime2={doc.OPD2StartTime}
+        endtime2={doc.OPD2EndTime}
+        starttime3={doc.OPD3StartTime}
+        endtime3={doc.OPD3EndTime}
+       
       />
-    </div> */}
-    {/* <div className="col-lg-4 col-md-6 col-12">
-    <Doctorsec
-      drimage={drimage}
-      drname="Dr. Name"
-      drlocation="Gynaecologist, Zydus Hospital"
-      location="Alkapuri"
-      />
-    </div> */}
-    {/* <div className="col-lg-4 col-md-6 col-12">
-    <Doctorsec
-      drimage={drimage}
-      drname="Dr. Name"
-      drlocation="ENT Speciality, Sterling Hospital"
-      location="Alkapuri"
-      />
-    </div> */}
-  </div>
+      ))}
+    </div>
+  )}
 </div>
 
       </Row>
