@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Pagetitle from '../patients/Pagetitle'
 import hospitalad from '../img/hospitalad.jpg';
 import { Container, Row, Col, Image } from 'react-bootstrap';
-import {Button, Collapse} from 'react-bootstrap'
+import {Button, Collapse,CardBody} from 'react-bootstrap'
 import { FiPlus ,FiMinus} from "react-icons/fi";
 import { Link } from 'react-router-dom';
 import Modalnavigationbar from '../navbar/Modalnavigationbar';
@@ -11,6 +11,9 @@ import Hospitalsearch from '../hospital/Hospitalsearch';
 import Hospitaldesc from '../hospital/Hospitaldesc';
 import { MdArrowForwardIos } from "react-icons/md";
 import axios from 'axios';
+import { IoSearch } from "react-icons/io5";
+import DataTable from "react-data-table-component";
+
 
 function Laboratorypage() {
   const [loc, setloc] = useState(null)
@@ -18,6 +21,13 @@ function Laboratorypage() {
   const [labtest, setlabtest] = useState(null)
   const [hospitalData, setHospitalData] = useState([]);
   const [lablistall, setLablistall] = useState([]);
+  const [labsPerPage] = useState(5); 
+  const [query, setQuery] = useState("");
+  const [labList, setLabList] = useState([]);
+  const [perPage, setPerPage] = useState(10);
+const [pageNo, setPageNo] = useState(0);
+
+  
   useEffect(() => {
     const fetchAllLocations = async () => {
       try {
@@ -35,23 +45,47 @@ function Laboratorypage() {
     };
     fetchAllLocations();
 
-    const fetchAllLaboratory = async () => {
+    const fetchAllLaboratories = async () => {
       try {
-        const laboratory = await axios.get(
-          `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listLaborateries`
+        // Define parameters for pagination, sorting, and filtering
+        const pageNo = 1; // Example page number
+        const perPage = 10; // Example number of items per page
+        const column = 'LabName'; // Example column to sort on
+        const sortDirection = 'asc'; // Example sort direction
+       
+        const filter = true; // Example filter for active laboratories
+
+        const skip = (pageNo - 1) * perPage;
+
+        const response = await axios.post(
+          `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listLaborateriesByParams`,
+          {
+            skip: skip,
+            per_page: perPage,
+            sorton: column,
+            sortdir: sortDirection,
+            match: query,
+            isActive: filter,
+          }
         );
-        
-        const laboratoryname = laboratory.data.filter(
-          (laboratorylistfetch)=> laboratorylistfetch.isActive
-        );
-        
-        setlab(laboratoryname);
-        // console.log("laboratory", laboratory.data);
+
+        // Assuming the response contains an array of laboratories
+        const laboratories = response.data[0];
+        console.log("labbbbbb",laboratories);
+        const labdata = laboratories.data
+
+        console.log("lab data ",labdata)
+
+        // Filter active laboratories (if needed)
+        const activeLaboratories = labdata.filter(lab => lab.isActive);
+
+        setLabList(activeLaboratories);
       } catch (error) {
-        console.log("Error : ", error);
+        console.error('Error fetching laboratories:', error);
       }
     };
-    fetchAllLaboratory();
+
+    fetchAllLaboratories();
 
     const fetchLaboratorytest = async  () => {
 
@@ -73,26 +107,26 @@ function Laboratorypage() {
     fetchLaboratorytest();
 
 
-    const lablist = async  () => {
+    // const lablist = async  () => {
 
-      try{
-        const labt = await axios.get(
-          `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listLaborateries`
-        );
+    //   try{
+    //     const labt = await axios.get(
+    //       `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listLaborateries`
+    //     );
 
-        const alllablistisactive = labt.data.filter(
-          (laboratoruisactive)=> laboratoruisactive.isActive
-        );
-        setLablistall(alllablistisactive)
-        console.log("lablistactivelab",labt.data)
-      }catch (error)
-      {
-        console.log("errors: ",error)
-      }
-    }
-    lablist();
+    //     const alllablistisactive = labt.data.filter(
+    //       (laboratoruisactive)=> laboratoruisactive.isActive
+    //     );
+    //     setLablistall(alllablistisactive)
+    //     console.log("lablistactivelab",labt.data)
+    //   }catch (error)
+    //   {
+    //     console.log("errors: ",error)
+    //   }
+    // }
+    // lablist();
   
-  }, []);
+  }, [query]);
   
     const [open1, setOpen1] = useState(true);
     const [open2, setOpen2] = useState(true);
@@ -100,6 +134,8 @@ function Laboratorypage() {
     const [showMore, setShowMore] = useState(false); 
     const [laboratoryshowMore, laboratorysetShowMore] = useState(false); 
     const [populartestshowMore, populartestsetShowMore] = useState(false); 
+    const [currentPage, setCurrentPage] = useState(1);
+   
 
 
     const toggleShowMore = (event) => {
@@ -131,6 +167,12 @@ function Laboratorypage() {
       event.preventDefault();
         setOpen3(!open3);
       };
+
+      const handleInputChange = (e) => {
+        const inputValue = e.target.value;
+        setQuery(inputValue); // Update query state on every input change
+      };
+
   return (
     <>
 
@@ -207,14 +249,23 @@ navigatelink="/laboratory-login"
             <div className="widget-area">
               <div className="widget widget_search">
                 <form className="search-form">
-                 <Hospitalsearch />
+                <label>
+                    <span className="screen-reader-text"></span>
+                    <input type="search"
+                     className="search-field"
+                      placeholder="Search..." 
+                      onChange={handleInputChange} 
+                      
+                      />
+                  </label>
+                  <button type="submit"><IoSearch /></button>
                 </form>
                 <div className="row mt-3" style={{ maxHeight: '170px', overflowY: 'auto' }}>
-                {lab?.map((labo) => (
+                {labList?.map((labo) => (
                 <Hospitallable  label={labo.LabName} size="12" />
               ))}
                   
-          {laboratoryshowMore && lab?.map((labo) => (
+          {laboratoryshowMore && labList?.map((labo) => (
             <Hospitallable label={labo.LabName} size="12" />
           ))}
                 
@@ -264,28 +315,46 @@ navigatelink="/laboratory-login"
 
   <div className="col-lg-8 col-md-12">
   <div className="row mt-3">
-  {lablistall.map((lab, index) => (
-  <div key={index} className="col-lg-12 col-md-12 col-12">
-    <Hospitaldesc
-      hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${lab.Labphoto}`}
-      mainheading={lab.LabName}
-      headings={lab.address}
-      starttime1={lab.LabStartTime1}
-      endtime1={lab.LabEndTime1}
-      starttime2={lab.LabStartTime2}
-      endtime2={lab.LabEndTime2}
-      starttime3={lab.LabStartTime3}
-      endtime3={lab.LabEndTime3}
-      
-    />
-  </div>
-))}
+  {labList.map((lab, index) => (
+              <div key={index} className="col-lg-12 col-md-12 col-12">
+                <Hospitaldesc
+                  hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${lab.Labphoto}`}
+                  mainheading={lab.LabName}
+                  headings={lab.address}
+                  starttime1={lab.LabStartTime1}
+                  endtime1={lab.LabEndTime1}
+                  starttime2={lab.LabStartTime2}
+                  endtime2={lab.LabEndTime2}
+                  starttime3={lab.LabStartTime3}
+                  endtime3={lab.LabEndTime3}
+                />
+              </div>
+            ))}
+         
 
 
+    
   </div>
 </div>
 
       </Row>
+
+        {/* Pagination */}
+        {/* {lablistall.length > labsPerPage && (
+            <nav className="pagination-area">
+              <ul className="pagination justify-content-center">
+                {Array(Math.ceil(lablistall.length / labsPerPage))
+                  .fill()
+                  .map((_, index) => (
+                    <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
+                      <button onClick={() => paginate(index + 1)} className="page-link">
+                        {index + 1}
+                      </button>
+                    </li>
+                  ))}
+              </ul>
+            </nav>
+          )} */}
     </Container>
     
     </section>

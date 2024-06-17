@@ -26,15 +26,7 @@ function Hospital() {
     const [doctorspecialist, setdoctorspecialist] = useState(null)
     const [symptomwise, setsymptomwise] = useState(null)
    const [hospitalalllist, sethospitalalllist] = useState(null)
-
-    const hospitalname = [
-      "Sterling Multispeciality Hospital",
-      "Zydus Hospital",
-      "Tricolour Hospital",
-      "Aadicura Superspeciality Hospital",
-      "Sterling Hospital",
-    ];
-
+ 
     useEffect(() => {
     
       const Locationfetch = async() => 
@@ -87,9 +79,9 @@ function Hospital() {
                   (symptomisactivefetch) => symptomisactivefetch.IsActive
                 );  
                 setsymptomwise(symptomisactive)
-                // console.log("Symptom wise data : ",Symptom.data)
+                
               } catch (error) {
-                // console.log("Symptom wise data error : ", error)
+                
               }
             }
             Doctorsymptom();
@@ -145,190 +137,153 @@ function Hospital() {
         setOpen3(!open3);
       };
   
-  return (
-    <>
+      return (
+        <>
+          <Modalnavigationbar navigatelink="/hospital-login" />
+          <div className="page-title-area">
+            <Pagetitle
+              heading="HOSPITAL"
+              pagetitlelink="/"
+              title1="Home"
+              title2="Hospital"
+              IconComponent={MdArrowForwardIos}
+            />
+          </div>
+    
+          <section className="services-details-area ptb-50 main-laboratory-section">
+            <Container>
+              <Row>
+                {/* Your Hospital Ad Section */}
+              </Row>
+            </Container>
+          </section>
+    
+          <section className="services-details-area ptb-50 main-laboratory-section">
+            <Container>
+              <Row>
+                <div className="col-lg-4 col-md-12">
+                  <div className="services-sidebar laboratory-detail">
+                    <div className="services-list">
+                      <div className="services-details-faq">
+                        <ul className="accordion">
+                          <li className="accordion-item">
+                            <Link className="accordion-title active" onClick={toggleAccordion1}>
+                              Location{open1 ? <FiMinus className='hospital-icon' /> : <FiPlus className='hospital-icon' />}
+                            </Link>
+                            <Collapse in={open1}>
+                            <div className="widget-area">
 
-<Modalnavigationbar 
-navigatelink="/hospital-login"
-
-/>
-    <div className="page-title-area">
-    <Pagetitle  
-    heading="HOSPITAL"
-    pagetitlelink="/"
-    title1="Home"
-    title2="Hospital"
-    IconComponent={MdArrowForwardIos}
-    />
+<div className="widget widget_search">
+   <form className="search-form">
+     <Hospitalsearch />
+   </form>
+   <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
+   {location?.map((city) => (
+   <Hospitallable label={city.Name} size="6" />
+ ))}
+       
+{showMore && location?.map((city) => (
+<Hospitallable label={city.Name} size="6" />
+))}
+   
+   {showMore ? (
+<Link onClick={toggleShowMore} className='view-more'>View Less</Link>
+) : (
+<Link onClick={toggleShowMore} className='view-more'>View More</Link>
+)}
 </div>
+ </div>
 
-{/* section start */}
+</div>
+                            </Collapse>
+                          </li>
+                          <li className="accordion-item">
+                            <Link className="accordion-title" onClick={toggleAccordion2}>
+                              Hospital Name{open2 ? <FiMinus className='hospital-icon' /> : <FiPlus className='hospital-icon' />}
+                            </Link>
+                            <Collapse in={open2}>
+                              <div className="widget-area">
+                                <div className="widget widget_search">
+                                  <form className="search-form">
+                                    <Hospitalsearch />
+                                  </form>
+                                  <div className="row mt-3" style={{ maxHeight: '170px', overflowY: 'auto' }}>
+                                    {hospitalalllist?.map((hospital) => (
+                                      <Hospitallable key={hospital._id} label={hospital.HospitalName} size="12" />
+                                    ))}
+                                    {hospitalshowMore ? (
+                                      <Link onClick={hospitaltoggleShowMore} className='view-more'>View Less</Link>
+                                    ) : (
+                                      <Link onClick={hospitaltoggleShowMore} className='view-more'>View More</Link>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            </Collapse>
+                          </li>
+                          <li className="accordion-item">
+                            <Link className="accordion-title" onClick={toggleAccordion3}>
+                              Speciality {open3 ? <FiMinus className='hospital-icon' /> : <FiPlus className='hospital-icon' />}
+                            </Link>
+                            <Collapse in={open3}>
+                             
+                              <div className="widget-area">
 
-<section className="services-details-area ptb-50 main-laboratory-section">
-<Container>
-      <Row>
-        <Hospitalad
-        hospitaladimage={hospitalad}
-        />
-
-        {/* left side section start */}
-
-        <div className="col-lg-4 col-md-12">
-  <div className="services-sidebar laboratory-detail">
-    <div className="services-list">
-      <div className="services-details-faq">
-        <ul className="accordion">
-
-
-          <li className="accordion-item">
-          <Link className="accordion-title active" onClick={toggleAccordion1}> Location{open1 ? <FiMinus className='hospital-icon' /> : <FiPlus className='hospital-icon' />}</Link>
-             <Collapse in={open1}>
-            <div className="widget-area">
-
-             <div className="widget widget_search">
-                <form className="search-form">
-                  <Hospitalsearch />
-                </form>
-                <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
-                            {location?.map((city) => (
-                <Hospitallable label={city.Name} size="6" />
-              ))}
-                 {/* Render additional labels only if showMore is true */}
-                 
-          {showMore && location?.map((city) => (
-            <Hospitallable label={city.Name} size="6" />
-          ))}
-                
-                {showMore ? (
-        <Link onClick={toggleShowMore} className='view-more'>View Less</Link>
-      ) : (
-        <Link onClick={toggleShowMore} className='view-more'>View More</Link>
-      )}
-      </div>
-      
-              </div>
-
-            </div>
-             </Collapse>
-          </li>
-          <li className="accordion-item">
-          <Link className="accordion-title" onClick={toggleAccordion2}> Hospital Name{open2 ? <FiMinus className='hospital-icon' /> : <FiPlus className='hospital-icon' />}</Link>
-            <Collapse in={open2}>
-            <div className="widget-area">
-              <div className="widget widget_search">
-                <form className="search-form">
-                 <Hospitalsearch />
-                </form>
-                <div className="row mt-3" style={{ maxHeight: '170px', overflowY: 'auto' }}>
-                          {hospitalalllist?.map((hospitalnamelist) => (
-              <Hospitallable label={hospitalnamelist} size="12" />
-            ))}
-              {hospitalshowMore && hospitalname.map((label, index) => (
-                          <Hospitallable key={index} label={label} />
-                        ))}
-                
-                {hospitalshowMore ? (
-        <Link onClick={hospitaltoggleShowMore} className='view-more'>View Less</Link>
-      ) : (
-        <Link onClick={hospitaltoggleShowMore} className='view-more'>View More</Link>
-      )}
-
-                 </div>
-              </div>
-            </div>
-            </Collapse>
-          </li>
-          <li className="accordion-item">
-          <Link className="accordion-title" onClick={toggleAccordion3}>Speciality {open3 ? <FiMinus className='hospital-icon' /> : <FiPlus className='hospital-icon' />}</Link>
-            <Collapse in={open3}>
-            <div className="widget-area">
-              <div className="widget widget_search">
-                <form className="search-form">
-                <Hospitalsearch />
-                </form>
-                <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
-                {doctorspecialist?.map((special) => (
-              <Hospitallable label={special.Speciality} size="12" />
-            ))}
-                  
-                  {specialityshowMore && doctorspecialist?.map((special) => (
-                          <Hospitallable label={special.Speciality} />
-                        ))}
-                
-                {specialityshowMore ? (
-        <Link onClick={specialitytoggleShowMore} className='view-more'>View Less</Link>
-      ) : (
-        <Link onClick={specialitytoggleShowMore} className='view-more'>View More</Link>
-      )}
+<div className="widget widget_search">
+   <form className="search-form">
+     <Hospitalsearch />
+   </form>
+   <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
+   {doctorspecialist?.map((city) => (
+   <Hospitallable label={city.Speciality} size="6" />
+ ))}
+       
+{showMore && doctorspecialist?.map((city) => (
+<Hospitallable label={city.Speciality} size="6" />
+))}
+   
+   {specialityshowMore ? (
+<Link onClick={specialitytoggleShowMore} className='view-more'>View Less</Link>
+) : (
+<Link onClick={specialitytoggleShowMore} className='view-more'>View More</Link>
+)}
+</div>
+ </div>
+                              </div>
+                            </Collapse>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            </Collapse>
-          </li>
-
-         
-        </ul>
-      </div>
-    </div>
-  </div>
-  
-  </div>
-
-  {/* secound section start */}
-
-  <div className="col-lg-8 col-md-12">
-  <div className="row">
-  {/* {doctorlist.map((doc, index) => (
-  <div key={index} className="col-lg-12 col-md-6 col-12">
-    <Doctorsec
-      drimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${doc.Doctorphoto}`}
-      drname={doc.DoctorName}
-      drlocation={doc.area}
-      location={doc.address}
-      starttime1={doc.OPD1StartTime}
-      endtime1={doc.OPD1EndTime}
-      starttime2={doc.OPD2StartTime}
-      endtime2={doc.OPD2EndTime}
-      starttime3={doc.OPD3StartTime}
-      endtime3={doc.OPD3EndTime}
-     
-    />
-  </div>
-))} */}
-    {/* <div className="col-lg-4 col-md-6 col-12">
-    <Doctorsec
-      drimage={drimage}
-      drname="Dr. Name"
-      drlocation="ENT Speciality, Sterling Hospital"
-      location="Alkapuri"
-      />
-    </div> */}
-    {/* <div className="col-lg-4 col-md-6 col-12">
-    <Doctorsec
-      drimage={drimage}
-      drname="Dr. Name"
-      drlocation="Gynaecologist, Zydus Hospital"
-      location="Alkapuri"
-      />
-    </div> */}
-    {/* <div className="col-lg-4 col-md-6 col-12">
-    <Doctorsec
-      drimage={drimage}
-      drname="Dr. Name"
-      drlocation="ENT Speciality, Sterling Hospital"
-      location="Alkapuri"
-      />
-    </div> */}
-  </div>
-</div>
-
-      </Row>
-    </Container>
     
-    </section>
+                <div className="col-lg-8 col-md-12">
+                  <div className="row">
+                    {hospitalalllist?.map((hospital, index) => (
+                      <div key={index} className="col-lg-12 col-md-6 col-12">
+                        <Doctorsec
+                          drimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${hospital.Hospitalphoto}`}
+                          drname={hospital?.HospitalName}
+                          drlocation={hospital?.area} // Adjust this based on your API response structure
+                          location={hospital?.address} // Adjust this based on your API response structure
+                          starttime1={hospital?.OPD1StartTime} // Adjust this based on your API response structure
+                          endtime1={hospital?.OPD1EndTime} // Adjust this based on your API response structure
+                          starttime2={hospital?.OPD2StartTime} // Adjust this based on your API response structure
+                          endtime2={hospital?.OPD2EndTime} // Adjust this based on your API response structure
+                          starttime3={hospital?.OPD3StartTime} // Adjust this based on your API response structure
+                          endtime3={hospital?.OPD3EndTime} // Adjust this based on your API response structure
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
     
-    </>
-  )
-}
-
-export default Hospital
+              </Row>
+            </Container>
+          </section>
+        </>
+      )
+    }
+    
+    export default Hospital;

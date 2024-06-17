@@ -19,23 +19,48 @@ function Pharmacy() {
   const [pharmacylist, setpharmacylist] = useState(null)
   const [pharmacylocation, setpharmacylocation] = useState(null)
   const [pharmacylaballlist, setpharmacylaballlist] = useState([]);
+  const [PharmacyList, setPharmacyList] = useState([])
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     
   const Pharmacylist = async () =>{
     try {
-      const pharmactl = await axios.get(
-        `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listPharmacies`
-      )
-      const isactivepharmacylist = pharmactl.data.filter(
-        (pharmacylistac) => pharmacylistac.isActive
+      // Define parameters for pagination, sorting, and filtering
+      const pageNo = 1; // Example page number
+      const perPage = 10; // Example number of items per page
+      const column = 'LabName'; // Example column to sort on
+      const sortDirection = 'asc'; // Example sort direction
+     
+      const filter = true; // Example filter for active laboratories
+
+      const skip = (pageNo - 1) * perPage;
+
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listPharmaciesByParams`,
+        {
+          skip: skip,
+          per_page: perPage,
+          sorton: column,
+          sortdir: sortDirection,
+          match: query,
+          isActive: filter,
+        }
       );
 
-      setpharmacylist(isactivepharmacylist)
-      console.log("Pharmacy list : ",pharmactl.data)
+      // Assuming the response contains an array of laboratories
+      const laboratories = response.data[0];
+      console.log("pharmacy_data : ",laboratories);
+      const labdata = laboratories.data
 
+      console.log("lab data ",labdata)
+
+      // Filter active laboratories (if needed)
+      const activeLaboratories = labdata.filter(lab => lab.isActive);
+
+      setPharmacyList(activeLaboratories);
     } catch (error) {
-      console.log('Error Show : ',error)
+      console.error('Error fetching laboratories:', error);
     }
   };
   Pharmacylist();
@@ -80,7 +105,7 @@ function Pharmacy() {
   };
   Pharmacylistall();
    
-  }, [])
+  }, [query])
   
       const [open1, setOpen1] = useState(true);
     const [open2, setOpen2] = useState(true);
@@ -107,6 +132,11 @@ function Pharmacy() {
     const toggleAccordion2 = (event) => {
        event.preventDefault();
         setOpen2(!open2);
+      };
+
+      const handleInputChange = (e) => {
+        const inputValue = e.target.value;
+        setQuery(inputValue); // Update query state on every input change
       };
  
   return (
@@ -180,10 +210,18 @@ navigatelink="/pharmacy-login"
             <div className="widget-area">
               <div className="widget widget_search">
                 <form className="search-form">
-                 <Hospitalsearch />
+                <label>
+                    <span className="screen-reader-text"></span>
+                    <input type="search"
+                     className="search-field"
+                      placeholder="Search..." 
+                      onChange={handleInputChange} 
+                      
+                      />
+                  </label>
                 </form>
                 <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
-                {pharmacylist?.map((listshow) => (
+                {PharmacyList?.map((listshow) => (
                 <Hospitallable label={listshow.PharmacyName} size="12" />
               ))}
                  {/* Render additional labels only if showMore is true */}
@@ -213,7 +251,7 @@ navigatelink="/pharmacy-login"
 
   <div className="col-lg-8 col-md-12">
   <div className="row mt-3">
-  {pharmacylaballlist.map((lab, index) => (
+  {PharmacyList.map((lab, index) => (
   <div key={index} className="col-lg-12 col-md-6 col-12">
     <Hospitaldesc
       hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${lab.Pharmacyphoto}`}
