@@ -31,14 +31,21 @@ const [pageNo, setPageNo] = useState(0);
   useEffect(() => {
     const fetchAllLocations = async () => {
       try {
-        const location = await axios.get(
-          `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/location/city`
-        );
-        const locationdata = location.data.filter(
-(inactivelocation) =>inactivelocation.IsActive
-        );
-        setloc(locationdata);
-        // console.log("all", location.data);
+        const location = await axios.post(
+          `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listLaborateriesByParams`,
+          {
+            skip: 0,
+            per_page: 1000,
+            sorton: "",
+            sortdir: "",
+            match: query,
+            isActive: true,
+          })
+
+        console.log("fetch all location data  :",location);
+        
+        setloc(location.data[0].data);
+        console.log("all", location.data);
       } catch (error) {
         console.log("Error : ", error);
       }
@@ -80,6 +87,10 @@ const [pageNo, setPageNo] = useState(0);
         const activeLaboratories = labdata.filter(lab => lab.isActive);
 
         setLabList(activeLaboratories);
+        const uniqueList = new Set() ;
+        labList.forEach((e)=>uniqueList.add(e.LabName)); 
+        console.log("osetoooooo",uniqueList);
+        
       } catch (error) {
         console.error('Error fetching laboratories:', error);
       }
@@ -149,10 +160,6 @@ const [pageNo, setPageNo] = useState(0);
       populartestsetShowMore(!populartestshowMore);
     };
 
-
-
-
-
     const toggleAccordion1 = (event) => {
       event.preventDefault();
         setOpen1(!open1);
@@ -170,6 +177,20 @@ const [pageNo, setPageNo] = useState(0);
         const inputValue = e.target.value;
         setQuery(inputValue); // Update query state on every input change
       };
+
+      
+      const [selectedCityLabs, setSelectedCityLabs] = useState({});
+      const handleInputChangelocation = (e, cityName) => {
+        const { checked } = e.target;
+    
+        setSelectedCityLabs((prev) => ({
+          ...prev,
+          [cityName]: checked
+            ? loc.filter((lab) => lab.cityInfo?.Name === cityName)
+            : [],
+        }));
+      }
+      
       const [selectedLabs, setSelectedLabs] = useState([]);
   
       const handleCheckboxChange = (e, labo) => {
@@ -183,7 +204,19 @@ const [pageNo, setPageNo] = useState(0);
           setSelectedLabs(selectedLabs.filter(lab => lab._id !== labo._id));
         }
       };
-   
+
+      
+      const handleCheckboxChangelocation = (e, city) => {
+        const isChecked = e.target.checked;
+    
+        if (isChecked) {
+          // Add labo to selectedLabs if checked
+          setSelectedLabs([...selectedLabs, city]);
+        } else {
+          // Remove labo from selectedLabs if unchecked
+          setSelectedLabs(selectedLabs.filter(lab => lab._id !== city._id));
+        }
+      };
 
   return (
     <>
@@ -233,22 +266,31 @@ navigatelink="/laboratory-login"
 
              <div className="widget widget_search">
                 <form className="search-form">
-                  <Hospitalsearch />
+                <label>
+                    <span className="screen-reader-text"></span>
+                    <input type="search"
+                     className="search-field"
+                      placeholder="Search..." 
+                      onChange={handleInputChangelocation} 
+                      
+                      />
+                  </label>
                 </form>
                 <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
-                {loc?.map((city) => (
-                <Hospitallable label={city.Name} size="6" />
+                {loc && loc?.map((city) => (
+                city.cityInfo && city.cityInfo.Name && (
+                  <Col lg={12} md={12} xs={12} key={city._id}>
+                    <div className="form-check">
+                      <input type="checkbox"
+                       className="form-check-input"
+                        id={`city-${city._id}`} 
+                        onChange={(e) => handleCheckboxChangelocation(e, city)} />
+                      <label className="form-check-label" htmlFor={`city-${city._id}`}>{city.cityInfo.Name}</label>
+                    </div>
+                  </Col>
+                )
               ))}
-                    
-          {showMore && loc?.map((city) => (
-            <Hospitallable label={city.Name} size="6" />
-          ))}
-                
-                {showMore ? (
-        <Link onClick={toggleShowMore} className='view-more'>View Less</Link>
-      ) : (
-        <Link onClick={toggleShowMore} className='view-more'>View More</Link>
-      )}
+                  
       </div>
               </div>
 
@@ -284,7 +326,7 @@ navigatelink="/laboratory-login"
         onChange={(e) => handleCheckboxChange(e, labo)} 
       />
       <label className="form-check-label" htmlFor={`lab-checkbox-${labo.id}`}>
-        {labo.LabName}
+        {labo.LabName} 
       </label>
     </div>
   </Col>

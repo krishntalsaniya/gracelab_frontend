@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import axios from 'axios';
 import Modalnavigationbar from '../navbar/Modalnavigationbar';
 import Pagetitle from '../patients/Pagetitle';
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button ,Label} from 'react-bootstrap';
 import laboratoryimage from '../img/laboratory-login.jpg';
 import { RxSlash } from "react-icons/rx";
 import { Formik } from 'formik';
@@ -34,6 +34,36 @@ const SignupSchema = Yup.object().shape({
 function Laboratorysignup() {
   const navigate = useNavigate();
   const [file, setFile] = useState(null);
+  const [DaysLab1, setDaysLab1] = useState("");
+  const [daysData, setDaysData] = useState("");
+
+  const listDay = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list/Days`);
+      return response.data; // Assuming response.data is an array of days objects
+    } catch (error) {
+      console.error('Error fetching days data:', error);
+      return []; // Return empty array or handle error as per your application's requirements
+    }
+  };
+
+  useEffect(() => {
+    const fetchDays = async () => {
+      try {
+        const days = await listDay();
+        setDaysData(days);
+      } catch (error) {
+        console.error('Error setting days data:', error);
+        // Handle error as per your application's requirements
+      }
+    };
+
+    fetchDays();
+  }, []); // Empty dependency array ensures useEffect runs only once on component mount
+
+  const [_id, set_Id] = useState("");
+  const [formErrors, setFormErrors] = useState({});
+  const [isSubmit, setIsSubmit] = useState(false);
 
   const handleFileChange = (event) => {
     setFile(event.currentTarget.files[0]);
@@ -50,6 +80,7 @@ function Laboratorysignup() {
       formData.append('LabLicenseDate', values.licencedate);
       formData.append('LabStartTime1', values.labStartTime1); // Appending the time slot
       formData.append('Pincode', values.pincode);
+      formData.append("DaysLab1", values.DaysLab1);
       formData.append('address', values.address);
       formData.append('photo', file); // Append the file
       formData.append('isActive', true); 
@@ -81,6 +112,13 @@ function Laboratorysignup() {
     }
   };
 
+
+  useEffect(() => {
+    console.log(formErrors);
+    if (Object.keys(formErrors).length === 0 && isSubmit) {
+      console.log("no errors");
+    }
+  }, [formErrors, isSubmit]);
   return (
     <>
       <Modalnavigationbar />
@@ -238,6 +276,42 @@ function Laboratorysignup() {
                             />
                             <Form.Control.Feedback type="invalid">{errors.licencedate}</Form.Control.Feedback>
                           </Col>
+                          <Col lg={6}>
+                                    <div className="form-floating mb-3">
+                                      <select
+                                        key={"DaysLab1" + _id}
+                                        type="text"
+                                        // className={validClassBT}
+                                        placeholder="Enter blog title"
+                                        required
+                                        name="DaysLab1"
+                                        value={values.DaysLab1}
+                                        onChange={(e) => {
+                                          setDaysLab1(e.target.value);
+                                        }}
+                                      >
+                                        <option value="">Select Days</option>
+                                        {daysData &&
+                                          daysData.map((user) => (
+                                            <option
+                                              key={user._id}
+                                              value={user._id}
+                                            >
+                                              {user.Days}
+                                            </option>
+                                          ))}
+                                      </select>
+                                     
+                                        Days{" "}
+                                        <span className="text-danger">*</span>
+                                      
+                                      {isSubmit && (
+                                        <p className="text-danger">
+                                          {formErrors.DaysLab1}
+                                        </p>
+                                      )}
+                                    </div>
+                                  </Col>
                           <Col lg={6} className="form-group mb-3">
                             <Form.Label>Lab Start time 1</Form.Label>
                             <Form.Control
