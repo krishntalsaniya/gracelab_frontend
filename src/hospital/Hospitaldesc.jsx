@@ -1,10 +1,51 @@
-import React from 'react'
+import React ,{useState,useEffect}from 'react'
 import { FaMapMarker } from "react-icons/fa";
 import { IoMdTimer } from "react-icons/io";
 import { Link } from 'react-router-dom';
 import { Card, Col, Image, Row } from 'react-bootstrap';
+import axios from 'axios';
+
 
 function Hospitaldesc(props) {
+
+  const [dayName, setDayName] = useState('');
+  const [dayName2, setDayName2] = useState('');
+  const [dayName3, setDayName3] = useState('');
+
+  useEffect(() => {
+    const fetchDayName = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/get/Days/${props.dayslab1}`);
+        setDayName(response.data.Days);
+      } catch (error) {
+        console.error('Error fetching day name:', error);
+      }
+    };
+
+    fetchDayName();
+
+    const fetchDayName2 = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/get/Days/${props.dayslab2}`);
+        setDayName2(response.data.Days);
+      } catch (error) {
+        console.error('Error fetching day name:', error);
+      }
+    };
+
+    fetchDayName2();
+
+    const fetchDayName3 = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/get/Days/${props.dayslab3}`);
+        setDayName3(response.data.Days);
+      } catch (error) {
+        console.error('Error fetching day name:', error);
+      }
+    };
+
+    fetchDayName3();
+  }, [props.dayslab1,props.dayslab2,props.dayslab3]);
   return (
     <>
 
@@ -25,9 +66,9 @@ function Hospitaldesc(props) {
     <h5 className="mt-3 d-inline-block me-2"><FaMapMarker className='map-color' /> {props.headings}</h5>
 </div>
 <div className="location-marker-section">
-    <h5 className="mt-3 d-inline-block me-2"><IoMdTimer className='map-color' /> Start Time : {props.starttime1}  End Time :  {props.endtime1} <br /> <br />
-    <IoMdTimer className='map-color' /> Start Time : {props.starttime2}  End Time :  {props.endtime2} <br /> <br />
-    <IoMdTimer className='map-color' /> Start Time : {props.starttime3}  End Time :  {props.endtime3}</h5>
+    <h5 className="mt-3 d-inline-block me-2"><IoMdTimer className='map-color' /> {dayName} - {props.starttime1} - {props.endtime1} <br /> <br />
+    <IoMdTimer className='map-color' />{dayName2} - {props.starttime2} -   {props.endtime2} <br /> <br />
+    <IoMdTimer className='map-color' /> {dayName3} -  {props.starttime3} -   {props.endtime3}</h5>
 </div>
       </Card.Body>
     </Col>

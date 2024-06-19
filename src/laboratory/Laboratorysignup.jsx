@@ -1,8 +1,8 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Modalnavigationbar from '../navbar/Modalnavigationbar';
 import Pagetitle from '../patients/Pagetitle';
-import { Container, Row, Col, Form, Button ,Label} from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Label } from 'react-bootstrap';
 import laboratoryimage from '../img/laboratory-login.jpg';
 import { RxSlash } from "react-icons/rx";
 import { Formik } from 'formik';
@@ -26,24 +26,26 @@ const SignupSchema = Yup.object().shape({
   confirmpass: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required('Confirm Password is required'),
   licenceno: Yup.string().required('License No. is required'),
   licencedate: Yup.date().required('License Date is required'),
-  labStartTime1: Yup.string().required('Time Slot is required'), // Adding validation for time slot
+  labStartTime1: Yup.string().required('Time Slot is required'),
   pincode: Yup.string().required('Pincode is required'),
   address: Yup.string().required('Address is required'),
+  DaysLab1: Yup.string().required('Days is required'),
+  DaysLab2: Yup.string().required('Days is required'),
+  DaysLab3: Yup.string().required('Days is required'),
 });
 
 function Laboratorysignup() {
   const navigate = useNavigate();
   const [file, setFile] = useState(null);
-  const [DaysLab1, setDaysLab1] = useState("");
-  const [daysData, setDaysData] = useState("");
+  const [daysData, setDaysData] = useState([]);
 
   const listDay = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list/Days`);
-      return response.data; // Assuming response.data is an array of days objects
+      return response.data;
     } catch (error) {
       console.error('Error fetching days data:', error);
-      return []; // Return empty array or handle error as per your application's requirements
+      return [];
     }
   };
 
@@ -54,16 +56,11 @@ function Laboratorysignup() {
         setDaysData(days);
       } catch (error) {
         console.error('Error setting days data:', error);
-        // Handle error as per your application's requirements
       }
     };
 
     fetchDays();
-  }, []); // Empty dependency array ensures useEffect runs only once on component mount
-
-  const [_id, set_Id] = useState("");
-  const [formErrors, setFormErrors] = useState({});
-  const [isSubmit, setIsSubmit] = useState(false);
+  }, []);
 
   const handleFileChange = (event) => {
     setFile(event.currentTarget.files[0]);
@@ -78,12 +75,14 @@ function Laboratorysignup() {
       formData.append('Password', values.password);
       formData.append('LabLicenseNumber', values.licenceno);
       formData.append('LabLicenseDate', values.licencedate);
-      formData.append('LabStartTime1', values.labStartTime1); // Appending the time slot
+      formData.append('LabStartTime1', values.labStartTime1);
       formData.append('Pincode', values.pincode);
       formData.append("DaysLab1", values.DaysLab1);
+      formData.append("DaysLab2", values.DaysLab2);
+      formData.append("DaysLab3", values.DaysLab3);
       formData.append('address', values.address);
-      formData.append('photo', file); // Append the file
-      formData.append('isActive', true); 
+      formData.append('photo', file);
+      formData.append('isActive', true);
 
       const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createLaboratery`, formData, {
         headers: {
@@ -112,13 +111,6 @@ function Laboratorysignup() {
     }
   };
 
-
-  useEffect(() => {
-    console.log(formErrors);
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
-      console.log("no errors");
-    }
-  }, [formErrors, isSubmit]);
   return (
     <>
       <Modalnavigationbar />
@@ -157,6 +149,9 @@ function Laboratorysignup() {
                     labStartTime1: '',
                     pincode: '',
                     address: '',
+                    DaysLab1: '',
+                    DaysLab2: '',
+                    DaysLab3: ''
                   }}
                   validationSchema={SignupSchema}
                   onSubmit={handleSubmit}
@@ -185,20 +180,6 @@ function Laboratorysignup() {
                             />
                             <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
                           </Col>
-                          {/* <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Owner Name</Form.Label>
-                            <Form.Control
-                              type="text"
-                              name="ownername"
-                              placeholder="Owner Name"
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.ownername}
-                              isInvalid={touched.ownername && errors.ownername}
-                            />
-                            <Form.Control.Feedback type="invalid">{errors.ownername}</Form.Control.Feedback>
-                          </Col> */}
-
                           <Col lg={6} className="form-group mb-3">
                             <Form.Label>Email Address</Form.Label>
                             <Form.Control
@@ -276,44 +257,27 @@ function Laboratorysignup() {
                             />
                             <Form.Control.Feedback type="invalid">{errors.licencedate}</Form.Control.Feedback>
                           </Col>
-                          <Col lg={6}>
-                                    <div className="form-floating mb-3">
-                                      <select
-                                        key={"DaysLab1" + _id}
-                                        type="text"
-                                        // className={validClassBT}
-                                        placeholder="Enter blog title"
-                                        required
-                                        name="DaysLab1"
-                                        value={values.DaysLab1}
-                                        onChange={(e) => {
-                                          setDaysLab1(e.target.value);
-                                        }}
-                                      >
-                                        <option value="">Select Days</option>
-                                        {daysData &&
-                                          daysData.map((user) => (
-                                            <option
-                                              key={user._id}
-                                              value={user._id}
-                                            >
-                                              {user.Days}
-                                            </option>
-                                          ))}
-                                      </select>
-                                     
-                                        Days{" "}
-                                        <span className="text-danger">*</span>
-                                      
-                                      {isSubmit && (
-                                        <p className="text-danger">
-                                          {formErrors.DaysLab1}
-                                        </p>
-                                      )}
-                                    </div>
-                                  </Col>
                           <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Lab Start time 1</Form.Label>
+                            <Form.Label>Days</Form.Label>
+                            <Form.Control
+                              as="select"
+                              name="DaysLab1"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.DaysLab1}
+                              isInvalid={touched.DaysLab1 && errors.DaysLab1}
+                            >
+                              <option value="">Select Days</option>
+                              {daysData.map((day) => (
+                                <option key={day._id} value={day._id}>
+                                  {day.Days}
+                                </option>
+                              ))}
+                            </Form.Control>
+                            <Form.Control.Feedback type="invalid">{errors.DaysLab1}</Form.Control.Feedback>
+                          </Col>
+                          <Col lg={6} className="form-group mb-3">
+                            <Form.Label>Lab Start Time 1</Form.Label>
                             <Form.Control
                               type="time"
                               name="labStartTime1"
@@ -325,8 +289,45 @@ function Laboratorysignup() {
                             <Form.Control.Feedback type="invalid">{errors.labStartTime1}</Form.Control.Feedback>
                           </Col>
 
-                          
-                          
+                          <Col lg={6} className="form-group mb-3">
+                            <Form.Label>Days</Form.Label>
+                            <Form.Control
+                              as="select"
+                              name="DaysLab2"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.DaysLab2}
+                              isInvalid={touched.DaysLab2 && errors.DaysLab2}
+                            >
+                              <option value="">Select Days</option>
+                              {daysData.map((day) => (
+                                <option key={day._id} value={day._id}>
+                                  {day.Days}
+                                </option>
+                              ))}
+                            </Form.Control>
+                            <Form.Control.Feedback type="invalid">{errors.DaysLab2}</Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg={6} className="form-group mb-3">
+                            <Form.Label>Days</Form.Label>
+                            <Form.Control
+                              as="select"
+                              name="DaysLab3"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.DaysLab3}
+                              isInvalid={touched.DaysLab3 && errors.DaysLab3}
+                            >
+                              <option value="">Select Days</option>
+                              {daysData.map((day) => (
+                                <option key={day._id} value={day._id}>
+                                  {day.Days}
+                                </option>
+                              ))}
+                            </Form.Control>
+                            <Form.Control.Feedback type="invalid">{errors.DaysLab3}</Form.Control.Feedback>
+                          </Col>
                           <Col lg={6} className="form-group mb-3">
                             <Form.Label>Pincode</Form.Label>
                             <Form.Control
@@ -354,7 +355,6 @@ function Laboratorysignup() {
                             />
                             <Form.Control.Feedback type="invalid">{errors.address}</Form.Control.Feedback>
                           </Col>
-
                           <Col lg={6} className="form-group mb-3">
                             <Form.Label>Upload Photo</Form.Label>
                             <Form.Control
@@ -369,7 +369,6 @@ function Laboratorysignup() {
                             />
                             <Form.Control.Feedback type="invalid">{errors.photo}</Form.Control.Feedback>
                           </Col>
-                          
                           <Col lg={12} className="form-group d-md-flex mb-4">
                             <div className="w-100 text-start">
                               <label className="checkbox-wrap checkbox-primary mb-0">

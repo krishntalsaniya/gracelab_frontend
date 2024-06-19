@@ -396,6 +396,9 @@ navigatelink="/laboratory-login"
           endtime2={lab.LabEndTime2}
           starttime3={lab.LabStartTime3}
           endtime3={lab.LabEndTime3}
+          dayslab1={lab.DaysLab1}
+          dayslab2={lab.DaysLab2}
+          dayslab3={lab.DaysLab3}
         />
       ))}
     </div>
@@ -414,6 +417,9 @@ navigatelink="/laboratory-login"
           endtime2={lab.LabEndTime2}
           starttime3={lab.LabStartTime3}
           endtime3={lab.LabEndTime3}
+          dayslab1={lab.DaysLab1}
+          dayslab2={lab.DaysLab2}
+          dayslab3={lab.DaysLab3}
         />
       ))}
     </div>
