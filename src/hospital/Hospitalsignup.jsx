@@ -84,7 +84,14 @@ const SignupSchema = Yup.object().shape({
   licenceno: Yup.string().required('License No. is required'),
   licencedate: Yup.date().required('License Date is required'),  
   opd1StartTime: Yup.string().required('time slote is required'),  
+  opd2StartTime: Yup.string().required('time slote is required'),  
+  opd3StartTime: Yup.string().required('time slote is required'),  
   opd1EndTime: Yup.string().required('end time slote is required'),  
+  opd2EndTime: Yup.string().required('end time slote is required'),  
+  opd3EndTime: Yup.string().required('end time slote is required'),  
+  DaysHospital1: Yup.string().required('days selected required'),  
+  DaysHospital2: Yup.string().required('days selected required'),  
+  DaysHospital3: Yup.string().required('days selected required'),  
   pincode: Yup.string().required('Pincode is required'),
   address: Yup.string().required('Address is required'),
 });
@@ -134,7 +141,14 @@ function Hospitalsignup() {
       formData.append('HospitalLicenseNumber', values.licenceno);
       formData.append('HospitalLicenseDate', values.licencedate);
       formData.append('OPD1StartTime', values.opd1StartTime);
+      formData.append('OPD2StartTime', values.opd2StartTime);
+      formData.append('OPD3StartTime', values.opd3StartTime);
       formData.append('OPD1EndTime', values.opd1EndTime);
+      formData.append('OPD2EndTime', values.opd2EndTime);
+      formData.append('OPD3EndTime', values.opd3EndTime);
+      formData.append('DaysHospital1', values.DaysHospital1);
+      formData.append('DaysHospital2', values.DaysHospital2);
+      formData.append('DaysHospital3', values.DaysHospital3);
       formData.append('Pincode', values.pincode);
       formData.append('address', values.address);
       formData.append('isActive', false);
@@ -200,9 +214,16 @@ function Hospitalsignup() {
                     licenceno: '',
                     licencedate: '',
                     opd1StartTime: '',
+                    opd2StartTime: '',
+                    opd3StartTime: '',
                     opd1EndTime: '',
+                    opd2EndTime: '',
+                    opd3EndTime: '',
                     pincode: '',
                     address: '',
+                    DaysHospital1: '',
+                    DaysHospital2: '',
+                    DaysHospital3: '',
                   }}
                   validationSchema={SignupSchema}
                   onSubmit={handleSubmit}
@@ -365,6 +386,98 @@ function Hospitalsignup() {
                               ))}
                             </Form.Control>
                             <Form.Control.Feedback type="invalid">{errors.DaysHospital1}</Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>OPD Start Time 2</Form.Label>
+                            <Form.Control
+                              type="time"
+                              name="opd2StartTime"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.opd2StartTime}
+                              isInvalid={touched.opd2StartTime && errors.opd2StartTime}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.opd2StartTime}</Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>OPD End Time 2</Form.Label>
+                            <Form.Control
+                              type="time"
+                              name="opd2EndTime"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.opd2EndTime}
+                              isInvalid={touched.opd2EndTime && errors.opd2EndTime}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.opd2EndTime}</Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>Days</Form.Label>
+                            <Form.Control
+                              as="select"
+                              name="DaysHospital2"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.DaysHospital2}
+                              isInvalid={touched.DaysHospital2 && errors.DaysHospital2}
+                            >
+                              <option value="">Select Days</option>
+                              {daysData.map((day) => (
+                                <option key={day._id} value={day._id}>
+                                  {day.Days}
+                                </option>
+                              ))}
+                            </Form.Control>
+                            <Form.Control.Feedback type="invalid">{errors.DaysHospital2}</Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>OPD Start Time 3</Form.Label>
+                            <Form.Control
+                              type="time"
+                              name="opd3StartTime"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.opd3StartTime}
+                              isInvalid={touched.opd3StartTime && errors.opd3StartTime}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.opd3StartTime}</Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>OPD End Time 3</Form.Label>
+                            <Form.Control
+                              type="time"
+                              name="opd3EndTime"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.opd3EndTime}
+                              isInvalid={touched.opd3EndTime && errors.opd3EndTime}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.opd3EndTime}</Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>Days</Form.Label>
+                            <Form.Control
+                              as="select"
+                              name="DaysHospital3"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.DaysHospital3}
+                              isInvalid={touched.DaysHospital3 && errors.DaysHospital3}
+                            >
+                              <option value="">Select Days</option>
+                              {daysData.map((day) => (
+                                <option key={day._id} value={day._id}>
+                                  {day.Days}
+                                </option>
+                              ))}
+                            </Form.Control>
+                            <Form.Control.Feedback type="invalid">{errors.DaysHospital3}</Form.Control.Feedback>
                           </Col>
                           <Col lg={6} className="form-group mb-3">
                             <Form.Label>Pincode</Form.Label>
