@@ -299,7 +299,7 @@ navigatelink="/pharmacy-login"
   <div className="col-lg-8 col-md-12">
   {selectedLabs.length > 0 ? (
     <div className="selected-labs">
-      <h4>Selected Laboratories</h4>
+     
       {selectedLabs.map((lab) => (
         <Hospitaldesc
           key={lab.id}
@@ -312,12 +312,15 @@ navigatelink="/pharmacy-login"
           endtime2={lab.PharmacyEndTime2}
           starttime3={lab.PharmacyStartTime3}
           endtime3={lab.PharmacyEndTime3}
+          dayslab1={lab.DaysPharmacy1}
+          dayslab2={lab.DaysPharmacy2}
+          dayslab3={lab.DaysPharmacy3}
         />
       ))}
     </div>
   ) : (
     <div className="all-labs">
-      <h4>All Laboratories</h4>
+      
       {pharmacylist.map((lab) => (
          <Hospitaldesc
          key={lab.id}
@@ -330,6 +333,9 @@ navigatelink="/pharmacy-login"
          endtime2={lab.PharmacyEndTime2}
          starttime3={lab.PharmacyStartTime3}
          endtime3={lab.PharmacyEndTime3}
+         dayslab1={lab.DaysPharmacy1}
+          dayslab2={lab.DaysPharmacy2}
+          dayslab3={lab.DaysPharmacy3}
        />
       ))}
     </div>

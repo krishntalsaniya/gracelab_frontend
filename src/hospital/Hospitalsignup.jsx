@@ -52,7 +52,7 @@
 // binding
 
 
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import axios from 'axios';
 import Modalnavigationbar from '../navbar/Modalnavigationbar';
 import Pagetitle from '../patients/Pagetitle';
@@ -82,7 +82,9 @@ const SignupSchema = Yup.object().shape({
   password: Yup.string().required('Password is required'),
   confirmpass: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required('Confirm Password is required'),
   licenceno: Yup.string().required('License No. is required'),
-  licencedate: Yup.date().required('License Date is required'),
+  licencedate: Yup.date().required('License Date is required'),  
+  opd1StartTime: Yup.string().required('time slote is required'),  
+  opd1EndTime: Yup.string().required('end time slote is required'),  
   pincode: Yup.string().required('Pincode is required'),
   address: Yup.string().required('Address is required'),
 });
@@ -92,6 +94,30 @@ function Hospitalsignup() {
   const navigate = useNavigate();
 
   const [file, setFile] = useState(null);
+  const [daysData, setDaysData] = useState([]);
+
+  const listDay = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list/Days`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching days data:', error);
+      return [];
+    }
+  };
+
+  useEffect(() => {
+    const fetchDays = async () => {
+      try {
+        const days = await listDay();
+        setDaysData(days);
+      } catch (error) {
+        console.error('Error setting days data:', error);
+      }
+    };
+
+    fetchDays();
+  }, []);
 
   const handleFileChange = (event) => {
     setFile(event.currentTarget.files[0]);
@@ -107,9 +133,11 @@ function Hospitalsignup() {
       formData.append( 'Password', values.password);
       formData.append('HospitalLicenseNumber', values.licenceno);
       formData.append('HospitalLicenseDate', values.licencedate);
+      formData.append('OPD1StartTime', values.opd1StartTime);
+      formData.append('OPD1EndTime', values.opd1EndTime);
       formData.append('Pincode', values.pincode);
       formData.append('address', values.address);
-      formData.append('isActive', true);
+      formData.append('isActive', false);
       formData.append('photo', file);
       const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createHospital`,formData, {
         headers: {
@@ -171,6 +199,8 @@ function Hospitalsignup() {
                     confirmpass: '',
                     licenceno: '',
                     licencedate: '',
+                    opd1StartTime: '',
+                    opd1EndTime: '',
                     pincode: '',
                     address: '',
                   }}
@@ -290,6 +320,51 @@ function Hospitalsignup() {
                               isInvalid={touched.licencedate && errors.licencedate}
                             />
                             <Form.Control.Feedback type="invalid">{errors.licencedate}</Form.Control.Feedback>
+                          </Col>
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>OPD Start Time 1</Form.Label>
+                            <Form.Control
+                              type="time"
+                              name="opd1StartTime"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.opd1StartTime}
+                              isInvalid={touched.opd1StartTime && errors.opd1StartTime}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.opd1StartTime}</Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>OPD End Time 1</Form.Label>
+                            <Form.Control
+                              type="time"
+                              name="opd1EndTime"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.opd1EndTime}
+                              isInvalid={touched.opd1EndTime && errors.opd1EndTime}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.opd1EndTime}</Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>Days</Form.Label>
+                            <Form.Control
+                              as="select"
+                              name="DaysHospital1"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.DaysHospital1}
+                              isInvalid={touched.DaysHospital1 && errors.DaysHospital1}
+                            >
+                              <option value="">Select Days</option>
+                              {daysData.map((day) => (
+                                <option key={day._id} value={day._id}>
+                                  {day.Days}
+                                </option>
+                              ))}
+                            </Form.Control>
+                            <Form.Control.Feedback type="invalid">{errors.DaysHospital1}</Form.Control.Feedback>
                           </Col>
                           <Col lg={6} className="form-group mb-3">
                             <Form.Label>Pincode</Form.Label>

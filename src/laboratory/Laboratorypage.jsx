@@ -383,7 +383,7 @@ navigatelink="/laboratory-login"
   <div className="col-lg-8 col-md-12">
   {selectedLabs.length > 0 ? (
     <div className="selected-labs">
-      <h4>Selected Laboratories</h4>
+     
       {selectedLabs.map((lab) => (
         <Hospitaldesc
           key={lab.id}
@@ -404,7 +404,7 @@ navigatelink="/laboratory-login"
     </div>
   ) : (
     <div className="all-labs">
-      <h4>All Laboratories</h4>
+     
       {lablistall.map((lab) => (
         <Hospitaldesc
           key={lab.id}
@@ -454,3 +454,394 @@ navigatelink="/laboratory-login"
 }
 
 export default Laboratorypage
+
+
+
+
+
+// pagination code 
+
+// import React, { useEffect, useState } from 'react';
+// import Pagetitle from '../patients/Pagetitle';
+// import hospitalad from '../img/hospitalad.jpg';
+// import { Container, Row, Col, Image, Button, Collapse } from 'react-bootstrap';
+// import { FiPlus, FiMinus } from "react-icons/fi";
+// import { Link } from 'react-router-dom';
+// import Modalnavigationbar from '../navbar/Modalnavigationbar';
+// import { MdArrowForwardIos } from "react-icons/md";
+// import axios from 'axios';
+// import { IoSearch } from "react-icons/io5";
+// import Hospitaldesc from '../hospital/Hospitaldesc';
+
+
+// function Laboratorypage() {
+//   const [loc, setLoc] = useState([]);
+//   const [labtest, setLabtest] = useState([]);
+//   const [labListAll, setLabListAll] = useState([]);
+//   const [query, setQuery] = useState("");
+//   const [labList, setLabList] = useState([]);
+//   const [perPage, setPerPage] = useState(5);
+//   const [currentPage, setCurrentPage] = useState(1);
+
+//   const [open1, setOpen1] = useState(true);
+//   const [open2, setOpen2] = useState(true);
+//   const [open3, setOpen3] = useState(true);
+//   const [showMore, setShowMore] = useState(false);
+//   const [laboratoryshowMore, laboratorysetShowMore] = useState(false);
+//   const [populartestshowMore, populartestsetShowMore] = useState(false);
+
+//   const toggleShowMore = (event) => {
+//     event.preventDefault();
+//     setShowMore(!showMore);
+//   };
+//   const laboratorytoggleShowMore = (event) => {
+//     event.preventDefault();
+//     laboratorysetShowMore(!laboratoryshowMore);
+//   };
+//   const populartesttoggleShowMore = (event) => {
+//     event.preventDefault();
+//     populartestsetShowMore(!populartestshowMore);
+//   };
+
+//   const toggleAccordion1 = (event) => {
+//     event.preventDefault();
+//     setOpen1(!open1);
+//   };
+//   const toggleAccordion2 = (event) => {
+//     event.preventDefault();
+//     setOpen2(!open2);
+//   };
+//   const toggleAccordion3 = (event) => {
+//     event.preventDefault();
+//     setOpen3(!open3);
+//   };
+
+//   const handleInputChange = (e) => {
+//     const inputValue = e.target.value;
+//     setQuery(inputValue);
+//   };
+
+//   const fetchAllLocations = async () => {
+//     try {
+//       const location = await axios.post(
+//         `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listLaborateriesByParams`,
+//         {
+//           skip: 0,
+//           per_page: 1000,
+//           sorton: "",
+//           sortdir: "",
+//           match: query,
+//           isActive: true,
+//         }
+//       );
+//       setLoc(location.data[0].data);
+//     } catch (error) {
+//       console.log("Error : ", error);
+//     }
+//   };
+
+//   const fetchAllLaboratories = async () => {
+//     try {
+//       const skip = (currentPage - 1) * perPage;
+//       const response = await axios.post(
+//         `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listLaborateriesByParams`,
+//         {
+//           skip: skip,
+//           per_page: perPage,
+//           sorton: 'LabName',
+//           sortdir: 'asc',
+//           match: query,
+//           isActive: true,
+//         }
+//       );
+//       const laboratories = response.data[0];
+//       setLabList(laboratories.data);
+//     } catch (error) {
+//       console.error('Error fetching laboratories:', error);
+//     }
+//   };
+
+//   const fetchLaboratoryTest = async () => {
+//     try {
+//       const test = await axios.get(
+//         `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/get/getAllLabTests`
+//       );
+//       const laboratoryTest = test.data.filter(
+//         (laboratoryTestActive) => laboratoryTestActive.IsActive
+//       );
+//       setLabtest(laboratoryTest);
+//     } catch (error) {
+//       console.log("errors: ", error);
+//     }
+//   };
+
+//   const labListall = async () => {
+//     try {
+//       const labt = await axios.get(
+//         `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listLaborateries`
+//       );
+//       const allLabListIsActive = labt.data.filter(
+//         (laboratoryIsActive) => laboratoryIsActive.isActive
+//       );
+//       setLabListAll(allLabListIsActive);
+//     } catch (error) {
+//       console.log("errors: ", error);
+//     }
+//   };
+
+//   useEffect(() => {
+//     fetchAllLocations();
+//     fetchAllLaboratories();
+//     fetchLaboratoryTest();
+//     labListall();
+//   }, [query, currentPage]);
+
+//   const [selectedCityLabs, setSelectedCityLabs] = useState({});
+//   const handleInputChangeLocation = (e, cityName) => {
+//     const { checked } = e.target;
+//     setSelectedCityLabs((prev) => ({
+//       ...prev,
+//       [cityName]: checked
+//         ? loc.filter((lab) => lab.cityInfo?.Name === cityName)
+//         : [],
+//     }));
+//   };
+
+//   const [selectedLabs, setSelectedLabs] = useState([]);
+
+//   const handleCheckboxChange = (e, labo) => {
+//     const isChecked = e.target.checked;
+//     if (isChecked) {
+//       setSelectedLabs([...selectedLabs, labo]);
+//     } else {
+//       setSelectedLabs(selectedLabs.filter((lab) => lab._id !== labo._id));
+//     }
+//   };
+
+//   const handleCheckboxChangeLocation = (e, city) => {
+//     const isChecked = e.target.checked;
+//     if (isChecked) {
+//       setSelectedLabs([...selectedLabs, city]);
+//     } else {
+//       setSelectedLabs(selectedLabs.filter((lab) => lab._id !== city._id));
+//     }
+//   };
+
+//   const totalPages = Math.ceil(labListAll.length / perPage);
+
+//   const handlePageChange = (page) => {
+//     setCurrentPage(page);
+//   };
+
+//   return (
+//     <>
+//       <Modalnavigationbar navigatelink="/laboratory-login" />
+//       <div className="page-title-area">
+//         <Pagetitle
+//           heading="LABORATORY"
+//           pagetitlelink="/"
+//           title1="Home"
+//           title2="Laboratory"
+//           IconComponent={MdArrowForwardIos}
+//         />
+//       </div>
+
+//       <section className="services-details-area ptb-50 main-laboratory-section">
+//         <Container>
+//           <Row>
+//             <Col lg={12} md={12} xs={12} className="mb-20">
+//               <div className="ad-image position-relative">
+//                 <Image src={hospitalad} fluid />
+//                 <div className="span-title">
+//                   <span>Ad</span>
+//                 </div>
+//               </div>
+//             </Col>
+
+//             <div className="col-lg-4 col-md-12">
+//               <div className="services-sidebar laboratory-detail">
+//                 <div className="services-list">
+//                   <div className="services-details-faq">
+//                     <ul className="accordion">
+//                       <li className="accordion-item">
+//                         <Link className="accordion-title active" onClick={toggleAccordion1}>
+//                           Location{open1 ? <FiMinus className='hospital-icon' /> : <FiPlus className='hospital-icon' />}
+//                         </Link>
+//                         <Collapse in={open1}>
+//                           <div className="widget-area">
+//                             <div className="widget widget_search">
+//                               <form className="search-form">
+//                                 <label>
+//                                   <span className="screen-reader-text"></span>
+//                                   <input
+//                                     type="search"
+//                                     className="search-field"
+//                                     placeholder="Search..."
+//                                     onChange={handleInputChangeLocation}
+//                                   />
+//                                 </label>
+//                               </form>
+//                               <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
+//                                 {loc && loc.map((city) => (
+//                                   city.cityInfo && city.cityInfo.Name && (
+//                                     <Col lg={12} md={12} xs={12} key={city._id}>
+//                                       <div className="form-check">
+//                                         <input
+//                                           type="checkbox"
+//                                           className="form-check-input"
+//                                           id={`city-${city._id}`}
+//                                           onChange={(e) => handleCheckboxChangeLocation(e, city)}
+//                                         />
+//                                         <label className="form-check-label" htmlFor={`city-${city._id}`}>{city.cityInfo.Name}</label>
+//                                       </div>
+//                                     </Col>
+//                                   )
+//                                 ))}
+//                               </div>
+//                             </div>
+//                           </div>
+//                         </Collapse>
+//                       </li>
+//                       <li className="accordion-item">
+//                         <Link className="accordion-title" onClick={toggleAccordion2}>
+//                           Laboratory Name{open2 ? <FiMinus className='hospital-icon' /> : <FiPlus className='hospital-icon' />}
+//                         </Link>
+//                         <Collapse in={open2}>
+//                           <div className="widget-area">
+//                             <div className="widget widget_search">
+//                               <form className="search-form">
+//                                 <label>
+//                                   <span className="screen-reader-text"></span>
+//                                   <input
+//                                     type="search"
+//                                     className="search-field"
+//                                     placeholder="Search..."
+//                                     onChange={handleInputChange}
+//                                   />
+//                                 </label>
+//                               </form>
+//                               <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
+//                                 {loc && loc.map((labo) => (
+//                                   <Col lg={12} md={12} xs={12} key={labo._id}>
+//                                     <div className="form-check">
+//                                       <input
+//                                         type="checkbox"
+//                                         className="form-check-input"
+//                                         id={`lab-${labo._id}`}
+//                                         onChange={(e) => handleCheckboxChange(e, labo)}
+//                                       />
+//                                       <label className="form-check-label" htmlFor={`lab-${labo._id}`}>{labo.LabName}</label>
+//                                     </div>
+//                                   </Col>
+//                                 ))}
+//                               </div>
+//                             </div>
+//                           </div>
+//                         </Collapse>
+//                       </li>
+//                       <li className="accordion-item">
+//                         <Link className="accordion-title" onClick={toggleAccordion3}>
+//                           Popular Tests{open3 ? <FiMinus className='hospital-icon' /> : <FiPlus className='hospital-icon' />}
+//                         </Link>
+//                         <Collapse in={open3}>
+//                           <div className="widget-area">
+//                             <div className="widget widget_search">
+//                               <form className="search-form">
+//                                 <label>
+//                                   <span className="screen-reader-text"></span>
+//                                   <input
+//                                     type="search"
+//                                     className="search-field"
+//                                     placeholder="Search..."
+//                                   />
+//                                 </label>
+//                               </form>
+//                               <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
+//                                 {labtest && labtest.map((test) => (
+//                                   <Col lg={12} md={12} xs={12} key={test._id}>
+//                                     <div className="form-check">
+//                                       <input
+//                                         type="checkbox"
+//                                         className="form-check-input"
+//                                         id={`test-${test._id}`}
+//                                       />
+//                                       <label className="form-check-label" htmlFor={`test-${test._id}`}>{test.TestName}</label>
+//                                     </div>
+//                                   </Col>
+//                                 ))}
+//                               </div>
+//                             </div>
+//                           </div>
+//                         </Collapse>
+//                       </li>
+//                     </ul>
+//                   </div>
+//                 </div>
+//               </div>
+//             </div>
+
+//             <div className="col-lg-8 col-md-12">
+//               <div className="services-details-desc">
+//                 <h2>All Laboratories</h2>
+//                 {selectedLabs.length > 0 ? (
+//                   <div className="selected-labs">
+//                     {selectedLabs.map((lab) => (
+//                       <Hospitaldesc
+//                         key={lab._id}
+//                         hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${lab.Labphoto}`}
+//                         mainheading={lab.LabName}
+//                         headings={lab.address}
+//                         starttime1={lab.LabStartTime1}
+//                         endtime1={lab.LabEndTime1}
+//                         starttime2={lab.LabStartTime2}
+//                         endtime2={lab.LabEndTime2}
+//                         starttime3={lab.LabStartTime3}
+//                         endtime3={lab.LabEndTime3}
+//                         dayslab1={lab.DaysLab1}
+//                         dayslab2={lab.DaysLab2}
+//                         dayslab3={lab.DaysLab3}
+//                       />
+//                     ))}
+//                   </div>
+//                 ) : (
+//                   <div className="all-labs">
+//                     {labList.map((lab) => (
+//                       <Hospitaldesc
+//                         key={lab._id}
+//                         hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${lab.Labphoto}`}
+//                         mainheading={lab.LabName}
+//                         headings={lab.address}
+//                         starttime1={lab.LabStartTime1}
+//                         endtime1={lab.LabEndTime1}
+//                         starttime2={lab.LabStartTime2}
+//                         endtime2={lab.LabEndTime2}
+//                         starttime3={lab.LabStartTime3}
+//                         endtime3={lab.LabEndTime3}
+//                         dayslab1={lab.DaysLab1}
+//                         dayslab2={lab.DaysLab2}
+//                         dayslab3={lab.DaysLab3}
+//                       />
+//                     ))}
+//                   </div>
+//                 )}
+//                 <div className="pagination">
+//                   {Array.from({ length: totalPages }, (_, index) => (
+//                     <Button
+//                       key={index + 1}
+//                       onClick={() => handlePageChange(index + 1)}
+//                       className={currentPage === index + 1 ? 'active' : ''}
+//                     >
+//                       {index + 1}
+//                     </Button>
+//                   ))}
+//                 </div>
+//               </div>
+//             </div>
+//           </Row>
+//         </Container>
+//       </section>
+//     </>
+//   );
+// }
+
+// export default Laboratorypage;

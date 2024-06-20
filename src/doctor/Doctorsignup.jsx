@@ -87,7 +87,7 @@ function Doctorsignup() {
       formData.append('Pincode', values.pincode);
       formData.append('address', values.address);
       formData.append('photo', file);
-      formData.append('isActive', true); 
+      formData.append('isActive', false); 
       const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createDoctor`,formData, {
         headers: {
           'Content-Type': 'multipart/form-data',

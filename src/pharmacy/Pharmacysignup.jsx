@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import axios from 'axios';
 import Modalnavigationbar from '../navbar/Modalnavigationbar';
 import Pagetitle from '../patients/Pagetitle';
@@ -12,7 +12,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string().required('Name is required'),
-  ownername: Yup.string().required('Owner Name is required'),
+ 
   email: Yup.string()
     .matches(
       /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
@@ -28,12 +28,45 @@ const SignupSchema = Yup.object().shape({
   licenceno: Yup.string().required('License No. is required'),
   licencedate: Yup.date().required('License Date is required'),
   pincode: Yup.string().required('Pincode is required'),
+  pharmacyStartTime1: Yup.string().required('time slote is required'),
+  pharmacyStartTime2: Yup.string().required('time slote is required'),
+  pharmacyStartTime3: Yup.string().required('time slote is required'),
+  pharmacyEndTime1: Yup.string().required('time slote is required'),
+  pharmacyEndTime2: Yup.string().required('time slote is required'),
+  pharmacyEndTime3: Yup.string().required('time slote is required'),
   address: Yup.string().required('Address is required'),
+  DaysPharmacy1: Yup.string().required('Days selected is required'),
+  DaysPharmacy2: Yup.string().required('Days selected is required'),
+  DaysPharmacy3: Yup.string().required('Days selected is required'),
 });
 
 function Pharmacysignup() {
   const navigate = useNavigate();
   const [file, setFile] = useState(null);
+  const [daysData, setDaysData] = useState([]);
+
+  const listDay = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list/Days`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching days data:', error);
+      return [];
+    }
+  };
+
+  useEffect(() => {
+    const fetchDays = async () => {
+      try {
+        const days = await listDay();
+        setDaysData(days);
+      } catch (error) {
+        console.error('Error setting days data:', error);
+      }
+    };
+
+    fetchDays();
+  }, []);
 
   const handleFileChange = (event) => {
     setFile(event.currentTarget.files[0]);
@@ -43,16 +76,25 @@ function Pharmacysignup() {
     try {
       const formData = new FormData();
       formData.append('PharmacyName', values.name);
-      formData.append('PharmacyOwnerName', values.ownername); // Include the owner name
+     
       formData.append('EmailClinic', values.email);
       formData.append('mobileNumber', values.contact);
       formData.append('Password', values.password);
       formData.append('PharmacyLicenseNumber', values.licenceno);
       formData.append('PharmacyLicenseDate', values.licencedate);
+      formData.append('PharmacyStartTime1', values.pharmacyStartTime1);
+      formData.append('PharmacyStartTime2', values.pharmacyStartTime2);
+      formData.append('PharmacyStartTime3', values.pharmacyStartTime3);
+      formData.append('PharmacyEndTime1', values.pharmacyEndTime1);
+      formData.append('PharmacyEndTime2', values.pharmacyEndTime2);
+      formData.append('PharmacyEndTime3', values.pharmacyEndTime3);
+      formData.append('DaysPharmacy1', values.DaysPharmacy1);
+      formData.append('DaysPharmacy2', values.DaysPharmacy2);
+      formData.append('DaysPharmacy3', values.DaysPharmacy3);
       formData.append('Pincode', values.pincode); // Include pincode
       formData.append('address', values.address);
       formData.append('photo', file);
-      formData.append('isActive', true); 
+      formData.append('isActive', false);
 
       const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createPharmacy`, formData, {
         headers: {
@@ -110,15 +152,24 @@ function Pharmacysignup() {
                 <Formik
                   initialValues={{
                     name: '',
-                    ownername: '',
+                   
                     email: '',
                     contact: '',
                     password: '',
                     confirmpass: '',
                     licenceno: '',
                     licencedate: '',
+                    pharmacyStartTime1: '',
+                    pharmacyStartTime2: '',
+                    pharmacyStartTime3: '',
+                    pharmacyEndTime1: '',
+                    pharmacyEndTime2: '',
+                    pharmacyEndTime3: '',
                     pincode: '',
                     address: '',
+                    DaysPharmacy1: '',
+                    DaysPharmacy2: '',
+                    DaysPharmacy3: '',
                   }}
                   validationSchema={SignupSchema}
                   onSubmit={handleSubmit}
@@ -147,7 +198,7 @@ function Pharmacysignup() {
                             />
                             <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
                           </Col>
-                          <Col lg={6} className="form-group mb-3">
+                          {/* <Col lg={6} className="form-group mb-3">
                             <Form.Label>Owner Name</Form.Label>
                             <Form.Control
                               type="text"
@@ -159,9 +210,9 @@ function Pharmacysignup() {
                               isInvalid={touched.ownername && errors.ownername}
                             />
                             <Form.Control.Feedback type="invalid">{errors.ownername}</Form.Control.Feedback>
-                          </Col>
+                          </Col> */}
                           <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Email Address</Form.Label>
+                            <Form.Label>Pharmacy Email Address</Form.Label>
                             <Form.Control
                               type="text"
                               name="email"
@@ -173,19 +224,7 @@ function Pharmacysignup() {
                             />
                             <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
                           </Col>
-                          <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Contact No.</Form.Label>
-                            <Form.Control
-                              type="text"
-                              name="contact"
-                              placeholder="Contact No."
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.contact}
-                              isInvalid={touched.contact && errors.contact}
-                            />
-                            <Form.Control.Feedback type="invalid">{errors.contact}</Form.Control.Feedback>
-                          </Col>
+                        
                           <Col lg={6} className="form-group mb-3">
                             <Form.Label>Password</Form.Label>
                             <Form.Control
@@ -238,6 +277,174 @@ function Pharmacysignup() {
                             />
                             <Form.Control.Feedback type="invalid">{errors.licencedate}</Form.Control.Feedback>
                           </Col>
+
+                          <Col lg={6} className="form-group mb-3">
+                            <Form.Label>Pharmacy License Image</Form.Label>
+                            <Form.Control
+                              type="file"
+                              name="photo"
+                              onChange={handleFileChange}
+                              isInvalid={touched.photo && errors.photo}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.photo}</Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg={6} className="form-group mb-3">
+                            <Form.Label>Contact No.</Form.Label>
+                            <Form.Control
+                              type="text"
+                              name="contact"
+                              placeholder="Contact No."
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.contact}
+                              isInvalid={touched.contact && errors.contact}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.contact}</Form.Control.Feedback>
+                          </Col>
+
+
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>Pharmacy Start Time 1</Form.Label>
+                            <Form.Control
+                              type="time"
+                              name="pharmacyStartTime1"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.pharmacyStartTime1}
+                              isInvalid={touched.pharmacyStartTime1 && errors.pharmacyStartTime1}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.pharmacyStartTime1}</Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>Pharmacy End Time 1</Form.Label>
+                            <Form.Control
+                              type="time"
+                              name="pharmacyEndTime1"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.pharmacyEndTime1}
+                              isInvalid={touched.pharmacyEndTime1 && errors.pharmacyEndTime1}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.pharmacyEndTime1}</Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>Days</Form.Label>
+                            <Form.Control
+                              as="select"
+                              name="DaysPharmacy1"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.DaysPharmacy1}
+                              isInvalid={touched.DaysPharmacy1 && errors.DaysPharmacy1}
+                            >
+                              <option value="">Select Days</option>
+                              {daysData.map((day) => (
+                                <option key={day._id} value={day._id}>
+                                  {day.Days}
+                                </option>
+                              ))}
+                            </Form.Control>
+                            <Form.Control.Feedback type="invalid">{errors.DaysPharmacy1}</Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>Pharmacy Start Time 2</Form.Label>
+                            <Form.Control
+                              type="time"
+                              name="pharmacyStartTime2"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.pharmacyStartTime2}
+                              isInvalid={touched.pharmacyStartTime2 && errors.pharmacyStartTime2}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.pharmacyStartTime2}</Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>Pharmacy End Time 2</Form.Label>
+                            <Form.Control
+                              type="time"
+                              name="pharmacyEndTime2"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.pharmacyEndTime2}
+                              isInvalid={touched.pharmacyEndTime2 && errors.pharmacyEndTime2}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.pharmacyEndTime2}</Form.Control.Feedback>
+                          </Col>
+                          
+                          
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>Days</Form.Label>
+                            <Form.Control
+                              as="select"
+                              name="DaysPharmacy2"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.DaysPharmacy2}
+                              isInvalid={touched.DaysPharmacy2 && errors.DaysPharmacy2}
+                            >
+                              <option value="">Select Days</option>
+                              {daysData.map((day) => (
+                                <option key={day._id} value={day._id}>
+                                  {day.Days}
+                                </option>
+                              ))}
+                            </Form.Control>
+                            <Form.Control.Feedback type="invalid">{errors.DaysPharmacy2}</Form.Control.Feedback>
+                          </Col>
+
+                         
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>Pharmacy Start Time 3</Form.Label>
+                            <Form.Control
+                              type="time"
+                              name="pharmacyStartTime3"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.pharmacyStartTime3}
+                              isInvalid={touched.pharmacyStartTime3 && errors.pharmacyStartTime3}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.pharmacyStartTime3}</Form.Control.Feedback>
+                          </Col>
+                          
+
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>Pharmacy End Time 3</Form.Label>
+                            <Form.Control
+                              type="time"
+                              name="pharmacyEndTime3"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.pharmacyEndTime3}
+                              isInvalid={touched.pharmacyEndTime3 && errors.pharmacyEndTime3}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.pharmacyEndTime3}</Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>Days</Form.Label>
+                            <Form.Control
+                              as="select"
+                              name="DaysPharmacy3"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.DaysPharmacy3}
+                              isInvalid={touched.DaysPharmacy3 && errors.DaysPharmacy3}
+                            >
+                              <option value="">Select Days</option>
+                              {daysData.map((day) => (
+                                <option key={day._id} value={day._id}>
+                                  {day.Days}
+                                </option>
+                              ))}
+                            </Form.Control>
+                            <Form.Control.Feedback type="invalid">{errors.DaysPharmacy3}</Form.Control.Feedback>
+                          </Col>
+
                           <Col lg={6} className="form-group mb-3">
                             <Form.Label>Pincode</Form.Label>
                             <Form.Control
@@ -264,18 +471,17 @@ function Pharmacysignup() {
                             />
                             <Form.Control.Feedback type="invalid">{errors.address}</Form.Control.Feedback>
                           </Col>
-                          <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Upload License Image</Form.Label>
-                            <Form.Control
-                              type="file"
-                              name="photo"
-                              onChange={handleFileChange}
-                              isInvalid={touched.photo && errors.photo}
-                            />
-                            <Form.Control.Feedback type="invalid">{errors.photo}</Form.Control.Feedback>
+                         
+                          <Col lg={12} className="form-group d-md-flex mb-4">
+                            <div className="w-100 text-start">
+                              <label className="checkbox-wrap checkbox-primary mb-0">
+                                <input type="checkbox" />
+                                <span className="checkmark"></span> I agree to all statements in <a href="#" className="d-inline-block">Terms of service</a>
+                              </label>
+                            </div>
                           </Col>
-                          <Col lg={12} className="form-group mb-3 text-center">
-                            <Button type="submit" className="btn btn-primary">Signup</Button>
+                          <Col lg={6} className="form-group">
+                            <Button type="submit" className="form-control btn btn-sign-in rounded submit px-3">Submit Now</Button>
                           </Col>
                         </Row>
                       </div>
@@ -283,9 +489,8 @@ function Pharmacysignup() {
                   )}
                 </Formik>
                 <div className="w-100 text-center mt-4">
-                  <p className="mb-0">
-                    <Link className="btn btn-link" to="/pharmacy-login">Already a member?</Link>
-                  </p>
+                <p className="text-center">Already have an account? <Link to='/pharmacy-login' className="d-inline-block">Sign In</Link></p>
+              
                 </div>
               </div>
             </div>

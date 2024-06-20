@@ -66,9 +66,9 @@ function Hospitaldesc(props) {
     <h5 className="mt-3 d-inline-block me-2"><FaMapMarker className='map-color' /> {props.headings}</h5>
 </div>
 <div className="location-marker-section">
-    <h5 className="mt-3 d-inline-block me-2"><IoMdTimer className='map-color' /> {dayName} - {props.starttime1} - {props.endtime1} <br /> <br />
-    <IoMdTimer className='map-color' />{dayName2} - {props.starttime2} -   {props.endtime2} <br /> <br />
-    <IoMdTimer className='map-color' /> {dayName3} -  {props.starttime3} -   {props.endtime3}</h5>
+    <h5 className="mt-3 d-inline-block me-2"><IoMdTimer className='map-color' /> {props.starttime1} - {props.endtime1} - {dayName}   <br /> <br />
+    <IoMdTimer className='map-color' /> {props.starttime2} -   {props.endtime2} - {dayName2}   <br /> <br />
+    <IoMdTimer className='map-color' />{props.starttime3} -   {props.endtime3} -  {dayName3}   </h5>
 </div>
       </Card.Body>
     </Col>

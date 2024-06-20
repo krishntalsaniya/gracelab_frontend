@@ -27,6 +27,11 @@ const SignupSchema = Yup.object().shape({
   licenceno: Yup.string().required('License No. is required'),
   licencedate: Yup.date().required('License Date is required'),
   labStartTime1: Yup.string().required('Time Slot is required'),
+  labStartTime2: Yup.string().required('Time Slot is required'),
+  labStartTime3: Yup.string().required('Time Slot is required'),
+  labEndTime1: Yup.string().required('Time Slot is required'),
+  labEndTime2: Yup.string().required('Time Slot is required'),
+  labEndTime3: Yup.string().required('Time Slot is required'),
   pincode: Yup.string().required('Pincode is required'),
   address: Yup.string().required('Address is required'),
   DaysLab1: Yup.string().required('Days is required'),
@@ -76,13 +81,18 @@ function Laboratorysignup() {
       formData.append('LabLicenseNumber', values.licenceno);
       formData.append('LabLicenseDate', values.licencedate);
       formData.append('LabStartTime1', values.labStartTime1);
+      formData.append('LabStartTime2', values.labStartTime2);
+      formData.append('LabStartTime3', values.labStartTime3);
+      formData.append('LabEndTime1', values.labEndTime1);
+      formData.append('LabEndTime2', values.labEndTime2);
+      formData.append('LabEndTime3', values.labEndTime3);
       formData.append('Pincode', values.pincode);
       formData.append("DaysLab1", values.DaysLab1);
       formData.append("DaysLab2", values.DaysLab2);
       formData.append("DaysLab3", values.DaysLab3);
       formData.append('address', values.address);
       formData.append('photo', file);
-      formData.append('isActive', true);
+      formData.append('IsActive', false);
 
       const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createLaboratery`, formData, {
         headers: {
@@ -147,6 +157,11 @@ function Laboratorysignup() {
                     licenceno: '',
                     licencedate: '',
                     labStartTime1: '',
+                    labStartTime2: '',
+                    labStartTime3: '',
+                    labEndTime1: '',
+                    labEndTime2: '',
+                    labEndTime3: '',
                     pincode: '',
                     address: '',
                     DaysLab1: '',
@@ -181,7 +196,7 @@ function Laboratorysignup() {
                             <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
                           </Col>
                           <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Email Address</Form.Label>
+                            <Form.Label>Laboratory Email Address</Form.Label>
                             <Form.Control
                               type="text"
                               name="email"
@@ -193,19 +208,7 @@ function Laboratorysignup() {
                             />
                             <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
                           </Col>
-                          <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Contact No.</Form.Label>
-                            <Form.Control
-                              type="text"
-                              name="contact"
-                              placeholder="Contact No."
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.contact}
-                              isInvalid={touched.contact && errors.contact}
-                            />
-                            <Form.Control.Feedback type="invalid">{errors.contact}</Form.Control.Feedback>
-                          </Col>
+                         
                           <Col lg={6} className="form-group mb-3">
                             <Form.Label>Password</Form.Label>
                             <Form.Control
@@ -219,6 +222,7 @@ function Laboratorysignup() {
                             />
                             <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
                           </Col>
+
                           <Col lg={6} className="form-group mb-3">
                             <Form.Label>Confirm Password</Form.Label>
                             <Form.Control
@@ -232,6 +236,7 @@ function Laboratorysignup() {
                             />
                             <Form.Control.Feedback type="invalid">{errors.confirmpass}</Form.Control.Feedback>
                           </Col>
+                         
                           <Col lg={6} className="form-group mb-3">
                             <Form.Label>Laboratory Licence No.</Form.Label>
                             <Form.Control
@@ -257,7 +262,62 @@ function Laboratorysignup() {
                             />
                             <Form.Control.Feedback type="invalid">{errors.licencedate}</Form.Control.Feedback>
                           </Col>
+
                           <Col lg={6} className="form-group mb-3">
+                            <Form.Label>Upload Photo</Form.Label>
+                            <Form.Control
+                              type='file'
+                              name="photo"
+                              onChange={(event) => {
+                                handleFileChange(event);
+                                handleChange(event);
+                              }}
+                              onBlur={handleBlur}
+                              isInvalid={touched.photo && errors.photo}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.photo}</Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg={6} className="form-group mb-3">
+                            <Form.Label>Contact No.</Form.Label>
+                            <Form.Control
+                              type="text"
+                              name="contact"
+                              placeholder="Contact No."
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.contact}
+                              isInvalid={touched.contact && errors.contact}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.contact}</Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>Lab Start Time 1</Form.Label>
+                            <Form.Control
+                              type="time"
+                              name="labStartTime1"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.labStartTime1}
+                              isInvalid={touched.labStartTime1 && errors.labStartTime1}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.labStartTime1}</Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>Lab End Time 1</Form.Label>
+                            <Form.Control
+                              type="time"
+                              name="labEndTime1"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.labEndTime1}
+                              isInvalid={touched.labEndTime1 && errors.labEndTime1}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.labEndTime1}</Form.Control.Feedback>
+                          </Col>
+                          <Col lg={4} className="form-group mb-3">
                             <Form.Label>Days</Form.Label>
                             <Form.Control
                               as="select"
@@ -276,20 +336,35 @@ function Laboratorysignup() {
                             </Form.Control>
                             <Form.Control.Feedback type="invalid">{errors.DaysLab1}</Form.Control.Feedback>
                           </Col>
-                          <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Lab Start Time 1</Form.Label>
+                         
+
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>Lab Start Time 2</Form.Label>
                             <Form.Control
                               type="time"
-                              name="labStartTime1"
+                              name="labStartTime2"
                               onChange={handleChange}
                               onBlur={handleBlur}
-                              value={values.labStartTime1}
-                              isInvalid={touched.labStartTime1 && errors.labStartTime1}
+                              value={values.labStartTime2}
+                              isInvalid={touched.labStartTime2 && errors.labStartTime2}
                             />
-                            <Form.Control.Feedback type="invalid">{errors.labStartTime1}</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">{errors.labStartTime2}</Form.Control.Feedback>
                           </Col>
 
-                          <Col lg={6} className="form-group mb-3">
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>Lab End Time 2</Form.Label>
+                            <Form.Control
+                              type="time"
+                              name="labEndTime2"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.labEndTime2}
+                              isInvalid={touched.labEndTime2 && errors.labEndTime2}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.labEndTime2}</Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg={4} className="form-group mb-3">
                             <Form.Label>Days</Form.Label>
                             <Form.Control
                               as="select"
@@ -309,7 +384,33 @@ function Laboratorysignup() {
                             <Form.Control.Feedback type="invalid">{errors.DaysLab2}</Form.Control.Feedback>
                           </Col>
 
-                          <Col lg={6} className="form-group mb-3">
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>Lab Start Time 3</Form.Label>
+                            <Form.Control
+                              type="time"
+                              name="labStartTime3"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.labStartTime3}
+                              isInvalid={touched.labStartTime3 && errors.labStartTime3}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.labStartTime3}</Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>Lab End Time 3</Form.Label>
+                            <Form.Control
+                              type="time"
+                              name="labEndTime3"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.labEndTime3}
+                              isInvalid={touched.labEndTime3 && errors.labEndTime3}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.labEndTime3}</Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg={4} className="form-group mb-3">
                             <Form.Label>Days</Form.Label>
                             <Form.Control
                               as="select"
@@ -328,6 +429,8 @@ function Laboratorysignup() {
                             </Form.Control>
                             <Form.Control.Feedback type="invalid">{errors.DaysLab3}</Form.Control.Feedback>
                           </Col>
+
+                          
                           <Col lg={6} className="form-group mb-3">
                             <Form.Label>Pincode</Form.Label>
                             <Form.Control
@@ -355,20 +458,7 @@ function Laboratorysignup() {
                             />
                             <Form.Control.Feedback type="invalid">{errors.address}</Form.Control.Feedback>
                           </Col>
-                          <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Upload Photo</Form.Label>
-                            <Form.Control
-                              type='file'
-                              name="photo"
-                              onChange={(event) => {
-                                handleFileChange(event);
-                                handleChange(event);
-                              }}
-                              onBlur={handleBlur}
-                              isInvalid={touched.photo && errors.photo}
-                            />
-                            <Form.Control.Feedback type="invalid">{errors.photo}</Form.Control.Feedback>
-                          </Col>
+                         
                           <Col lg={12} className="form-group d-md-flex mb-4">
                             <div className="w-100 text-start">
                               <label className="checkbox-wrap checkbox-primary mb-0">

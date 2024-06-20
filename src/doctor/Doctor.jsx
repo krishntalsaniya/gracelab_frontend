@@ -393,7 +393,7 @@ navigatelink="/doctor-login"
  <div className="col-lg-8 col-md-12">
   {selectedLabs.length > 0 ? (
     <div className="selected-labs">
-      <h4>Selected Laboratories</h4>
+      
       {selectedLabs.map((doc) => (
        <Doctorsec
        key={doc.id}
@@ -407,13 +407,16 @@ navigatelink="/doctor-login"
        endtime2={doc.OPD2EndTime}
        starttime3={doc.OPD3StartTime}
        endtime3={doc.OPD3EndTime}
+       dayslab1={doc.DaysDoctor1}
+       dayslab2={doc.DaysDoctor2}
+       dayslab3={doc.DaysDoctor3}
       
      />
       ))}
     </div>
   ) : (
     <div className="all-labs">
-      <h4>All Laboratories</h4>
+      
       {doctorlist.map((doc) => (
         <Doctorsec
         key={doc.id}
@@ -427,6 +430,9 @@ navigatelink="/doctor-login"
         endtime2={doc.OPD2EndTime}
         starttime3={doc.OPD3StartTime}
         endtime3={doc.OPD3EndTime}
+        dayslab1={doc.DaysDoctor1}
+       dayslab2={doc.DaysDoctor2}
+       dayslab3={doc.DaysDoctor3}
        
       />
       ))}

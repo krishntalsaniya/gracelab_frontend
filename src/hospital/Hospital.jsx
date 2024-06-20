@@ -345,7 +345,7 @@ function Hospital() {
                 <div className="col-lg-8 col-md-12">
   {selectedLabs.length > 0 ? (
     <div className="selected-labs">
-      <h4>Selected Laboratories</h4>
+      
       {selectedLabs?.map((hospital) => (
        <Doctorsec
        drimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${hospital.Hospitalphoto}`}
@@ -358,12 +358,15 @@ function Hospital() {
        endtime2={hospital.OPD2EndTime} // Adjust this based on your API response structure
        starttime3={hospital.OPD3StartTime} // Adjust this based on your API response structure
        endtime3={hospital.OPD3EndTime} // Adjust this based on your API response structure
+       dayslab1={hospital.DaysHospital1}
+       dayslab2={hospital.DaysHospital2}
+       dayslab3={hospital.DaysHospital3}
      />
       ))}
     </div>
   ) : (
     <div className="all-labs">
-      <h4>All Laboratories</h4>
+     
       {hospitalalllist?.map((hospital) => (
         <Doctorsec
         drimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${hospital.Hospitalphoto}`}
@@ -376,6 +379,9 @@ function Hospital() {
         endtime2={hospital?.OPD2EndTime} // Adjust this based on your API response structure
         starttime3={hospital?.OPD3StartTime} // Adjust this based on your API response structure
         endtime3={hospital?.OPD3EndTime} // Adjust this based on your API response structure
+        dayslab1={hospital.DaysHospital1}
+        dayslab2={hospital.DaysHospital2}
+        dayslab3={hospital.DaysHospital3}
       />
       ))}
     </div>
