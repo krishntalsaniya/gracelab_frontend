@@ -68,7 +68,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string().required('Name is required'),
-  ownername: Yup.string().required('Owner Name is required'),
+  // ownername: Yup.string().required('Owner Name is required'),
   email: Yup.string()
     .matches(
       /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
@@ -134,7 +134,7 @@ function Hospitalsignup() {
 
       const formData = new FormData();
       formData.append('HospitalName', values.name);
-      formData.append('PharmacyOwnerName', values.ownername);
+      // formData.append('PharmacyOwnerName', values.ownername);
       formData.append('EmailHospital', values.email);
       formData.append('mobileNumber', values.contact);
       formData.append( 'Password', values.password);
@@ -163,7 +163,7 @@ function Hospitalsignup() {
 
       Swal.fire({
         title: "Success!",
-        text: "Pharmacy registered successfully",
+        text: "Hospital registered successfully",
         icon: "success",
         confirmButtonText: "OK"
       }).then(() => {
@@ -206,7 +206,7 @@ function Hospitalsignup() {
                 <Formik
                   initialValues={{
                     name: '',
-                    ownername: '',
+                    
                     email: '',
                     contact: '',
                     password: '',
@@ -252,7 +252,7 @@ function Hospitalsignup() {
                             />
                             <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
                           </Col>
-                          <Col lg={6} className="form-group mb-3">
+                          {/* <Col lg={6} className="form-group mb-3">
                             <Form.Label>Owner Name</Form.Label>
                             <Form.Control
                               type="text"
@@ -264,9 +264,9 @@ function Hospitalsignup() {
                               isInvalid={touched.ownername && errors.ownername}
                             />
                             <Form.Control.Feedback type="invalid">{errors.ownername}</Form.Control.Feedback>
-                          </Col>
+                          </Col> */}
                           <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Email Address</Form.Label>
+                            <Form.Label>Hospital Email Address</Form.Label>
                             <Form.Control
                               type="text"
                               name="email"
@@ -278,19 +278,7 @@ function Hospitalsignup() {
                             />
                             <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
                           </Col>
-                          <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Contact No.</Form.Label>
-                            <Form.Control
-                              type="text"
-                              name="contact"
-                              placeholder="Contact No."
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.contact}
-                              isInvalid={touched.contact && errors.contact}
-                            />
-                            <Form.Control.Feedback type="invalid">{errors.contact}</Form.Control.Feedback>
-                          </Col>
+                       
                           <Col lg={6} className="form-group mb-3">
                             <Form.Label>Password</Form.Label>
                             <Form.Control
@@ -341,6 +329,31 @@ function Hospitalsignup() {
                               isInvalid={touched.licencedate && errors.licencedate}
                             />
                             <Form.Control.Feedback type="invalid">{errors.licencedate}</Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg={6} className="form-group mb-3">
+                            <Form.Label>Upload License Image</Form.Label>
+                            <Form.Control
+                              type="file"
+                              name="photo"
+                              onChange={handleFileChange}
+                              isInvalid={touched.photo && errors.photo}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.photo}</Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg={6} className="form-group mb-3">
+                            <Form.Label>Contact No.</Form.Label>
+                            <Form.Control
+                              type="text"
+                              name="contact"
+                              placeholder="Contact No."
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.contact}
+                              isInvalid={touched.contact && errors.contact}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.contact}</Form.Control.Feedback>
                           </Col>
                           <Col lg={4} className="form-group mb-3">
                             <Form.Label>OPD Start Time 1</Form.Label>
@@ -506,16 +519,7 @@ function Hospitalsignup() {
                             />
                             <Form.Control.Feedback type="invalid">{errors.address}</Form.Control.Feedback>
                           </Col>
-                          <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Upload License Image</Form.Label>
-                            <Form.Control
-                              type="file"
-                              name="photo"
-                              onChange={handleFileChange}
-                              isInvalid={touched.photo && errors.photo}
-                            />
-                            <Form.Control.Feedback type="invalid">{errors.photo}</Form.Control.Feedback>
-                          </Col>
+                        
                           
                           <Col lg={12} className="form-group d-md-flex mb-4">
                       <div className="w-100 text-start">
