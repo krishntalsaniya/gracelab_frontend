@@ -1,10 +1,35 @@
-import React from 'react'
+import React,{useEffect,useState} from 'react'
 import { Container, Row,Col ,Image} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { IoCheckmarkDoneSharp,IoLocationSharp  ,IoCall  } from "react-icons/io5";
 import { IoIosMail } from "react-icons/io";
 import logo from '../img/logo.jpg';
+import axios from 'axios';
+
 function Footer() {
+  const [cmsdesc, setcmsdesc] = useState([])
+  useEffect(() => {
+    
+    const CMScontent = async() =>
+      {
+       try {
+        const HomeCMScontent = await axios.get
+        (
+          `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list/blogs`
+        );
+        console.log("show CMS content:", HomeCMScontent.data);
+
+              
+        setcmsdesc(HomeCMScontent.data)
+        console.log("cms data in about us ",HomeCMScontent.data);
+       } catch (error) {
+        console.log("cms data   :", error)
+       }
+        
+      }
+      CMScontent();
+  }, [])
+  
   return (
     <>
     <footer className="footer-area" style={{ boxShadow:'0 2px 28px 0 rgba(0, 0, 0, 0.06)'}}>
@@ -18,15 +43,16 @@ function Footer() {
             </div>
           </Col>
           <Col lg={3} md={6} sm={6}>
-            <div className="single-footer-widget ms-5">
-              <h3>Useful Links</h3>
-              <ul className="useful-links-list">
-                <li><Link to="/about">About Us</Link></li>
-                <li><Link to="/contact">Contact Us</Link></li>
-                <li><Link to="/privacy-policies">Privacy Policy</Link></li>
-                <li><Link to="/terms-condition">Terms and Conditions</Link></li>
-              </ul>
-            </div>
+          <div className="single-footer-widget ms-5">
+      <h3>Useful Links</h3>
+      <ul className="useful-links-list">
+        {cmsdesc.map((link, index) => (
+          <li key={index}>
+            <Link to={`/about/${link._id}`}>{link.blogTitle}</Link>
+          </li>
+        ))}
+      </ul>
+    </div>
           </Col>
           <Col lg={3} md={6} sm={6}>
             <div className="single-footer-widget">

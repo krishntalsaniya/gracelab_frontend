@@ -26,120 +26,125 @@ function Laboratorypage() {
   const [labList, setLabList] = useState([]);
   const [perPage, setPerPage] = useState(10);
 const [pageNo, setPageNo] = useState(0);
+const [selectedCities, setSelectedCities] = useState([]);
 
   
-  useEffect(() => {
-
-    
-    const fetchAllLocations = async () => {
-      try {
-        const location = await axios.post(
-          `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listLaborateriesByParams`,
-          {
-            skip: 0,
-            per_page: 1000,
-            sorton: "",
-            sortdir: "",
-            match: query,
-            isActive: true,
-          })
-
-        console.log("fetch all location data  :",location);
-        
-        setloc(location.data[0].data);
-        console.log("all", location.data);
-      } catch (error) {
-        console.log("Error : ", error);
-      }
-    };
-    fetchAllLocations();
-
+   useEffect(() => {
     const fetchAllLaboratories = async () => {
       try {
-        // Define parameters for pagination, sorting, and filtering
-        const pageNo = 1; // Example page number
-        const perPage = 10; // Example number of items per page
-        const column = 'LabName'; // Example column to sort on
-        const sortDirection = 'asc'; // Example sort direction
-       
-        const filter = true; // Example filter for active laboratories
+        const pageNo = 1;
+        const perPage = 10;
+        const column = 'LabName';
+        const sortDirection = 'asc';
+        const filter = true;
 
         const skip = (pageNo - 1) * perPage;
 
         const response = await axios.post(
-          `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listLaborateriesByParams`,
+          `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listLaborateriesByLocation`,
           {
             skip: skip,
             per_page: perPage,
             sorton: column,
             sortdir: sortDirection,
-            match: query,
+            match: {
+              City: selectedCities,
+            },
             isActive: filter,
           }
         );
 
-        // Assuming the response contains an array of laboratories
         const laboratories = response.data[0];
-        console.log("labbbbbb",laboratories);
-        const labdata = laboratories.data
+        const labdata = laboratories;
 
-        console.log("lab data ",labdata)
 
-        // Filter active laboratories (if needed)
-        const activeLaboratories = labdata.filter(lab => lab.isActive);
-
-        setLabList(activeLaboratories);
-        const uniqueList = new Set() ;
-        labList.forEach((e)=>uniqueList.add(e.LabName)); 
-        console.log("osetoooooo",uniqueList);
-        
+        setLabList(labdata);
       } catch (error) {
         console.error('Error fetching laboratories:', error);
       }
     };
 
-    fetchAllLaboratories();
-
-    const fetchLaboratorytest = async  () => {
-
-      try{
+    const fetchLaboratorytest = async () => {
+      try {
         const test = await axios.get(
           `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/get/getAllLabTests`
         );
         const laboratorytest = test.data.filter(
-
           (laboratorytestactive) => laboratorytestactive.IsActive
         );
-        setlabtest(laboratorytest)
-        // console.log("labtest",test.data)
-      }catch (error)
-      {
-        console.log("errors: ",error)
+        setlabtest(laboratorytest);
+      } catch (error) {
+        console.error('Error fetching laboratory tests:', error);
       }
-    }
-    fetchLaboratorytest();
+    };
+
+    const lablist = async () => {
+     try {
+        const pageNo = 1;
+        const perPage = 10;
+        const column = 'LabName';
+        const sortDirection = 'asc';
+        const filter = true;
+
+        const skip = (pageNo - 1) * perPage;
+
+        const response = await axios.post(
+          `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listLaborateriesByLocation`,
+          {
+            skip: skip,
+            per_page: perPage,
+            sorton: column,
+            sortdir: sortDirection,
+            match: {
+              City: selectedCities,
+            },
+            isActive: filter,
+          }
+        );
+
+        const laboratories = response?.data.data;
+        console.log("laboratories",response);
+        const labdata = laboratories;
 
 
-    const lablist = async  () => {
+        setLablistall(labdata);
 
-      try{
+      } catch (error) {
+        console.error('Error fetching laboratories:', error);
+      }
+    };
+
+
+    const lablocation = async () => {
+      try {
         const labt = await axios.get(
-          `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listLaborateries`
+          `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/location/city`
         );
 
         const alllablistisactive = labt.data.filter(
-          (laboratoruisactive)=> laboratoruisactive.isActive
+          (laboratoruisactive) => laboratoruisactive.isActive
         );
-        setLablistall(alllablistisactive)
-        console.log("lablistactivelab",labt.data)
-      }catch (error)
-      {
-        console.log("errors: ",error)
+        setloc(alllablistisactive);
+        console.log("lablistactivelab", labt.data);
+      } catch (error) {
+        console.error('Error fetching laboratory list:', error);
       }
-    }
+    };
+
+    fetchAllLaboratories();
+    fetchLaboratorytest();
     lablist();
-  
-  }, [query]);
+    lablocation();
+  }, [selectedCities]);
+
+  const handleCityChange = (event) => {
+    const { value, checked } = event.target;
+    if (checked) {
+      setSelectedCities([...selectedCities, value]);
+    } else {
+      setSelectedCities(selectedCities.filter(city => city !== value));
+    }
+  };
   
     const [open1, setOpen1] = useState(true);
     const [open2, setOpen2] = useState(true);
@@ -180,18 +185,7 @@ const [pageNo, setPageNo] = useState(0);
         setQuery(inputValue); // Update query state on every input change
       };
 
-      
-      const [selectedCityLabs, setSelectedCityLabs] = useState({});
-      const handleInputChangelocation = (e, cityName) => {
-        const { checked } = e.target;
-    
-        setSelectedCityLabs((prev) => ({
-          ...prev,
-          [cityName]: checked
-            ? loc.filter((lab) => lab.cityInfo?.Name === cityName)
-            : [],
-        }));
-      }
+ 
       
       const [selectedLabs, setSelectedLabs] = useState([]);
   
@@ -273,24 +267,26 @@ navigatelink="/laboratory-login"
                     <input type="search"
                      className="search-field"
                       placeholder="Search..." 
-                      onChange={handleInputChangelocation} 
+                     
                       
                       />
                   </label>
                 </form>
                 <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
                 {loc && loc?.map((city) => (
-                city.cityInfo && city.cityInfo.Name && (
                   <Col lg={12} md={12} xs={12} key={city._id}>
-                    <div className="form-check">
-                      <input type="checkbox"
-                       className="form-check-input"
-                        id={`city-${city._id}`} 
-                        onChange={(e) => handleCheckboxChangelocation(e, city)} />
-                      <label className="form-check-label" htmlFor={`city-${city._id}`}>{city.cityInfo.Name}</label>
-                    </div>
-                  </Col>
-                )
+                <div className="form-check">
+                  <input 
+                    type="checkbox" 
+                    className="form-check-input" 
+                    id={`city-${city._id}`} 
+                    value={city._id} 
+                    onChange={handleCityChange} 
+                  />
+                  <label className="form-check-label" htmlFor={`city-${city._id}`}>{city.Name}</label>
+                </div>
+              </Col>
+                
               ))}
                   
       </div>
@@ -407,7 +403,7 @@ navigatelink="/laboratory-login"
   ) : (
     <div className="all-labs">
      
-      {lablistall.map((lab) => (
+      {lablistall?.map((lab) => (
         <Hospitaldesc
           key={lab.id}
           hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${lab.Labphoto}`}

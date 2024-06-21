@@ -58,7 +58,7 @@ function App() {
   <Route path='/pharmacy' element={<Pharmacy />} />
   <Route path='/doctor' element={<Doctor />} />
   <Route path='/forgotpassword' element={<Forgotpass />} />
-  <Route path='/about' element={<About />} />
+  {/* <Route path='/about' element={<About />} /> */}
   <Route path='/contact' element={<Contact />} />
   <Route path='/registration' element={<Registration />} />
   <Route path='/sign-up' element={<Signup />} />
@@ -68,6 +68,7 @@ function App() {
   <Route path='/pharmacy-page' element={<Pharmacypage />} />
   <Route path='/doctor-page' element={<Doctorpage />} />
   <Route path='/lab-page' element={<Labpage />} />
+  <Route path='/about/:_ID' element={<About />} />
  
 </Routes> 
     <Footer />

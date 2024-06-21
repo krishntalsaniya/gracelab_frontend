@@ -57,6 +57,8 @@ function Home() {
         
       }
       Homebannerimage();
+
+
   
    
   }, [])
@@ -72,6 +74,7 @@ function Home() {
         </Carousel.Item>
       ))}
     </Carousel>
+
 
  {/* carousal start */}
             
