@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect,useState} from 'react'
 
 
 
@@ -29,33 +29,49 @@ import Modalpopup from './Modalpopup';
 import Program from './Program';
 import Banner from './Banner';
 import Modalnavigationbar from '../navbar/Modalnavigationbar';
+import axios from 'axios';
+
 
 
 function Home() {
+  const [bannerList, setBannerList] = useState([]);
+
+  useEffect(() => {
+    const Homebannerimage = async() =>
+      {
+       try {
+        const Homebannerimage = await axios.get
+        (
+          `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list/banners`
+        );
+        console.log("show baneer images :", Homebannerimage);
+
+        const specilityisactive = Homebannerimage.data.filter(
+          (specialityisactive) => specialityisactive.IsActive
+        );          
+        setBannerList(specilityisactive)
+        console.log("specilityisactive",specilityisactive);
+       } catch (error) {
+        console.log("Doctor Speciality error  :", error)
+       }
+        
+      }
+      Homebannerimage();
+  
+   
+  }, [])
+  
 
   return (
     <>
     <Modalnavigationbar  />
-
-<Carousel>
-
-<Carousel.Item>
-  <img src={banner1} alt="" />
-</Carousel.Item>
-<Carousel.Item>
-  <img src={banner2} alt="" />
-</Carousel.Item>
-<Carousel.Item>
-  <img src={banner3} alt="" />
-</Carousel.Item>
-<Carousel.Item>
-  <img src={banner4} alt="" />
-</Carousel.Item>
-<Carousel.Item>
-  <img src={banner5} alt="" />
-</Carousel.Item>
-
-</Carousel>
+    <Carousel>
+      {bannerList.map(banner => (
+        <Carousel.Item key={banner._id}>
+          <img src={`${process.env.REACT_APP_API_URL_GRACELAB}/${banner.bannerImage}`} alt={banner.Title} />
+        </Carousel.Item>
+      ))}
+    </Carousel>
 
  {/* carousal start */}
             

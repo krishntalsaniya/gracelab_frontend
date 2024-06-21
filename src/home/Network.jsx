@@ -9,11 +9,11 @@ function Network(props) {
   return (
     <>
        <Col lg={3} md={6} sm={6}>
-      <Link to="/">
+      <Link to={props.networklink}>
         <Card className="single-services-box text-center">
           <Card.Body>
             <div className="icon">
-            <Link to={props.networklink}><Image src={props.networkimage} alt="Service Icon" /></Link>
+            <Image src={props.networkimage} alt="Service Icon" />
             </div>
             <Card.Title className='networktitle'>{props.networktitle}</Card.Title>
           </Card.Body>

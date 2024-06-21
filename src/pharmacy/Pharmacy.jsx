@@ -20,6 +20,7 @@ function Pharmacy() {
   const [pharmacylocation, setpharmacylocation] = useState(null)
   const [pharmacylaballlist, setpharmacylaballlist] = useState([]);
   const [PharmacyList, setPharmacyList] = useState([])
+  const [selectedCities, setSelectedCities] = useState([]);
   const [query, setQuery] = useState("");
 
   useEffect(() => {
@@ -37,13 +38,16 @@ function Pharmacy() {
       const skip = (pageNo - 1) * perPage;
 
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listPharmaciesByParams`,
+        `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listPharmaciesByCity`,
         {
           skip: skip,
           per_page: perPage,
           sorton: column,
           sortdir: sortDirection,
-          match: query,
+          match: {
+           
+            City: selectedCities,
+        },
           isActive: filter,
         }
       );
@@ -68,19 +72,45 @@ function Pharmacy() {
   
   const lablist = async  () => {
 
-    try{
-      const labt = await axios.get(
-        `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listPharmacies`
+    try {
+      // Define parameters for pagination, sorting, and filtering
+      const pageNo = 1; // Example page number
+      const perPage = 10; // Example number of items per page
+      const column = 'LabName'; // Example column to sort on
+      const sortDirection = 'asc'; // Example sort direction
+     
+      const filter = true; // Example filter for active laboratories
+
+      const skip = (pageNo - 1) * perPage;
+
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listPharmaciesByCity`,
+        {
+          skip: skip,
+          per_page: perPage,
+          sorton: column,
+          sortdir: sortDirection,
+          match: {
+           
+            City: selectedCities,
+        },
+          isActive: filter,
+        }
       );
 
-      const alllablistisactive = labt.data.filter(
-        (laboratoruisactive)=> laboratoruisactive.isActive
-      );
-      setpharmacylist(alllablistisactive)
-      console.log("lablistactivelab",labt.data)
-    }catch (error)
-    {
-      console.log("errors: ",error)
+      // Assuming the response contains an array of laboratories
+      const laboratories = response.data[0];
+      console.log("pharmacy_data : ",laboratories);
+      const labdata = laboratories.data
+
+      console.log("lab data ",labdata)
+
+      // Filter active laboratories (if needed)
+      const activeLaboratories = labdata.filter(lab => lab.isActive);
+
+      setpharmacylist(activeLaboratories);
+    } catch (error) {
+      console.error('Error fetching laboratories:', error);
     }
   }
   lablist();
@@ -103,6 +133,8 @@ function Pharmacy() {
     }
   };
   Pharmacylocation();
+
+  
 
   const Pharmacylistall = async () =>{
 
@@ -127,7 +159,19 @@ function Pharmacy() {
 
 
    
-  }, [query])
+  }, [query,selectedCities])
+
+  const handleCityChange = (event) => {
+    const { value, checked } = event.target;
+    if (checked) {
+      setSelectedCities([...selectedCities, value]);
+      
+    } else {
+      setSelectedCities(selectedCities.filter(city => city !== value));
+    }
+    
+    console.log("selected cities:",handleCityChange);
+  };
   
       const [open1, setOpen1] = useState(true);
     const [open2, setOpen2] = useState(true);
@@ -220,7 +264,18 @@ navigatelink="/pharmacy-login"
                 </form>
                 <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
                 {pharmacylocation?.map((locationpha) => (
-                <Hospitallable label={locationpha.Name} size="6" />
+                <Col lg={12} md={12} xs={12} key={locationpha._id}>
+                <div className="form-check">
+                  <input 
+                    type="checkbox" 
+                    className="form-check-input" 
+                    id={`city-${locationpha._id}`} 
+                    value={locationpha._id} 
+                    onChange={handleCityChange} 
+                  />
+                  <label className="form-check-label" htmlFor={`city-${locationpha._id}`}>{locationpha.Name}</label>
+                </div>
+              </Col>
               ))}
                  {/* Render additional labels only if showMore is true */}
                  

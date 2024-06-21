@@ -7,7 +7,7 @@ import logo from '../img/logo.jpg';
 function Footer() {
   return (
     <>
-    <footer className="footer-area" style={{ backgroundColor: "#fff7f4" }}>
+    <footer className="footer-area" style={{ boxShadow:'0 2px 28px 0 rgba(0, 0, 0, 0.06)'}}>
       <Container>
         <Row>
           <Col lg={2} md={6} sm={6}>

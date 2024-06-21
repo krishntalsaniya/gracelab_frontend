@@ -9,7 +9,7 @@ import Modalnavigationbar from '../navbar/Modalnavigationbar';
 import { Hospitalad, Hospitallable, Hospitalname } from '../hospital/Hospitallable';
 import Hospitalsearch from '../hospital/Hospitalsearch';
 import drimage from '../img/drimage.jpg';
-
+import { IoSearch } from "react-icons/io5";
 import { MdArrowForwardIos } from "react-icons/md";
 import axios from 'axios';
 import Doctorsec from '../doctor/Doctorsec';
@@ -28,6 +28,9 @@ function Hospital() {
    const [hospitalalllist, sethospitalalllist] = useState(null)
    const [query, setQuery] = useState("");
    const [hospitalallparms, sethospitalallparms] = useState([])
+   const [selectedSpecialties, setSelectedSpecialties] = useState([]);
+   const [selectedCities, setSelectedCities] = useState([]);
+   const [hospitalName, sethospitalName] = useState([])
  
     useEffect(() => {
     
@@ -50,24 +53,25 @@ function Hospital() {
         }
         Locationfetch();
 
-        const Doctorspecilist = async() =>
+        const Hospitalspecilist = async() =>
           {
-           try {
-            const Specilitydoctor = await axios.get
-            (
-              `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list/DoctorSpeciality`
-            );
-
-            const specilityisactive = Specilitydoctor.data.filter(
-              (specialityisactive) => specialityisactive.IsActive
-            );          
-            setdoctorspecialist(specilityisactive)
-           } catch (error) {
-            // console.log("Doctor Speciality error  :", error)
-           }
+            try {
+              const SpecilityHoapital = await axios.get
+              (
+                `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list/HospitalSpeciality`
+              );
+  
+              const specilityisactive = SpecilityHoapital.data.filter(
+                (specialityisactive) => specialityisactive.IsActive
+              );          
+              setdoctorspecialist(specilityisactive)
+              console.log("hospital speciality list",specilityisactive);
+             } catch (error) {
+              console.log("Hospital Speciality error  :", error)
+             }
             
           }
-          Doctorspecilist();
+          Hospitalspecilist();
           
           const Doctorsymptom = async() =>
             {
@@ -92,15 +96,46 @@ function Hospital() {
           const Hospitalname = async() =>
             {
               try {
-                
-                const hospitalnamelist = await axios.get
-                (
-                  `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listHospital`
+                // Define parameters for pagination, sorting, and filtering
+                const pageNo = 1; // Example page number
+                const perPage = 10; // Example number of items per page
+                const column = 'LabName'; // Example column to sort on
+                const sortDirection = 'asc'; // Example sort direction
+               
+                const filter = true; // Example filter for active laboratories
+        
+                const skip = (pageNo - 1) * perPage;
+        
+                const response = await axios.post(
+                  `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list-by-params/listHospitalSpecialityBySpeciality`,
+                  {
+                    skip: skip,
+                    per_page: perPage,
+                    sorton: column,
+                    sortdir: sortDirection,
+                    match: {
+                      Speciality: selectedSpecialties,
+                      City: selectedCities,
+                      HospitalName:hospitalName,
+                      
+                  },
+                    isActive: filter,
+                  }
                 );
-                sethospitalalllist(hospitalnamelist.data)
-                console.log("Hospital all list active : ",hospitalnamelist)
+        
+                // Assuming the response contains an array of laboratories
+                const Hospitallist = response.data[0];
+                console.log("labbbbbb",Hospitallist);
+                const hospitaldata = Hospitallist.data
+        
+                console.log("hospital all data ",hospitaldata)
+        
+                // Filter active laboratories (if needed)
+                const activeHospitals = hospitaldata.filter(hospital => hospital.isActive);
+        
+                sethospitalalllist(activeHospitals);
               } catch (error) {
-                console.log("Hospital all list active : ", error)
+                console.error('Error fetching laboratories:', error);
               }
             }
             Hospitalname();
@@ -120,28 +155,33 @@ function Hospital() {
                 const skip = (pageNo - 1) * perPage;
         
                 const response = await axios.post(
-                  `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listHospitalByParams`,
+                  `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list-by-params/listHospitalSpecialityBySpeciality`,
                   {
                     skip: skip,
                     per_page: perPage,
                     sorton: column,
                     sortdir: sortDirection,
-                    match: query,
+                    match: {
+                      Speciality: selectedSpecialties,
+                      City: selectedCities,
+                      HospitalName:hospitalName,
+                      
+                  },
                     isActive: filter,
                   }
                 );
         
                 // Assuming the response contains an array of laboratories
-                const laboratories = response.data[0];
-                console.log("labbbbbb",laboratories);
-                const labdata = laboratories.data
+                const Hospitallist = response.data[0];
+                console.log("labbbbbb",Hospitallist);
+                const hospitaldata = Hospitallist.data
         
-                console.log("lab data ",labdata)
+                console.log("hospital all data ",hospitaldata)
         
                 // Filter active laboratories (if needed)
-                const activeLaboratories = labdata.filter(lab => lab.isActive);
+                const activeHospitals = hospitaldata.filter(hospital => hospital.isActive);
         
-                sethospitalallparms(activeLaboratories);
+                sethospitalallparms(activeHospitals);
               } catch (error) {
                 console.error('Error fetching laboratories:', error);
               }
@@ -149,10 +189,36 @@ function Hospital() {
             Hospitalparms();
     
      
-    }, [query])
+    }, [query,selectedSpecialties,selectedCities,hospitalName])
     
 
+    const handleSpecialtyChange = (event) => {
+      const { value, checked } = event.target;
+      if (checked) {
+        setSelectedSpecialties([...selectedSpecialties, value]);
+        console.log("checked box selected :",setSelectedSpecialties);
+      } else {
+        setSelectedSpecialties(selectedSpecialties.filter(specialty => specialty !== value));
+      }
+    };
 
+    const handleCityChange = (event) => {
+      const { value, checked } = event.target;
+      if (checked) {
+        setSelectedCities([...selectedCities, value]);
+      } else {
+        setSelectedCities(selectedCities.filter(city => city !== value));
+      }
+    };
+
+    const handleHospitalnameChange = (event) => {
+      const { value, checked } = event.target;
+      if (checked) {
+        sethospitalName([...hospitalName, value]);
+      } else {
+        sethospitalName(hospitalName.filter(HospitalName => HospitalName !== value));
+      }
+    };
 
     const toggleShowMore = (event) => {
       event.preventDefault();
@@ -238,22 +304,31 @@ function Hospital() {
 
 <div className="widget widget_search">
    <form className="search-form">
-     <Hospitalsearch />
+   <form className="search-form">
+                <label>
+                    <span className="screen-reader-text"></span>
+                    <input type="search" className="search-field" placeholder="Search..." />
+                  </label>
+                  <button type="submit"><IoSearch /></button>
+                </form>
    </form>
    <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
    {location?.map((city) => (
-   <Hospitallable label={city.Name} size="6" />
+   <Col lg={12} md={12} xs={12} key={city._id}>
+   <div className="form-check">
+     <input 
+       type="checkbox" 
+       className="form-check-input" 
+       id={`city-${city._id}`} 
+       value={city._id} 
+       onChange={handleCityChange} 
+     />
+     <label className="form-check-label" htmlFor={`city-${city._id}`}>{city.Name}</label>
+   </div>
+ </Col>
  ))}
        
-{showMore && location?.map((city) => (
-<Hospitallable label={city.Name} size="6" />
-))}
-   
-   {showMore ? (
-<Link onClick={toggleShowMore} className='view-more'>View Less</Link>
-) : (
-<Link onClick={toggleShowMore} className='view-more'>View More</Link>
-)}
+
 </div>
  </div>
 
@@ -279,21 +354,22 @@ function Hospital() {
                   </label>
                                   </form>
                                   <div className="row mt-3" style={{ maxHeight: '170px', overflowY: 'auto' }}>
-                                    {hospitalallparms?.map((labo) => (
-                                      <Col lg={12} md={12} xs={12} key={labo._id}>
+                                    {hospitalallparms?.map((hospital) => (
+                                      <Col xs={6} key={hospital._id}>
                                       <div className="form-check">
-                                        <input 
-                                          type="checkbox" 
-                                          className="form-check-input" 
-                                          id={`lab-checkbox-${labo.id}`} 
-                                          checked={selectedLabs.some(lab => lab._id === labo._id)} // Check if labo is in selectedLabs
-                                          onChange={(e) => handleCheckboxChange(e, labo)} 
-                                        />
-                                        <label className="form-check-label" htmlFor={`lab-checkbox-${labo.id}`}>
-                                          {labo.HospitalName}
-                                        </label>
+                                          <input
+                                              type="checkbox"
+                                              className="form-check-input"
+                                              id={hospital.HospitalName}
+                                              value={hospital.HospitalName}
+                                              checked={selectedSpecialties.includes(hospital.HospitalName)}
+                                              onChange={handleHospitalnameChange}
+                                          />
+                                          <label className="form-check-label" htmlFor={hospital.HospitalName}>
+                                              {hospital.HospitalName}
+                                          </label>
                                       </div>
-                                    </Col>
+                                  </Col>
                                     ))}
                                     {hospitalshowMore ? (
                                       <Link onClick={hospitaltoggleShowMore} className='view-more'>View Less</Link>
@@ -314,23 +390,33 @@ function Hospital() {
                               <div className="widget-area">
 
 <div className="widget widget_search">
-   <form className="search-form">
-     <Hospitalsearch />
-   </form>
+<form className="search-form">
+                <label>
+                    <span className="screen-reader-text"></span>
+                    <input type="search" className="search-field" placeholder="Search..." />
+                  </label>
+                  <button type="submit"><IoSearch /></button>
+                </form>
    <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
-   {doctorspecialist?.map((city) => (
-   <Hospitallable label={city.Speciality} size="6" />
- ))}
-       
-{showMore && doctorspecialist?.map((city) => (
-<Hospitallable label={city.Speciality} size="6" />
-))}
-   
-   {specialityshowMore ? (
-<Link onClick={specialitytoggleShowMore} className='view-more'>View Less</Link>
-) : (
-<Link onClick={specialitytoggleShowMore} className='view-more'>View More</Link>
-)}
+   {doctorspecialist?.map((specialty) => (
+                                                                    <Col xs={6} key={specialty._id}>
+                                                                        <div className="form-check">
+                                                                            <input
+                                                                                type="checkbox"
+                                                                                className="form-check-input"
+                                                                                id={specialty._id}
+                                                                                value={specialty._id}
+                                                                                checked={selectedSpecialties.includes(specialty._id)}
+                                                                                onChange={handleSpecialtyChange}
+                                                                            />
+                                                                            <label className="form-check-label" htmlFor={specialty._id}>
+                                                                                {specialty.Speciality
+                                                                                }
+                                                                            </label>
+                                                                        </div>
+                                                                    </Col>
+                                                                ))}
+      
 </div>
  </div>
                               </div>

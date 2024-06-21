@@ -6820,3 +6820,11 @@ display: block;
   color: #555555;
   font-size: 16px;
 }
+
+.carousel img
+{
+  width: 100% !important;
+    height: 500px !important;
+    display: inline-block !important;
+    pointer-events: none !important;
+}

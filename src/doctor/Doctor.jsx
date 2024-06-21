@@ -12,12 +12,14 @@ import drimage from '../img/drimage.jpg';
 import Doctorsec from './Doctorsec';
 import { MdArrowForwardIos } from "react-icons/md";
 import axios from 'axios';
+import { IoSearch } from "react-icons/io5";
 
 function Doctor() {
 
     const [open1, setOpen1] = useState(true);
     const [open2, setOpen2] = useState(true);
     const [open3, setOpen3] = useState(true);
+    const [searchQuery, setSearchQuery] = useState('');
     const [open4, setOpen4] = useState(true);
     const [showMore, setShowMore] = useState(false); 
     const [hospitalshowMore, hospitalsetShowMore] = useState(false); 
@@ -29,6 +31,9 @@ function Doctor() {
     const [doctorlist, setdoctorlist] = useState([])
     const [DoctorAllList, setDoctorAllList] = useState([])
     const [query, setQuery] = useState("");
+    const [selectedSpecialties, setSelectedSpecialties] = useState([]);
+    const [selectedCities, setSelectedCities] = useState([]);
+
 
 
     useEffect(() => {
@@ -45,7 +50,7 @@ function Doctor() {
             );
 
             setlocation(docotorlocation);
-            // console.log("doctor list : ",locationcity.data);
+            console.log("doctor list location : ",locationcity.data);
           } catch (error) {
             console.log("doctor error :", error)
           }
@@ -64,6 +69,7 @@ function Doctor() {
               (specialityisactive) => specialityisactive.IsActive
             );          
             setdoctorspecialist(specilityisactive)
+            console.log("specilityisactive",specilityisactive);
            } catch (error) {
             console.log("Doctor Speciality error  :", error)
            }
@@ -71,33 +77,27 @@ function Doctor() {
           }
           Doctorspecilist();
           
-          const Doctorsymptom = async() =>
-            {
-              try {
-                
-                const Symptom = await axios.get
-                (
-                  `${process.env.REACT_APP_API_URL_GRACELAB}/api//auth/list/DiseasesSymptoms`
-                );
-                const symptomisactive = Symptom.data.filter(
-                  (symptomisactivefetch) => symptomisactivefetch.IsActive
-                );  
-                setsymptomwise(symptomisactive)
-                // console.log("Symptom wise data : ",Symptom.data)
-              } catch (error) {
-                console.log("Symptom wise data error : ", error)
-              }
-            }
-            Doctorsymptom();
+         
 
           const Doctorlistall = async() =>
             {
               try {
                 
-                const Symptom = await axios.get
+                const Symptom = await axios.post
                 (
-                  `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listDoctors`
-                );
+                  `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listDoctorsBySpeciality`,
+                  {
+                      skip: 0,
+                      per_page: 1000,
+                      sorton: "DoctorName",
+                      sortdir: "asc",
+                      match: {
+                          Speciality: selectedSpecialties,
+                          City: selectedCities,
+                      },
+                      isActive: true,
+                  }
+              );
                 
                 setdoctorlist(Symptom.data)
                 // console.log("Symptom wise data : ",Symptom.data)
@@ -107,55 +107,68 @@ function Doctor() {
             }
             Doctorlistall();
 
-    const Doctorlist = async() =>
-      {
-        try {
-          // Define parameters for pagination, sorting, and filtering
-          const pageNo = 1; // Example page number
-          const perPage = 10; // Example number of items per page
-          const column = 'LabName'; // Example column to sort on
-          const sortDirection = 'asc'; // Example sort direction
-         
-          const filter = true; // Example filter for active laboratories
+            const Doctorlist = async () => {
+              try {
+                  const pageNo = 1;
+                  const perPage = 10;
+                  const column = 'DoctorName';
+                  const sortDirection = 'asc';
+                  const filter = true;
+                  const skip = (pageNo - 1) * perPage;
     
-          const skip = (pageNo - 1) * perPage;
+                  const response = await axios.post(
+                      `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listDoctorsBySpeciality`,
+                      {
+                          skip: skip,
+                          per_page: perPage,
+                          sorton: column,
+                          sortdir: sortDirection,
+                          match: {
+                              Speciality: selectedSpecialties,
+                              City: selectedCities,
+                          },
+                          isActive: filter,
+                      }
+                  );
     
-          const response = await axios.post(
-            `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listDoctorsByParams`,
-            {
-              skip: skip,
-              per_page: perPage,
-              sorton: column,
-              sortdir: sortDirection,
-              match: query,
-              isActive: filter,
-            }
-          );
+                  console.log("data doctor: ",response.data[0]);
     
-          // Assuming the response contains an array of laboratories
-          const laboratories = response.data[0];
-          console.log("pharmacy_data : ",laboratories);
-          const labdata = laboratories.data
-    
-          console.log("lab data ",labdata)
-    
-          // Filter active laboratories (if needed)
-          const activeLaboratories = labdata.filter(lab => lab.isActive);
-    
-          setDoctorAllList(activeLaboratories);
-        } catch (error) {
-          console.error('Error fetching laboratories:', error);
-        }
+                  const laboratories = response.data[0];
+                  const labdata = laboratories.data;
+                  const activeLaboratories = labdata.filter(lab => lab.isActive);
+                  setDoctorAllList(activeLaboratories);
+                  console.log("doctor all list :",setDoctorAllList);
+              } catch (error) {
+                  console.error('Error fetching laboratories:', error);
+              }
+          };
+          Doctorlist();
+   
+    }, [query,selectedSpecialties,selectedCities])
 
+  //   useEffect(() => {
+    
+  // }, []);
+    
+    const handleSpecialtyChange = (event) => {
+      const { value, checked } = event.target;
+      if (checked) {
+        setSelectedSpecialties([...selectedSpecialties, value]);
+        console.log("checked box selected :",setSelectedSpecialties);
+      } else {
+        setSelectedSpecialties(selectedSpecialties.filter(specialty => specialty !== value));
       }
-      Doctorlist(); 
+    };
 
- 
-      
-      
-    }, [query])
+    const handleCityChange = (event) => {
+      const { value, checked } = event.target;
+      if (checked) {
+        setSelectedCities([...selectedCities, value]);
+      } else {
+        setSelectedCities(selectedCities.filter(city => city !== value));
+      }
+    };
     
-
 
 
     const toggleShowMore = (event) => {
@@ -252,13 +265,28 @@ navigatelink="/doctor-login"
             <div className="widget-area">
 
              <div className="widget widget_search">
-                <form className="search-form">
-                  <Hospitalsearch />
+             <form className="search-form">
+                <label>
+                    <span className="screen-reader-text"></span>
+                    <input type="search" className="search-field" placeholder="Search..." />
+                  </label>
+                  <button type="submit"><IoSearch /></button>
                 </form>
                 <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
-                            {location?.map((city) => (
-                <Hospitallable label={city.Name} size="6" />
-              ))}
+                {location?.map((city) => (
+      <Col lg={12} md={12} xs={12} key={city._id}>
+        <div className="form-check">
+          <input 
+            type="checkbox" 
+            className="form-check-input" 
+            id={`city-${city._id}`} 
+            value={city._id} 
+            onChange={handleCityChange} 
+          />
+          <label className="form-check-label" htmlFor={`city-${city._id}`}>{city.Name}</label>
+        </div>
+      </Col>
+    ))}
                  {/* Render additional labels only if showMore is true */}
                  
           {showMore && location?.map((city) => (
@@ -304,7 +332,7 @@ navigatelink="/doctor-login"
                   checked={selectedLabs.some(lab => lab._id === labo._id)} // Check if labo is in selectedLabs
                   onChange={(e) => handleCheckboxChange(e, labo)} 
                 />
-                <label className="form-check-label" htmlFor={`lab-checkbox-${labo.id}`}>
+                <label className="form-check-label">
                   {labo.DoctorName}
                 </label>
               </div>
@@ -331,14 +359,34 @@ navigatelink="/doctor-login"
             <div className="widget-area">
               <div className="widget widget_search">
                 <form className="search-form">
-                <Hospitalsearch />
+                <label>
+                    <span className="screen-reader-text"></span>
+                    <input type="search" className="search-field" placeholder="Search..." />
+                  </label>
+                  <button type="submit"><IoSearch /></button>
                 </form>
                 <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
-                {doctorspecialist?.map((special) => (
-              <Hospitallable label={special.Speciality} size="12" />
-            ))}
-                  
-                  {specialityshowMore && doctorspecialist?.map((special) => (
+
+
+                {doctorspecialist?.map((specialty) => (
+                                                                    <Col xs={6} key={specialty._id}>
+                                                                        <div className="form-check">
+                                                                            <input
+                                                                                type="checkbox"
+                                                                                className="form-check-input"
+                                                                                id={specialty._id}
+                                                                                value={specialty._id}
+                                                                                checked={selectedSpecialties.includes(specialty._id)}
+                                                                                onChange={handleSpecialtyChange}
+                                                                            />
+                                                                            <label className="form-check-label" htmlFor={specialty._id}>
+                                                                                {specialty.Speciality}
+                                                                            </label>
+                                                                        </div>
+                                                                    </Col>
+                                                                ))}
+
+                  {/* {specialityshowMore && doctorspecialist?.map((special) => (
                           <Hospitallable label={special.Speciality} />
                         ))}
                 
@@ -346,41 +394,13 @@ navigatelink="/doctor-login"
         <Link onClick={specialitytoggleShowMore} className='view-more'>View Less</Link>
       ) : (
         <Link onClick={specialitytoggleShowMore} className='view-more'>View More</Link>
-      )}
+      )} */}
                 </div>
               </div>
             </div>
             </Collapse>
           </li>
 
-          <li className="accordion-item">
-          <Link className="accordion-title" onClick={toggleAccordion4}>Symptom Wise {open4 ? <FiMinus className='hospital-icon' /> : <FiPlus className='hospital-icon' />}</Link>
-            <Collapse in={open4}>
-            <div className="widget-area">
-              <div className="widget widget_search">
-                <form className="search-form">
-                <Hospitalsearch />
-                </form>
-                <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
-                {symptomwise?.map((allsymptom) => (
-              <Hospitallable label={allsymptom.Symptom} size="12" />
-            ))}
-                  
-                  {symptomshowMore && symptomwise?.map((allsymptom) => (
-                          <Hospitallable label={allsymptom.Symptom} />
-                        ))}
-                
-                {symptomshowMore ? (
-        <Link onClick={symptomtoggleShowMore} className='view-more'>View Less</Link>
-      ) : (
-        <Link onClick={symptomtoggleShowMore} className='view-more'>View More</Link>
-      )}
-                  
-                </div>
-              </div>
-            </div>
-            </Collapse>
-          </li>
         </ul>
       </div>
     </div>

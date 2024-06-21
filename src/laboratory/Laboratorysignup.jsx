@@ -92,7 +92,7 @@ function Laboratorysignup() {
       formData.append("DaysLab3", values.DaysLab3);
       formData.append('address', values.address);
       formData.append('photo', file);
-      formData.append('IsActive', false);
+      formData.append('isActive', false);
 
       const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createLaboratery`, formData, {
         headers: {
@@ -120,6 +120,9 @@ function Laboratorysignup() {
       });
     }
   };
+
+
+  
 
   return (
     <>

@@ -29,6 +29,8 @@ const [pageNo, setPageNo] = useState(0);
 
   
   useEffect(() => {
+
+    
     const fetchAllLocations = async () => {
       try {
         const location = await axios.post(
