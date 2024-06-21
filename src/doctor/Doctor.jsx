@@ -19,6 +19,7 @@ function Doctor() {
     const [open1, setOpen1] = useState(true);
     const [open2, setOpen2] = useState(true);
     const [open3, setOpen3] = useState(true);
+    
     const [searchQuery, setSearchQuery] = useState('');
     const [open4, setOpen4] = useState(true);
     const [showMore, setShowMore] = useState(false); 
@@ -33,6 +34,7 @@ function Doctor() {
     const [query, setQuery] = useState("");
     const [selectedSpecialties, setSelectedSpecialties] = useState([]);
     const [selectedCities, setSelectedCities] = useState([]);
+    const [selectedsymtoms, setSelectedsymtoms] = useState([]);
 
 
 
@@ -94,6 +96,7 @@ function Doctor() {
                       match: {
                           Speciality: selectedSpecialties,
                           City: selectedCities,
+                          DiseasesSymptoms:selectedsymtoms,
                       },
                       isActive: true,
                   }
@@ -126,6 +129,7 @@ function Doctor() {
                           match: {
                               Speciality: selectedSpecialties,
                               City: selectedCities,
+                              DiseasesSymptoms:selectedsymtoms,
                           },
                           isActive: filter,
                       }
@@ -143,8 +147,29 @@ function Doctor() {
               }
           };
           Doctorlist();
+
+           const Doctorsymtoms = async() =>
+          {
+           try {
+            const Doctorsymtoms = await axios.get
+            (
+              `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list/DiseasesSymptoms`
+            );
+
+            const specilityisactive = Doctorsymtoms.data.filter(
+              (specialityisactive) => specialityisactive.IsActive
+            );          
+            setsymptomwise(specilityisactive)
+            console.log("doctor symtoms",specilityisactive);
+           } catch (error) {
+            console.log("doctor symtoms  :", error)
+           }
+            
+          }
+          Doctorsymtoms();
+          
    
-    }, [query,selectedSpecialties,selectedCities])
+    }, [query,selectedSpecialties,selectedCities,selectedsymtoms])
 
   //   useEffect(() => {
     
@@ -166,6 +191,16 @@ function Doctor() {
         setSelectedCities([...selectedCities, value]);
       } else {
         setSelectedCities(selectedCities.filter(city => city !== value));
+      }
+    };
+
+
+    const handlesymtomsChange = (event) => {
+      const { value, checked } = event.target;
+      if (checked) {
+        setSelectedsymtoms([...selectedsymtoms, value]);
+      } else {
+        setSelectedsymtoms(selectedsymtoms.filter(symtoms => symtoms !== value));
       }
     };
     
@@ -381,6 +416,54 @@ navigatelink="/doctor-login"
                                                                             />
                                                                             <label className="form-check-label" htmlFor={specialty._id}>
                                                                                 {specialty.Speciality}
+                                                                            </label>
+                                                                        </div>
+                                                                    </Col>
+                                                                ))}
+
+                  {/* {specialityshowMore && doctorspecialist?.map((special) => (
+                          <Hospitallable label={special.Speciality} />
+                        ))}
+                
+                {specialityshowMore ? (
+        <Link onClick={specialitytoggleShowMore} className='view-more'>View Less</Link>
+      ) : (
+        <Link onClick={specialitytoggleShowMore} className='view-more'>View More</Link>
+      )} */}
+                </div>
+              </div>
+            </div>
+            </Collapse>
+          </li>
+
+           <li className="accordion-item">
+          <Link className="accordion-title" onClick={toggleAccordion4}>Symtoms {open4 ? <FiMinus className='hospital-icon' /> : <FiPlus className='hospital-icon' />}</Link>
+            <Collapse in={open4}>
+            <div className="widget-area">
+              <div className="widget widget_search">
+                <form className="search-form">
+                <label>
+                    <span className="screen-reader-text"></span>
+                    <input type="search" className="search-field" placeholder="Search..." />
+                  </label>
+                  <button type="submit"><IoSearch /></button>
+                </form>
+                <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
+
+
+                {symptomwise?.map((specialty) => (
+                                                                    <Col xs={6} key={specialty._id}>
+                                                                        <div className="form-check">
+                                                                            <input
+                                                                                type="checkbox"
+                                                                                className="form-check-input"
+                                                                                id={specialty._id}
+                                                                                value={specialty._id}
+                                                                                checked={selectedsymtoms.includes(specialty._id)}
+                                                                                onChange={handlesymtomsChange}
+                                                                            />
+                                                                            <label className="form-check-label" htmlFor={specialty._id}>
+                                                                                {specialty.Symptom}
                                                                             </label>
                                                                         </div>
                                                                     </Col>
