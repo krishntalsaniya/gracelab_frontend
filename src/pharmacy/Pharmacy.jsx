@@ -22,6 +22,9 @@ function Pharmacy() {
   const [PharmacyList, setPharmacyList] = useState([])
   const [selectedCities, setSelectedCities] = useState([]);
   const [query, setQuery] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredPharmacies, setFilteredPharmacies] = useState([]);
+
 
   useEffect(() => {
     
@@ -61,6 +64,8 @@ function Pharmacy() {
 
       // Filter active laboratories (if needed)
       const activeLaboratories = labdata.filter(lab => lab.isActive);
+      console.log("location:",activeLaboratories);
+     
 
       setPharmacyList(activeLaboratories);
     } catch (error) {
@@ -97,6 +102,7 @@ function Pharmacy() {
           isActive: filter,
         }
       );
+      console.log("response locatio data",response);
 
       // Assuming the response contains an array of laboratories
       const laboratories = response.data[0];
@@ -199,11 +205,9 @@ function Pharmacy() {
        event.preventDefault();
         setOpen2(!open2);
       };
-
-      const handleInputChange = (e) => {
-        const inputValue = e.target.value;
-        setQuery(inputValue); // Update query state on every input change
-      };
+ const handleInputChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
       const [selectedLabs, setSelectedLabs] = useState([]);
   
       const handleCheckboxChange = (e, labo) => {
@@ -217,6 +221,17 @@ function Pharmacy() {
           setSelectedLabs(selectedLabs.filter(lab => lab._id !== labo._id));
         }
       };
+
+      useEffect(() => {
+    if (searchTerm.trim() === '') {
+      setFilteredPharmacies(PharmacyList); // If search term is empty, show all pharmacies
+    } else {
+      const filtered = PharmacyList.filter(labo =>
+        labo.PharmacyName.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredPharmacies(filtered);
+    }
+  }, [searchTerm, PharmacyList]);
  
   return (
     <>
@@ -297,50 +312,40 @@ navigatelink="/pharmacy-login"
           <li className="accordion-item">
           <Link className="accordion-title" onClick={toggleAccordion2}> Pharmacy Name{open2 ? <FiMinus className='hospital-icon' /> : <FiPlus className='hospital-icon' />}</Link>
             <Collapse in={open2}>
-            <div className="widget-area">
-              <div className="widget widget_search">
-                <form className="search-form">
-                <label>
-                    <span className="screen-reader-text"></span>
-                    <input type="search"
-                     className="search-field"
-                      placeholder="Search..." 
-                      onChange={handleInputChange} 
-                      
-                      />
-                  </label>
-                </form>
-                <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
-                {PharmacyList?.map((labo) => (
-               <Col lg={12} md={12} xs={12} key={labo._id}>
-               <div className="form-check">
-                 <input 
-                   type="checkbox" 
-                   className="form-check-input" 
-                   id={`lab-checkbox-${labo.id}`} 
-                   checked={selectedLabs.some(lab => lab._id === labo._id)} // Check if labo is in selectedLabs
-                   onChange={(e) => handleCheckboxChange(e, labo)} 
-                 />
-                 <label className="form-check-label" htmlFor={`lab-checkbox-${labo.id}`}>
-                   {labo.PharmacyName}
-                 </label>
-               </div>
-             </Col>
-              ))}
-                 {/* Render additional labels only if showMore is true */}
-                 
-          {/* {pharmacyshowMore && pharmacyname.map((label, index) => (
-            <Hospitallable key={index} label={label} size="12" />
-          ))}
-                
-                {pharmacyshowMore ? (
-        <Link onClick={pharmacytoggleShowMore} className='view-more'>View Less</Link>
-      ) : (
-        <Link onClick={pharmacytoggleShowMore} className='view-more'>View More</Link>
-      )} */}
-                 </div>
+             <div className="widget-area">
+      <div className="widget widget_search">
+        <form className="search-form">
+          <label>
+            <span className="screen-reader-text">Search Pharmacies</span>
+            <input
+              type="search"
+              className="search-field"
+              placeholder="Search..."
+              value={searchTerm}
+              onChange={handleInputChange}
+            />
+          </label>
+        </form>
+        <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
+          {filteredPharmacies.map((labo) => (
+            <Col lg={12} md={12} xs={12} key={labo._id}>
+              <div className="form-check">
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  id={`lab-checkbox-${labo.id}`}
+                  checked={selectedLabs.some(lab => lab._id === labo._id)}
+                  onChange={(e) => handleCheckboxChange(e, labo)}
+                />
+                <label className="form-check-label" htmlFor={`lab-checkbox-${labo.id}`}>
+                  {labo.PharmacyName}
+                </label>
               </div>
-            </div>
+            </Col>
+          ))}
+        </div>
+      </div>
+    </div>
             </Collapse>
           </li>
         </ul>
@@ -370,13 +375,17 @@ navigatelink="/pharmacy-login"
           dayslab1={lab.DaysPharmacy1}
           dayslab2={lab.DaysPharmacy2}
           dayslab3={lab.DaysPharmacy3}
+          locationmap={lab.Location}
+          imagelink={lab.website}
         />
       ))}
     </div>
   ) : (
     <div className="all-labs">
-      
+    
+    
       {pharmacylist.map((lab) => (
+
          <Hospitaldesc
          key={lab.id}
          hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${lab.Pharmacyphoto}`}
@@ -391,6 +400,8 @@ navigatelink="/pharmacy-login"
          dayslab1={lab.DaysPharmacy1}
           dayslab2={lab.DaysPharmacy2}
           dayslab3={lab.DaysPharmacy3}
+          locationmap={lab.Location}
+           imagelink={lab.website}
        />
       ))}
     </div>

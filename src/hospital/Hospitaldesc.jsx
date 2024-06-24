@@ -53,7 +53,7 @@ function Hospitaldesc(props) {
   <Row>
     <Col lg={6} md={6} sm={12}>
     <div className="research-image">
-        <Link to={props.passedimage}><Image src={props.hospitalimage} alt="image" /></Link>
+        <Link to={props.imagelink} target='_blank'><Image src={props.hospitalimage} alt="image" /></Link>
       </div>
     </Col>
     <Col lg={6} md={6} sm={12}>
@@ -63,8 +63,9 @@ function Hospitaldesc(props) {
         <h3><Link to="#">{props.mainheading}</Link></h3>
         
         <div className="location-marker-section">
-    <h5 className="mt-3 d-inline-block me-2"><FaMapMarker className='map-color' /> {props.headings}</h5>
+   <Link to={props.locationmap} target='_blank'><h5 className="mt-3 d-inline-block me-2"><FaMapMarker className='map-color' /> {props.headings}</h5></Link>
 </div>
+
 <div className="location-marker-section">
     <h5 className="mt-3 d-inline-block me-2"><IoMdTimer className='map-color' /> {props.starttime1} - {props.endtime1} - {dayName}   <br /> <br />
     <IoMdTimer className='map-color' /> {props.starttime2} -   {props.endtime2} - {dayName2}   <br /> <br />

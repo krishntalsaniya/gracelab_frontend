@@ -35,6 +35,29 @@ import axios from 'axios';
 
 function Home() {
   const [bannerList, setBannerList] = useState([]);
+  const [cmsdesc, setcmsdesc] = useState([])
+
+     useEffect(() => {
+    
+    const CMScontent = async() =>
+      {
+       try {
+        const HomeCMScontent = await axios.get
+        (
+          `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list/blogs`
+        );
+        console.log("show CMS content:", HomeCMScontent.data);
+
+              
+        setcmsdesc(HomeCMScontent.data)
+        console.log("cms data in about us ",HomeCMScontent.data);
+       } catch (error) {
+        console.log("cms data   :", error)
+       }
+        
+      }
+      CMScontent();
+  }, [])
 
   useEffect(() => {
     const Homebannerimage = async() =>
@@ -172,7 +195,9 @@ function Home() {
                 <li><IoCheckmarkDoneSharp style={{ color: '#ffb923' }} /> Enhanced Patient Satisfaction</li>
               </ul>
               <div className="btn-box">
-                <Link to="/about" className="btn btn-primary">Learn More</Link>
+              {cmsdesc.map((link)=>(
+                  <Link to={`/about/${link._id}`} className="btn btn-primary">Learn More</Link>
+              ))}
               </div>
             </div>
           </Col>

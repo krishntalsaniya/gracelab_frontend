@@ -43,6 +43,29 @@ function Laboratorysignup() {
   const navigate = useNavigate();
   const [file, setFile] = useState(null);
   const [daysData, setDaysData] = useState([]);
+    const [cmsdesc, setcmsdesc] = useState([])
+
+     useEffect(() => {
+    
+    const CMScontent = async() =>
+      {
+       try {
+        const HomeCMScontent = await axios.get
+        (
+          `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list/blogs`
+        );
+        console.log("show CMS content:", HomeCMScontent.data);
+
+              
+        setcmsdesc(HomeCMScontent.data)
+        console.log("cms data in about us ",HomeCMScontent.data);
+       } catch (error) {
+        console.log("cms data   :", error)
+       }
+        
+      }
+      CMScontent();
+  }, [])
 
   const listDay = async () => {
     try {
@@ -463,12 +486,14 @@ function Laboratorysignup() {
                           </Col>
                          
                           <Col lg={12} className="form-group d-md-flex mb-4">
-                            <div className="w-100 text-start">
+                            {cmsdesc.map((link)=>(
+                              <div className="w-100 text-start">
                               <label className="checkbox-wrap checkbox-primary mb-0">
                                 <input type="checkbox" />
-                                <span className="checkmark"></span> I agree to all statements in <a href="#" className="d-inline-block">Terms of service</a>
+                                <span className="checkmark"></span> I agree to all statements in <Link to={`/termcms/${link._id}`} className="d-inline-block">{link.blogTitle}</Link>
                               </label>
-                            </div>
+                            </div>  
+                            ))}
                           </Col>
                           <Col lg={6} className="form-group">
                             <Button type="submit" className="form-control btn btn-sign-in rounded submit px-3">Submit Now</Button>

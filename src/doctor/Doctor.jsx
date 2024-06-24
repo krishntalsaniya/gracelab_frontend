@@ -13,6 +13,7 @@ import Doctorsec from './Doctorsec';
 import { MdArrowForwardIos } from "react-icons/md";
 import axios from 'axios';
 import { IoSearch } from "react-icons/io5";
+import Hospitaldesc from '../hospital/Hospitaldesc';
 
 function Doctor() {
 
@@ -101,8 +102,10 @@ function Doctor() {
                       isActive: true,
                   }
               );
+              console.log("symtoms data ",Symptom.data.Location);
                 
                 setdoctorlist(Symptom.data)
+                 console.log("location",Symptom);
                 // console.log("Symptom wise data : ",Symptom.data)
               } catch (error) {
                 console.log("Symptom wise data error : ", error)
@@ -498,12 +501,11 @@ navigatelink="/doctor-login"
     <div className="selected-labs">
       
       {selectedLabs.map((doc) => (
-       <Doctorsec
-       key={doc.id}
-       drimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${doc.Doctorphoto}`}
-       drname={doc.DoctorName}
-       drlocation={doc.area}
-       location={doc.address}
+       <Hospitaldesc
+     
+       hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${doc.Doctorphoto}`}
+       mainheading={doc.DoctorName}
+       headings={doc.address}
        starttime1={doc.OPD1StartTime}
        endtime1={doc.OPD1EndTime}
        starttime2={doc.OPD2StartTime}
@@ -513,6 +515,8 @@ navigatelink="/doctor-login"
        dayslab1={doc.DaysDoctor1}
        dayslab2={doc.DaysDoctor2}
        dayslab3={doc.DaysDoctor3}
+       locationmap={doc.Location}
+       imagelink={doc.website}
       
      />
       ))}
@@ -521,27 +525,29 @@ navigatelink="/doctor-login"
     <div className="all-labs">
       
       {doctorlist.map((doc) => (
-        <Doctorsec
-        key={doc.id}
-        drimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${doc.Doctorphoto}`}
-        drname={doc.DoctorName}
-        drlocation={doc.area}
-        location={doc.address}
-        starttime1={doc.OPD1StartTime}
-        endtime1={doc.OPD1EndTime}
-        starttime2={doc.OPD2StartTime}
-        endtime2={doc.OPD2EndTime}
-        starttime3={doc.OPD3StartTime}
-        endtime3={doc.OPD3EndTime}
-        dayslab1={doc.DaysDoctor1}
+        <Hospitaldesc
+       
+         hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${doc.Doctorphoto}`}
+       mainheading={doc.DoctorName}
+       headings={doc.address}
+       starttime1={doc.OPD1StartTime}
+       endtime1={doc.OPD1EndTime}
+       starttime2={doc.OPD2StartTime}
+       endtime2={doc.OPD2EndTime}
+       starttime3={doc.OPD3StartTime}
+       endtime3={doc.OPD3EndTime}
+       dayslab1={doc.DaysDoctor1}
        dayslab2={doc.DaysDoctor2}
        dayslab3={doc.DaysDoctor3}
-       
+       locationmap={doc.Location}    
+       imagelink={doc.website}   
       />
       ))}
     </div>
   )}
+  
 </div>
+
 
       </Row>
     </Container>

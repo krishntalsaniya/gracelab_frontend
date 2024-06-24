@@ -7,7 +7,7 @@ import { FiPlus ,FiMinus} from "react-icons/fi";
 import { Link } from 'react-router-dom';
 import Modalnavigationbar from '../navbar/Modalnavigationbar';
 import { Hospitalad,Hospitallable,Hospitalname } from '../hospital/Hospitallable';
-import Hospitalsearch from '../hospital/Hospitalsearch';
+import Hospitalsearch from '../hospital/Hospitalsearch';  
 import Hospitaldesc from '../hospital/Hospitaldesc';
 import { MdArrowForwardIos } from "react-icons/md";
 import axios from 'axios';
@@ -27,10 +27,16 @@ function Laboratorypage() {
   const [perPage, setPerPage] = useState(10);
 const [pageNo, setPageNo] = useState(0);
 const [selectedCities, setSelectedCities] = useState([]);
+const [selectetest, setSelectedtest] = useState([]);
+
+
 
   
    useEffect(() => {
-    const fetchAllLaboratories = async () => {
+  
+
+
+    const fetchAllLaboratoriesbyparams = async () => {
       try {
         const pageNo = 1;
         const perPage = 10;
@@ -49,6 +55,7 @@ const [selectedCities, setSelectedCities] = useState([]);
             sortdir: sortDirection,
             match: {
               City: selectedCities,
+              LabTests:selectetest,
             },
             isActive: filter,
           }
@@ -69,6 +76,7 @@ const [selectedCities, setSelectedCities] = useState([]);
         const test = await axios.get(
           `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/get/getAllLabTests`
         );
+     
         const laboratorytest = test.data.filter(
           (laboratorytestactive) => laboratorytestactive.IsActive
         );
@@ -97,6 +105,7 @@ const [selectedCities, setSelectedCities] = useState([]);
             sortdir: sortDirection,
             match: {
               City: selectedCities,
+              LabTests:selectetest,
             },
             isActive: filter,
           }
@@ -131,11 +140,12 @@ const [selectedCities, setSelectedCities] = useState([]);
       }
     };
 
-    fetchAllLaboratories();
+
     fetchLaboratorytest();
     lablist();
     lablocation();
-  }, [selectedCities]);
+    fetchAllLaboratoriesbyparams();
+  }, [query,selectedCities,selectetest]);
 
   const handleCityChange = (event) => {
     const { value, checked } = event.target;
@@ -143,6 +153,16 @@ const [selectedCities, setSelectedCities] = useState([]);
       setSelectedCities([...selectedCities, value]);
     } else {
       setSelectedCities(selectedCities.filter(city => city !== value));
+    }
+  };
+
+
+  const handleTestChange = (event) => {
+    const { value, checked } = event.target;
+    if (checked) {
+      setSelectedtest([...selectetest, value]);
+    } else {
+      setSelectedtest(selectetest.filter(test => test !== value));
     }
   };
   
@@ -273,7 +293,7 @@ navigatelink="/laboratory-login"
                   </label>
                 </form>
                 <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
-                {loc && loc?.map((city) => (
+                {loc?.map((city) => (
                   <Col lg={12} md={12} xs={12} key={city._id}>
                 <div className="form-check">
                   <input 
@@ -350,11 +370,36 @@ navigatelink="/laboratory-login"
             <div className="widget-area">
               <div className="widget widget_search">
                 <form className="search-form">
-                <Hospitalsearch />
+                <form className="search-form">
+                <label>
+                    <span className="screen-reader-text"></span>
+                    <input type="search"
+                     className="search-field"
+                      placeholder="Search..." 
+                      onChange={handleTestChange} 
+                      
+                      />
+                  </label>
+                  <button type="submit"><IoSearch /></button>
+                </form>
                 </form>
                 <div className="row mt-3" style={{ maxHeight: '200px', overflowY: 'auto' }}>
                 {labtest?.map((laboratorytest) => (
-                <Hospitallable label={laboratorytest.TestName} size="12" />
+                   <Col xs={6} key={laboratorytest._id}>
+                                                                        <div className="form-check">
+                                                                            <input
+                                                                                type="checkbox"
+                                                                                className="form-check-input"
+                                                                                id={laboratorytest._id}
+                                                                                value={laboratorytest._id}
+                                                                                checked={selectetest.includes(laboratorytest._id)}
+                                                                                onChange={handleTestChange}
+                                                                            />
+                                                                            <label className="form-check-label" htmlFor={laboratorytest._id}>
+                                                                                {laboratorytest.TestName}
+                                                                            </label>
+                                                                        </div>
+                                                                    </Col>
               ))}
                   
           {populartestshowMore && labtest?.map((laboratorytest) => (
@@ -381,6 +426,7 @@ navigatelink="/laboratory-login"
   <div className="col-lg-8 col-md-12">
   {selectedLabs.length > 0 ? (
     <div className="selected-labs">
+      
      
       {selectedLabs.map((lab) => (
         <Hospitaldesc

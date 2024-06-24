@@ -62,7 +62,7 @@ function Doctorsec(props) {
           <h3><Link to="/">{props.drname}</Link></h3>
           <p>{props.drlocation}</p>
           <div className="location-marker-section">
-            <h5 className="mt-1 d-inline-block me-2"><FaMapMarker className='map-color' />{props.location}</h5>
+            <Link to={props.locationall} target='_blank'><h5 className="mt-1 d-inline-block me-2"><FaMapMarker className='map-color' />{props.location}</h5></Link>
           </div>
 
           <div className="location-marker-section">

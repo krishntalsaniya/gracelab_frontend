@@ -447,6 +447,7 @@ function Hospital() {
        dayslab1={hospital.DaysHospital1}
        dayslab2={hospital.DaysHospital2}
        dayslab3={hospital.DaysHospital3}
+       locationall={hospital.Location}
      />
       ))}
     </div>
@@ -468,6 +469,7 @@ function Hospital() {
         dayslab1={hospital.DaysHospital1}
         dayslab2={hospital.DaysHospital2}
         dayslab3={hospital.DaysHospital3}
+        locationall={hospital.Location}
       />
       ))}
     </div>
