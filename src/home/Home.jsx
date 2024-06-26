@@ -86,6 +86,10 @@ function Home() {
     function handleLinkClick(item) {
   localStorage.setItem('selectedtellusmore', item);
 }
+
+  function handleLinkClickmore(item) {
+  localStorage.setItem('selectedNavItem', item);
+}
   
 
   return (
@@ -114,31 +118,66 @@ function Home() {
   <Link onClick={() => handleLinkClick('Join Our Network')} to='/tellusmore' className="btn btn-secondary">Tell Us More</Link>
 </Card>
         <Row className="justify-content-center" id="homeindustry">
-          <Network
-            networkimage={icon1}
-            networktitle="Laboratory"
-            networklink="/laboratory-login"
-          />
-          <Network
-            networkimage={icon2}
-            networktitle="Pharmacy"
-            networklink="/Pharmacy-login"
-          />
-          <Network
-            networkimage={icon3}
-            networktitle="Doctors"
-            networklink="/doctor-login"
-          />
-          <Network
-            networkimage={icon4}
-            networktitle="Hospitals"
-            networklink="/hospital-login"
-          />
-          <Network
-            networkimage={icon5}
-            networktitle="Patients"
-            networklink="/patient-login"
-          />
+          <Col lg={3} md={6} sm={6}>
+      <Link onClick={() => handleLinkClickmore('Laboratory')} to='/laboratory-login'>
+        <Card className="single-services-box text-center">
+          <Card.Body>
+            <div className="icon">
+            <Image src={icon1} alt="Service Icon" />
+            </div>
+            <Card.Title className='networktitle'>Laboratory</Card.Title>
+          </Card.Body>
+        </Card>
+      </Link>
+    </Col>
+            <Col lg={3} md={6} sm={6}>
+      <Link onClick={() => handleLinkClickmore('Pharmacy')} to='/pharmacy-login'>
+        <Card className="single-services-box text-center">
+          <Card.Body>
+            <div className="icon">
+            <Image src={icon2} alt="Service Icon" />
+            </div>
+            <Card.Title className='networktitle'>Pharmacy</Card.Title>
+          </Card.Body>
+        </Card>
+      </Link>
+    </Col>
+           <Col lg={3} md={6} sm={6}>
+      <Link onClick={() => handleLinkClickmore('Doctors')} to='/doctor-login'>
+        <Card className="single-services-box text-center">
+          <Card.Body>
+            <div className="icon">
+            <Image src={icon3} alt="Service Icon" />
+            </div>
+            <Card.Title className='networktitle'>Doctor</Card.Title>
+          </Card.Body>
+        </Card>
+      </Link>
+    </Col>
+            <Col lg={3} md={6} sm={6}>
+      <Link onClick={() => handleLinkClickmore('Hospital')} to='/hospital-login'>
+        <Card className="single-services-box text-center">
+          <Card.Body>
+            <div className="icon">
+            <Image src={icon4} alt="Service Icon" />
+            </div>
+            <Card.Title className='networktitle'>Hospital</Card.Title>
+          </Card.Body>
+        </Card>
+      </Link>
+    </Col>
+          <Col lg={3} md={6} sm={6}>
+      <Link onClick={() => handleLinkClickmore('Patients')} to='/patient-login'>
+        <Card className="single-services-box text-center">
+          <Card.Body>
+            <div className="icon">
+            <Image src={icon5} alt="Service Icon" />
+            </div>
+            <Card.Title className='networktitle'>Patient</Card.Title>
+          </Card.Body>
+        </Card>
+      </Link>
+    </Col>
         </Row>
       </Container>
     </section>

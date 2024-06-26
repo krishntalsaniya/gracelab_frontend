@@ -7,11 +7,11 @@ function Modalpopup(props) {
   return (
    <>
    <Col lg={props.size} md={4} sm={6}>
-      <Link to="/">
+      <Link to={props.modalpopuplink}>
         <Card className="single-services-box-modalpopup text-center">
           <Card.Body>
             <div className="icon">
-              <Link to={props.modalpopuplink}><Image src={props.networkimage} alt="Service Icon" /></Link>
+              <Image src={props.networkimage} alt="Service Icon" />
             </div>
             <Card.Title className='networktitle'>{props.networktitle}</Card.Title>
           </Card.Body>

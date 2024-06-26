@@ -5,18 +5,28 @@ import { Link } from 'react-router-dom';
 import { Card, Col, Image, Row, Button, Modal, Form } from 'react-bootstrap';
 import axios from 'axios';
 import Swal from 'sweetalert2'; // Import SweetAlert
+import ReactStars from 'react-rating-stars-component'
+import { Formik, Form as FormikForm, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
 function Labsec(props) {
   const [dayName, setDayName] = useState('');
   const [dayName2, setDayName2] = useState('');
   const [dayName3, setDayName3] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [ratingshowModal, setratingShowModal] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     contactNumber: '',
     file: null,
   });
+   const [rating, setRating] = useState(0);
+
+  // Function to handle rating change
+  const handleRatingChange = (newRating) => {
+    setRating(newRating);
+  };
 
   useEffect(() => {
     const fetchDayName = async () => {
@@ -61,6 +71,11 @@ function Labsec(props) {
     setFormData({ ...formData, file: e.target.files[0] });
   };
 
+  const validationSchemarating = Yup.object().shape({
+  name: Yup.string().required('Name is required'),
+  
+});
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -104,6 +119,45 @@ function Labsec(props) {
     }
   };
 
+    const handleratingsubmit = async (values, { resetForm }) => {
+    try {
+        const formDataToSend = new FormData();
+        formDataToSend.append('name', values.name);
+        formDataToSend.append('rating', rating); // Assuming values.rating is provided from the form
+        formDataToSend.append('Laboratory', props.Labid); // Assuming values.Doctor is provided from the form
+
+        // Adjust the API endpoint to match your backend route for submitting contact form
+        const response = await axios.post(
+            `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/create/ContactRating`,
+            {
+              "name":values.name,
+              "rating":rating,
+              "Laboratory":props.Labid
+            },            
+        );
+
+        console.log('Form submitted successfully:', response.data);
+
+        // Show SweetAlert popup upon successful submission
+        Swal.fire({
+            icon: 'success',
+            title: 'Form Submitted!',
+            text: 'Your rating has been submitted successfully.',
+            confirmButtonText: 'Ok',
+        }).then(() => {
+            resetForm();
+        });
+    } catch (error) {
+        console.error('Error submitting form:', error);
+        // Handle error state or display error message to user
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong! Please try again.',
+            confirmButtonText: 'Ok',
+        });
+    }
+};
   return (
     <>
       <Card className="single-research-box">
@@ -143,6 +197,15 @@ function Labsec(props) {
                 onClick={() => setShowModal(true)}
               >
                 Contact
+              </Button>
+
+               <Button
+              
+                className="mt-3 float-end"
+                style={{ borderRadius: '10px' }}
+                onClick={() => setratingShowModal(true)}
+              >
+                rating
               </Button>
             </Card.Body>
           </Col>
@@ -198,6 +261,57 @@ function Labsec(props) {
               Submit
             </Button>
           </Form>
+        </Modal.Body>
+      </Modal>
+
+      
+      <Modal show={ratingshowModal} onHide={() => setratingShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Rating {props.mainheading}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Formik
+            initialValues={{
+              name: '',
+            }}
+            validationSchema={validationSchemarating}
+            onSubmit={handleratingsubmit}
+          >
+           
+              <FormikForm>
+                <Form.Group className="mb-3" controlId="formName">
+                  <Form.Label>Describe</Form.Label>
+                  <Field
+                    name="name"
+                    type="text"
+                    placeholder="Enter your name"
+                    className="form-control"
+                  />
+                  <ErrorMessage name="name" component="div" className="text-danger" />
+                </Form.Group>
+
+
+                <Form.Group className="mb-3" controlId="formName">
+                  <Form.Label>Rating </Form.Label>
+                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <ReactStars
+      name="star"
+        count={5}  // Number of stars to display
+        size={48}  // Size of the stars in pixels
+        activeColor="#ffd700"  // Color of active stars
+        onChange={handleRatingChange}  // Callback when rating changes
+         value={rating}  // Controlled value of the rating
+      />
+    </div>
+                  <ErrorMessage name="name" component="div" className="text-danger" />
+                </Form.Group>
+              
+                <Button variant="primary" type="submit">
+                  Submit
+                </Button>
+              </FormikForm>
+           
+          </Formik>
         </Modal.Body>
       </Modal>
     </>
