@@ -6557,7 +6557,7 @@ blockquote::before,
   right: 0;
   top: 0;
   border-radius: 0 0 0 10px;
-  width: max-content;
+  /* width: max-content; */
 }
 
 .research-content p {
@@ -6947,4 +6947,26 @@ blockquote::before,
   height: 500px !important;
   display: inline-block !important;
   pointer-events: none !important;
+}
+
+.banner-image {
+  height: 280px !important;
+  width: 90% !important;
+}
+
+.widget-area .widget_hospitalsearch {
+  box-shadow: 0px 0px 29px 0px rgba(102, 102, 102, 0.1);
+  background-color: #ffffff;
+  padding: 15px;
+}
+
+.widget-area .widget_hospitalsearch form .search-field {
+  background-color: transparent;
+  height: 50px;
+  padding: 6px 15px;
+  border: 1px solid #eeeeee;
+  width: 100% !important;
+  display: block;
+  outline: 0;
+  transition: 0.5s;
 }

@@ -3,20 +3,30 @@ import { FaMapMarker } from 'react-icons/fa';
 import { IoMdTimer } from 'react-icons/io';
 import { Link } from 'react-router-dom';
 import { Card, Col, Image, Row, Button, Modal, Form } from 'react-bootstrap';
+import { Formik, Form as FormikForm, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 import axios from 'axios';
 import Swal from 'sweetalert2'; // Import SweetAlert
+
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required('Name is required'),
+   email: Yup.string()
+    .matches(
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+      'Invalid email address'
+    )
+    .required('Email is required'),
+  contactNumber:  Yup.string()
+    .matches(/^\d+$/, 'Contact No. must contain only digits')
+    .length(10, 'Contact No. must be exactly 10 digits')
+    .required('Contact No. is required'),
+});
 
 function Doctordes(props) {
   const [dayName, setDayName] = useState('');
   const [dayName2, setDayName2] = useState('');
   const [dayName3, setDayName3] = useState('');
   const [showModal, setShowModal] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    contactNumber: '',
-    file: null,
-  });
 
   useEffect(() => {
     const fetchDayName = async () => {
@@ -53,22 +63,14 @@ function Doctordes(props) {
     fetchDayName3();
   }, [props.dayslab1, props.dayslab2, props.dayslab3]);
 
-  const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleFileChange = (e) => {
-    setFormData({ ...formData, file: e.target.files[0] });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (values, { resetForm }) => {
     try {
       const formDataToSend = new FormData();
-      formDataToSend.append('name', formData.name);
-      formDataToSend.append('email', formData.email);
-      formDataToSend.append('contactNumber', formData.contactNumber);
-      formDataToSend.append('myFile', formData.file); // Ensure 'myFile' matches your backend field name
+      formDataToSend.append('name', values.name);
+      formDataToSend.append('email', values.email);
+      formDataToSend.append('contactNumber', values.contactNumber);
+      formDataToSend.append('Description', values.description);
+      formDataToSend.append('myFile', values.file); // Ensure 'myFile' matches your backend field name
 
       // Adjust the API endpoint to match your backend route for submitting contact form
       const response = await axios.post(
@@ -85,12 +87,7 @@ function Doctordes(props) {
         confirmButtonText: 'Ok',
       }).then(() => {
         setShowModal(false);
-        setFormData({
-          name: '',
-          email: '',
-          contactNumber: '',
-          file: null,
-        });
+        resetForm();
       });
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -155,49 +152,75 @@ function Doctordes(props) {
           <Modal.Title>Contact {props.mainheading}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3" controlId="formName">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter your name"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                required
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formEmail">
-              <Form.Label>Email address</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Enter your email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                required
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formContactNumber">
-              <Form.Label>Contact Number</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter your contact number"
-                name="contactNumber"
-                value={formData.contactNumber}
-                onChange={handleInputChange}
-                required
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formFile">
-              <Form.Label>Upload File</Form.Label>
-              <Form.Control type="file" name="myFile" onChange={handleFileChange} />
-            </Form.Group>
-
-            <Button variant="primary" type="submit">
-              Submit
-            </Button>
-          </Form>
+          <Formik
+            initialValues={{
+              name: '',
+              email: '',
+              contactNumber: '',
+              description: '',
+              file: null,
+            }}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}
+          >
+            {({ setFieldValue }) => (
+              <FormikForm>
+                <Form.Group className="mb-3" controlId="formName">
+                  <Form.Label>Name</Form.Label>
+                  <Field
+                    name="name"
+                    type="text"
+                    placeholder="Enter your name"
+                    className="form-control"
+                  />
+                  <ErrorMessage name="name" component="div" className="text-danger" />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formEmail">
+                  <Form.Label>Email address</Form.Label>
+                  <Field
+                    name="email"
+                    type="email"
+                    placeholder="Enter your email"
+                    className="form-control"
+                  />
+                  <ErrorMessage name="email" component="div" className="text-danger" />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formContactNumber">
+                  <Form.Label>Contact Number</Form.Label>
+                  <Field
+                    name="contactNumber"
+                    type="text"
+                    placeholder="Enter your contact number"
+                    className="form-control"
+                  />
+                  <ErrorMessage name="contactNumber" component="div" className="text-danger" />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formFile">
+                  <Form.Label>Upload File</Form.Label>
+                  <input
+                    name="file"
+                    type="file"
+                    className="form-control"
+                    onChange={(event) => {
+                      setFieldValue("file", event.currentTarget.files[0]);
+                    }}
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formDescription">
+                  <Form.Label>Description</Form.Label>
+                  <Field
+                    name="description"
+                    type="text"
+                    placeholder="Enter your Description"
+                    className="form-control"
+                  />
+                </Form.Group>
+                <Button variant="primary" type="submit">
+                  Submit
+                </Button>
+              </FormikForm>
+            )}
+          </Formik>
         </Modal.Body>
       </Modal>
     </>

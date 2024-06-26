@@ -1,12 +1,9 @@
 import React,{useEffect,useState} from 'react'
-
-
-
 import { Link } from "react-router-dom";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; 
 import { IoCheckmarkDoneSharp,IoLocationSharp  ,IoCall  } from "react-icons/io5";
 import { IoIosMail } from "react-icons/io";
-import { Container, Row,Col ,Image} from 'react-bootstrap';
+import { Container, Row,Col ,Image,Card} from 'react-bootstrap';
 import Carousel  from 'react-bootstrap/Carousel';
 import '../css/responsive.css';
 import '../css/style.css';
@@ -85,6 +82,10 @@ function Home() {
   
    
   }, [])
+
+    function handleLinkClick(item) {
+  localStorage.setItem('selectedtellusmore', item);
+}
   
 
   return (
@@ -105,12 +106,13 @@ function Home() {
 
 <section className="services-area ptb-70 pb-5 bg-fff7f4">
       <Container>
-        <Program
-          title="Network"
-          heading="Join Our Network"
-          headinglinktitle="Tell Us More"
-          headinglink="/"
-        />
+      <Card className="section-title">
+    
+    <span>Network</span>
+    <h2>Join Our Network</h2>
+ 
+  <Link onClick={() => handleLinkClick('Join Our Network')} to='/tellusmore' className="btn btn-secondary">Tell Us More</Link>
+</Card>
         <Row className="justify-content-center" id="homeindustry">
           <Network
             networkimage={icon1}
@@ -145,12 +147,13 @@ function Home() {
 
 <section className="boxes-area ptb-70 pb-3">
       <Container>
-        <Program
-          title="LOYALTY PROGRAM"
-          heading="Join Our Loyalty Program"
-          headinglinktitle="Tell Us More"
-          headinglink="/"
-        />
+         <Card className="section-title">
+    
+    <span>LOYALTY PROGRAM</span>
+    <h2>Join Our Loyalty Program</h2>
+ 
+  <Link onClick={() => handleLinkClick('Join Our Loyalty Program')} to='/tellusmore' className="btn btn-secondary">Tell Us More</Link>
+</Card>
         <Row className="justify-content-center">
           <Banner
             baneerimg={program1}

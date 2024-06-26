@@ -364,7 +364,7 @@ const handleSpecialtyChange = (event) => {
               <Row>
               <Col lg={12} md={12} xs={12} className="mb-0">
   <div className="ad-image position-relative">
-    <Image 
+    <Image className='banner-image' 
       src={hospitalad ? `${process.env.REACT_APP_API_URL_GRACELAB}/${hospitalad}` : 'defaultAdImageURL'} 
       fluid 
     /> {/* Replace 'defaultAdImageURL' with your default ad image URL */}

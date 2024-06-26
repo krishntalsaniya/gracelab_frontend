@@ -191,6 +191,16 @@ function Patientsignup() {
 </Form.Group>
 
 
+ <Col lg={12} className="form-group d-md-flex mb-4">
+                            
+                              <div className="w-100 text-start">
+                              <label className="checkbox-wrap checkbox-primary mb-0">
+                                <input type="checkbox" />
+                                <span className="checkmark"></span> I agree to all statements in <Link to='/terms-condition' className="d-inline-block">Terms condition</Link>
+                              </label>
+                            </div>  
+                         
+                          </Col>
 
 
 <Button type="button" onClick={handleSubmit} className="form-control btn btn-sign-in rounded submit px-3">Submit Now</Button>

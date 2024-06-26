@@ -30,7 +30,8 @@ import Sterling from './hospitalpages/Sterling';
 import Pharmacypage from './pharmacypages/Pharmacypage';
 import Doctorpage from './doctorpages/Doctorpage';
 import Labpage from './laboraotrypage/Labpage';
-import Termscms from './privacy/Termscms';
+import Tellusmore from './home/Tellusmore';
+
 
 
 
@@ -70,8 +71,8 @@ function App() {
   <Route path='/pharmacy-page' element={<Pharmacypage />} />
   <Route path='/doctor-page' element={<Doctorpage />} />
   <Route path='/lab-page' element={<Labpage />} />
+  <Route path='/tellusmore' element={<Tellusmore />} />
   <Route path='/about/:_ID' element={<About />} />
-  <Route path='/termcms:_ID' element={<Termscms />} />
 
  
 </Routes> 

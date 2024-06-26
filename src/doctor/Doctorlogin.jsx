@@ -48,7 +48,7 @@ function Doctorlogin() {
   // };
 
   const handleRedirect = () => {
-    window.open('http://LabGracelab.barodaweb.in','_blank');
+    window.open('http://DoctorGracelab.barodaweb.in','_blank');
   };
 
   return (
