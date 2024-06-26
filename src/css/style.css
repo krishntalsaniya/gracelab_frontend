@@ -3744,8 +3744,8 @@ blockquote::before,
   transition: 0.5s;
   border-radius: 5px 10px 10px 5px;
   width: 100% !important;
-  min-height: 179px !important;
-  max-height: 200px !important;
+  min-height: 267px !important;
+  max-height: 294px !important;
   /* max-height: 179px !important; */
 }
 

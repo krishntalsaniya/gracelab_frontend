@@ -29,7 +29,7 @@ function About() {
 
   return (
     <>
-      <Modalnavigationbar navigatelink="/sign-up" />
+      <Modalnavigationbar />
       <div className="page-title-area">
         <Pagetitle
           heading="About Us"

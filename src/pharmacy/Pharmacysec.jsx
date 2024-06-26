@@ -6,7 +6,7 @@ import { Card, Col, Image, Row, Button, Modal, Form } from 'react-bootstrap';
 import axios from 'axios';
 import Swal from 'sweetalert2'; // Import SweetAlert
 
-function Hospitaldesc(props) {
+function Pharmacysec(props) {
   const [dayName, setDayName] = useState('');
   const [dayName2, setDayName2] = useState('');
   const [dayName3, setDayName3] = useState('');
@@ -15,6 +15,7 @@ function Hospitaldesc(props) {
     name: '',
     email: '',
     contactNumber: '',
+    Description:'',
     file: null,
   });
 
@@ -68,11 +69,12 @@ function Hospitaldesc(props) {
       formDataToSend.append('name', formData.name);
       formDataToSend.append('email', formData.email);
       formDataToSend.append('contactNumber', formData.contactNumber);
+      formDataToSend.append('Description', formData.Description);
       formDataToSend.append('myFile', formData.file); // Ensure 'myFile' matches your backend field name
 
       // Adjust the API endpoint to match your backend route for submitting contact form
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/create/Contacthospital/${props.Labid}`,
+        `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/create/Contactpharmacy/${props.Labid}`,
         formDataToSend
       );
       console.log('Form submitted successfully:', response.data);
@@ -89,6 +91,7 @@ function Hospitaldesc(props) {
           name: '',
           email: '',
           contactNumber: '',
+           Description:'',
           file: null,
         });
       });
@@ -194,6 +197,18 @@ function Hospitaldesc(props) {
               <Form.Control type="file" name="myFile" onChange={handleFileChange} />
             </Form.Group>
 
+              <Form.Group className="mb-3" controlId="formContactNumber">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter your Description"
+                name="Description"
+                value={formData.Description}
+                onChange={handleInputChange}
+                required
+              />
+            </Form.Group>
+
             <Button variant="primary" type="submit">
               Submit
             </Button>
@@ -204,4 +219,4 @@ function Hospitaldesc(props) {
   );
 }
 
-export default Hospitaldesc;
+export default Pharmacysec;

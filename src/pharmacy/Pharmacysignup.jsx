@@ -55,6 +55,18 @@ function Pharmacysignup() {
     }
   };
 
+
+  const pharmacytermsandcondition = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/get/termsandconditionbynetwork/:network`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching days data:', error);
+      return [];
+    }
+  };
+  pharmacytermsandcondition();
+
   useEffect(() => {
     const fetchDays = async () => {
       try {
@@ -122,6 +134,8 @@ function Pharmacysignup() {
       });
     }
   };
+
+
 
   return (
     <>
@@ -476,7 +490,7 @@ function Pharmacysignup() {
                             <div className="w-100 text-start">
                               <label className="checkbox-wrap checkbox-primary mb-0">
                                 <input type="checkbox" />
-                                <span className="checkmark"></span> I agree to all statements in <a href="#" className="d-inline-block">Terms of service</a>
+                                <span className="checkmark"></span> I agree to all statements in <Link to="/terms-condition" className="d-inline-block">Terms of service</Link>
                               </label>
                             </div>
                           </Col>

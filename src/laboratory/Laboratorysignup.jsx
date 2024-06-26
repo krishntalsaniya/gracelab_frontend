@@ -490,7 +490,7 @@ function Laboratorysignup() {
                               <div className="w-100 text-start">
                               <label className="checkbox-wrap checkbox-primary mb-0">
                                 <input type="checkbox" />
-                                <span className="checkmark"></span> I agree to all statements in <Link to={`/termcms/${link._id}`} className="d-inline-block">{link.blogTitle}</Link>
+                                <span className="checkmark"></span> I agree to all statements in <Link to='/terms-condition' className="d-inline-block">Terms condition</Link>
                               </label>
                             </div>  
                             ))}

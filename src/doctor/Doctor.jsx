@@ -14,6 +14,7 @@ import { MdArrowForwardIos } from "react-icons/md";
 import axios from 'axios';
 import { IoSearch } from "react-icons/io5";
 import Hospitaldesc from '../hospital/Hospitaldesc';
+import Doctordes from './Doctordes';
 
 function Doctor() {
 
@@ -36,6 +37,9 @@ function Doctor() {
     const [selectedSpecialties, setSelectedSpecialties] = useState([]);
     const [selectedCities, setSelectedCities] = useState([]);
     const [selectedsymtoms, setSelectedsymtoms] = useState([]);
+       const [adsData, setAdsData] = useState([]);
+  const [hospitalad, setHospitalad] = useState(null);
+  const [filteredDoctors, setFilteredDoctors] = useState([]);
 
 
 
@@ -130,9 +134,9 @@ function Doctor() {
                           sorton: column,
                           sortdir: sortDirection,
                           match: {
-                              Speciality: selectedSpecialties,
-                              City: selectedCities,
-                              DiseasesSymptoms:selectedsymtoms,
+                              Speciality: selectedSpecialties.length > 0 ?  selectedSpecialties : undefined,
+                              City: selectedCities.length > 0 ?  selectedCities : undefined,
+                              DiseasesSymptoms:selectedsymtoms.length > 0 ?  selectedsymtoms : undefined,
                           },
                           isActive: filter,
                       }
@@ -170,6 +174,58 @@ function Doctor() {
             
           }
           Doctorsymtoms();
+
+           const fetchAdsData = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list/customize-advertisement`);
+        setAdsData(response.data);
+        console.log("image doctor",response.data);
+      } catch (error) {
+        console.error('Error fetching ads:', error);
+      }
+    };
+    fetchAdsData();
+
+       const Doctoradimage = async() =>
+            {
+              try {
+                // Define parameters for pagination, sorting, and filtering
+                const pageNo = 1; // Example page number
+                const perPage = 10; // Example number of items per page
+                const column = 'LabName'; // Example column to sort on
+                const sortDirection = 'asc'; // Example sort direction
+               
+                const filter = true; // Example filter for active laboratories
+        
+                const skip = (pageNo - 1) * perPage;
+        
+                const response = await axios.post(
+                  `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list-by-params/listCustomizeAdvertisementByDoctorSpeciality`,
+                                      {
+                      "skip": 0,
+                      "per_page": 100,
+                      "sorton": "createdAt",
+                      "sortdir": "desc",
+                        match: {
+                      Speciality: selectedSpecialties,    
+                  },
+                      "IsActive": true
+                    }
+
+                );  
+                console.log("customized advertizment: ",response);
+        
+                // Assuming the response contains an array of laboratories
+                const doctorlist = response;
+                console.log("labbbbbb",doctorlist);
+               
+
+              } catch (error) {
+                console.error('Error fetching laboratories:', error);
+              }
+            }
+            Doctoradimage();
+
           
    
     }, [query,selectedSpecialties,selectedCities,selectedsymtoms])
@@ -178,15 +234,41 @@ function Doctor() {
     
   // }, []);
     
-    const handleSpecialtyChange = (event) => {
-      const { value, checked } = event.target;
-      if (checked) {
-        setSelectedSpecialties([...selectedSpecialties, value]);
-        console.log("checked box selected :",setSelectedSpecialties);
-      } else {
-        setSelectedSpecialties(selectedSpecialties.filter(specialty => specialty !== value));
-      }
-    };
+  const handleSpecialtyChange = (event) => {
+  const { value, checked } = event.target;
+  
+  // Create a copy of selectedSpecialties
+  let newSelectedSpecialties = [...selectedSpecialties];
+
+  if (checked) {
+    // Add value to newSelectedSpecialties if checked
+    newSelectedSpecialties.push(value);
+  } else {
+    // Remove value from newSelectedSpecialties if unchecked
+    newSelectedSpecialties = newSelectedSpecialties.filter(specialty => specialty !== value);
+  }
+
+  // Update the state with newSelectedSpecialties
+  setSelectedSpecialties(newSelectedSpecialties);
+
+  // Find the last checked specialty
+  const lastCheckedSpecialty = newSelectedSpecialties[newSelectedSpecialties.length - 1];
+
+  // Find an ad that matches the last checked specialty
+  const matchedAd = adsData.find(ad => ad.DoctorSpeciality === lastCheckedSpecialty);
+
+  if (matchedAd) {
+    // Set the advertisement image path based on the matched ad
+    const imagePath = matchedAd.CustomAdsImage;
+    setHospitalad(imagePath);
+    console.log("image path", imagePath);
+  } else {
+    // No matching ad found, clear the advertisement image
+    setHospitalad(""); // Set to empty string or default image path
+    console.log("No matching ad found for selected specialties");
+  }
+};
+
 
     const handleCityChange = (event) => {
       const { value, checked } = event.target;
@@ -262,6 +344,20 @@ function Doctor() {
           setSelectedLabs(selectedLabs.filter(lab => lab._id !== labo._id));
         }
       };
+
+        const filteredLabs = DoctorAllList?.filter(
+    (lab) => lab.DoctorName.toLowerCase().includes(query.toLowerCase())
+
+    
+  );
+
+    useEffect(() => {
+  // Filter pharmacies whenever query changes
+  const filtered = doctorlist.filter(doctor =>
+    doctor.DoctorName.toLowerCase().includes(query.toLowerCase())
+  );
+  setFilteredDoctors(filtered);
+}, [query, doctorlist]); 
   return (
     <>
 
@@ -284,9 +380,17 @@ navigatelink="/doctor-login"
 <section className="services-details-area ptb-50 main-laboratory-section">
 <Container>
       <Row>
-        <Hospitalad
-        hospitaladimage={hospitalad}
-        />
+                   <Col lg={12} md={12} xs={12} className="mb-0">
+  <div className="ad-image position-relative">
+    <Image 
+      src={hospitalad ? `${process.env.REACT_APP_API_URL_GRACELAB}/${hospitalad}` : 'defaultAdImageURL'} 
+      fluid 
+    /> {/* Replace 'defaultAdImageURL' with your default ad image URL */}
+    <div className="span-title">
+      <span>Ad</span>
+    </div>
+  </div>
+</Col>
 
         {/* left side section start */}
 
@@ -343,54 +447,7 @@ navigatelink="/doctor-login"
             </div>
              </Collapse>
           </li>
-          <li className="accordion-item">
-          <Link className="accordion-title" onClick={toggleAccordion2}> Doctor Name{open2 ? <FiMinus className='hospital-icon' /> : <FiPlus className='hospital-icon' />}</Link>
-            <Collapse in={open2}>
-            <div className="widget-area">
-              <div className="widget widget_search">
-                <form className="search-form">
-                <label>
-                    <span className="screen-reader-text"></span>
-                    <input type="search"
-                     className="search-field"
-                      placeholder="Search..." 
-                      onChange={handleInputChange} 
-                      
-                      />
-                  </label>
-                </form>
-                <div className="row mt-3" style={{ maxHeight: '170px', overflowY: 'auto' }}>
-                          {DoctorAllList?.map((labo) => (
-              <Col lg={12} md={12} xs={12} key={labo._id}>
-              <div className="form-check">
-                <input 
-                  type="checkbox" 
-                  className="form-check-input" 
-                  id={`lab-checkbox-${labo.id}`} 
-                  checked={selectedLabs.some(lab => lab._id === labo._id)} // Check if labo is in selectedLabs
-                  onChange={(e) => handleCheckboxChange(e, labo)} 
-                />
-                <label className="form-check-label">
-                  {labo.DoctorName}
-                </label>
-              </div>
-            </Col>
-            ))}
-              {/* {hospitalshowMore && DoctorAllList.map((label, index) => (
-                          <Hospitallable key={index} label={label} />
-                        ))}
-                
-                {hospitalshowMore ? (
-        <Link onClick={hospitaltoggleShowMore} className='view-more'>View Less</Link>
-      ) : (
-        <Link onClick={hospitaltoggleShowMore} className='view-more'>View More</Link>
-      )} */}
-
-                 </div>
-              </div>
-            </div>
-            </Collapse>
-          </li>
+         
           <li className="accordion-item">
           <Link className="accordion-title" onClick={toggleAccordion3}>Speciality {open3 ? <FiMinus className='hospital-icon' /> : <FiPlus className='hospital-icon' />}</Link>
             <Collapse in={open3}>
@@ -499,10 +556,8 @@ navigatelink="/doctor-login"
  <div className="col-lg-8 col-md-12">
   {selectedLabs.length > 0 ? (
     <div className="selected-labs">
-      
       {selectedLabs.map((doc) => (
-       <Hospitaldesc
-     
+       <Doctordes
        hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${doc.Doctorphoto}`}
        mainheading={doc.DoctorName}
        headings={doc.address}
@@ -517,15 +572,32 @@ navigatelink="/doctor-login"
        dayslab3={doc.DaysDoctor3}
        locationmap={doc.Location}
        imagelink={doc.website}
+       Labid={doc._id}
       
      />
       ))}
     </div>
   ) : (
     <div className="all-labs">
+      <div className="widget-area">
+                            <div className="widget widget_search">
+                              <form className="search-form">
+                                <label>
+                                  <span className="screen-reader-text"></span>
+                                  <input
+                                    type="search"
+                                    className="search-field"
+                                    placeholder="Search..."
+                                    onChange={handleInputChange}
+                                  />
+                                </label>
+                              </form>
+                              
+                            </div>
+                          </div>
       
-      {doctorlist.map((doc) => (
-        <Hospitaldesc
+      {filteredDoctors.map((doc) => (
+        <Doctordes
        
          hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${doc.Doctorphoto}`}
        mainheading={doc.DoctorName}
@@ -541,6 +613,7 @@ navigatelink="/doctor-login"
        dayslab3={doc.DaysDoctor3}
        locationmap={doc.Location}    
        imagelink={doc.website}   
+        Labid={doc._id}
       />
       ))}
     </div>

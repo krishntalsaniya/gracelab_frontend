@@ -1,54 +1,73 @@
-import React from 'react'
-import Modalnavigationbar from '../navbar/Modalnavigationbar'
-import Pagetitle from '../patients/Pagetitle'
-import { MdArrowForwardIos } from "react-icons/md";
-import { Container, Row, Col, Form, InputGroup, Button, Checkbox ,Modal} from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import Modalnavigationbar from '../navbar/Modalnavigationbar';
+import Pagetitle from '../patients/Pagetitle';
+import { MdArrowForwardIos } from 'react-icons/md';
+import { Container, Row, Col } from 'react-bootstrap';
+import axios from 'axios';
 
 function Terms() {
+  const [termsData, setTermsData] = useState([]);
+  const selectedNavItem = localStorage.getItem('selectedNavItem');
+
+useEffect(() => {
+  const fetchTermsAndConditions = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/get/termsandconditionbynetwork/${selectedNavItem}`
+      );
+      console.log('API Response:', response.data); // Log the API response data
+     if (Array.isArray(response.data)) {
+          setTermsData(response.data); // Set array of terms
+        } else {
+          setTermsData([response.data]); // Wrap single object in an array
+        }
+    } catch (error) {
+      console.error('Error fetching terms and conditions:', error);
+      setTermsData([]); // Set termsData to empty array on error
+    }
+  };
+
+  if (selectedNavItem) {
+    fetchTermsAndConditions();
+  }
+}, [selectedNavItem]);
+
+
   return (
-   <>
-   
-   <Modalnavigationbar />
-    <div className="page-title-area">
-    <Pagetitle  
-    heading="Terms & Condition"
-    pagetitlelink="/"
-    title1="Home"
-    title2="Terms"
-    IconComponent={MdArrowForwardIos}
-    />
-</div>
+    <>
+      <Modalnavigationbar />
+      <div className="page-title-area">
+        <Pagetitle
+          heading="Terms & Condition"
+          pagetitlelink="/"
+          title1="Home"
+          title2="Terms"
+          IconComponent={MdArrowForwardIos}
+        />
+      </div>
 
-
-
-<section className="services-area ptb-70 pb-5">
-      <Container>
-        <Row className="justify-content-center" id="loginPanel">
-          <Col md={12} lg={10}>
-                        <div class="research-details-desc">
-                            <h3>Challenge & Solution</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et.</p>
-
-                            <h3>Exerci tation ullamcorper suscipit lobortis</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis.</p>
-
-                            <h3>Occaecat sint occaecat suscipit dolore</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et.</p>
-
-                            <h3>Being a top us private facility for any kind</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis.</p>
-
-                            <h3>Our Process</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et.</p>
-                        </div>
-                </Col>
-                </Row>
-            </Container>
-    </section>
-   
-   </>
-  )
+      <section className="services-area ptb-70 pb-5">
+        <Container>
+          <Row className="justify-content-center" id="loginPanel">
+            <Col md={12} lg={10}>
+              {termsData.length > 0 ? (
+                <div className="research-details-desc">
+                  {termsData.map((term, index) => (
+                    <React.Fragment key={index}>
+                      <h3>{term.Network}</h3>
+                      <p dangerouslySetInnerHTML={{ __html: term.Description }}></p>
+                    </React.Fragment>
+                  ))}
+                </div>
+              ) : (
+                <p>No terms and conditions found for {selectedNavItem}</p>
+              )}
+            </Col>
+          </Row>
+        </Container>
+      </section>
+    </>
+  );
 }
 
-export default Terms
+export default Terms;

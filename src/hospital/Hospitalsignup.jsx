@@ -525,7 +525,7 @@ function Hospitalsignup() {
                       <div className="w-100 text-start">
                       <label class="checkbox-wrap checkbox-primary mb-0">
                        <input type="checkbox" />
-                         <span class="checkmark"></span> I agree all statements in <a href="#" class="d-inline-block">Terms of service</a>
+                         <span class="checkmark"></span> I agree all statements in <Link to='/terms-condition' class="d-inline-block">Terms of service</Link>
                                                     </label>
                       </div>
                     </Col>
