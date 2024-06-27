@@ -23,6 +23,7 @@ function Doctor() {
     const [open3, setOpen3] = useState(true);
     
     const [searchQuery, setSearchQuery] = useState('');
+    const [symtomsearchQuery, setsymtomSearchQuery] = useState('');
     const [open4, setOpen4] = useState(true);
     const [showMore, setShowMore] = useState(false); 
     const [hospitalshowMore, hospitalsetShowMore] = useState(false); 
@@ -40,7 +41,8 @@ function Doctor() {
        const [adsData, setAdsData] = useState([]);
   const [hospitalad, setHospitalad] = useState(null);
   const [filteredDoctors, setFilteredDoctors] = useState([]);
-
+   const [specilitysearchQuery, specilitysetSearchQuery] = useState('');
+  
 
 
     useEffect(() => {
@@ -290,6 +292,23 @@ function Doctor() {
     };
     
 
+      const filterespecility = doctorspecialist?.filter(city => 
+    city.Speciality.toLowerCase().includes(specilitysearchQuery.toLowerCase())
+  ) || [];
+
+  const handlespeciality = (event) => {
+    specilitysetSearchQuery(event.target.value);
+  };
+
+
+      const filtersymtom = symptomwise?.filter(city => 
+    city.Symptom.toLowerCase().includes(symtomsearchQuery.toLowerCase())
+  ) || [];
+
+  const handlespecialitysymtom = (event) => {
+    setsymtomSearchQuery(event.target.value);
+  };
+
 
     const toggleShowMore = (event) => {
       event.preventDefault();
@@ -350,6 +369,14 @@ function Doctor() {
 
     
   );
+   const filteredLocations = location?.filter(city => 
+    city.Name.toLowerCase().includes(searchQuery.toLowerCase())
+  ) || [];
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+  
 
     useEffect(() => {
   // Filter pharmacies whenever query changes
@@ -400,53 +427,56 @@ navigatelink="/doctor-login"
       <div className="services-details-faq">
         <ul className="accordion">
 
+ <li className="accordion-item">
+      <Link className="accordion-title active" onClick={toggleAccordion1}>
+        Location {open1 ? <FiMinus className='hospital-icon' /> : <FiPlus className='hospital-icon' />}
+      </Link>
+      <Collapse in={open1}>
+        <div className="widget-area">
+          <div className="widget widget_search">
+            <form className="search-form">
+              <label>
+                <span className="screen-reader-text"></span>
+                <input 
+                  type="search" 
+                  className="search-field" 
+                  placeholder="Search..." 
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                />
+              </label>
+              <button type="submit"><IoSearch /></button>
+            </form>
+            <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
+              {filteredLocations?.map((city) => (
+                <Col lg={12} md={12} xs={12} key={city._id}>
+                  <div className="form-check">
+                    <input 
+                      type="checkbox" 
+                      className="form-check-input" 
+                      id={`city-${city._id}`} 
+                      value={city._id} 
+                      onChange={handleCityChange} 
+                    />
+                    <label className="form-check-label" htmlFor={`city-${city._id}`}>{city.Name}</label>
+                  </div>
+                </Col>
+              ))}
+              
+              {showMore && location?.map((city) => (
+                <Hospitallable label={city.Name} size="6" />
+              ))}
 
-          <li className="accordion-item">
-          <Link className="accordion-title active" onClick={toggleAccordion1}> Location{open1 ? <FiMinus className='hospital-icon' /> : <FiPlus className='hospital-icon' />}</Link>
-             <Collapse in={open1}>
-            <div className="widget-area">
-
-             <div className="widget widget_search">
-             <form className="search-form">
-                <label>
-                    <span className="screen-reader-text"></span>
-                    <input type="search" className="search-field" placeholder="Search..." />
-                  </label>
-                  <button type="submit"><IoSearch /></button>
-                </form>
-                <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
-                {location?.map((city) => (
-      <Col lg={12} md={12} xs={12} key={city._id}>
-        <div className="form-check">
-          <input 
-            type="checkbox" 
-            className="form-check-input" 
-            id={`city-${city._id}`} 
-            value={city._id} 
-            onChange={handleCityChange} 
-          />
-          <label className="form-check-label" htmlFor={`city-${city._id}`}>{city.Name}</label>
-        </div>
-      </Col>
-    ))}
-                 {/* Render additional labels only if showMore is true */}
-                 
-          {showMore && location?.map((city) => (
-            <Hospitallable label={city.Name} size="6" />
-          ))}
-                
-                {showMore ? (
-        <Link onClick={toggleShowMore} className='view-more'>View Less</Link>
-      ) : (
-        <Link onClick={toggleShowMore} className='view-more'>View More</Link>
-      )}
-      </div>
-      
-              </div>
-
+              {showMore ? (
+                <Link onClick={toggleShowMore} className='view-more'>View Less</Link>
+              ) : (
+                <Link onClick={toggleShowMore} className='view-more'>View More</Link>
+              )}
             </div>
-             </Collapse>
-          </li>
+          </div>
+        </div>
+      </Collapse>
+    </li>
          
           <li className="accordion-item">
           <Link className="accordion-title" onClick={toggleAccordion3}>Speciality {open3 ? <FiMinus className='hospital-icon' /> : <FiPlus className='hospital-icon' />}</Link>
@@ -454,16 +484,22 @@ navigatelink="/doctor-login"
             <div className="widget-area">
               <div className="widget widget_search">
                 <form className="search-form">
-                <label>
-                    <span className="screen-reader-text"></span>
-                    <input type="search" className="search-field" placeholder="Search..." />
-                  </label>
-                  <button type="submit"><IoSearch /></button>
-                </form>
+              <label>
+                <span className="screen-reader-text"></span>
+                <input 
+                  type="search" 
+                  className="search-field" 
+                  placeholder="Search..." 
+                  value={specilitysearchQuery}
+                  onChange={handlespeciality}
+                />
+              </label>
+              <button type="submit"><IoSearch /></button>
+            </form>
                 <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
 
 
-                {doctorspecialist?.map((specialty) => (
+                {filterespecility?.map((specialty) => (
                                                                     <Col xs={6} key={specialty._id}>
                                                                         <div className="form-check">
                                                                             <input
@@ -501,17 +537,23 @@ navigatelink="/doctor-login"
             <Collapse in={open4}>
             <div className="widget-area">
               <div className="widget widget_search">
-                <form className="search-form">
-                <label>
-                    <span className="screen-reader-text"></span>
-                    <input type="search" className="search-field" placeholder="Search..." />
-                  </label>
-                  <button type="submit"><IoSearch /></button>
-                </form>
+               <form className="search-form">
+              <label>
+                <span className="screen-reader-text"></span>
+                <input 
+                  type="search" 
+                  className="search-field" 
+                  placeholder="Search..." 
+                  value={symtomsearchQuery}
+                  onChange={handlespecialitysymtom}
+                />
+              </label>
+              <button type="submit"><IoSearch /></button>
+            </form>
                 <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
 
 
-                {symptomwise?.map((specialty) => (
+                {filtersymtom?.map((specialty) => (
                                                                     <Col xs={6} key={specialty._id}>
                                                                         <div className="form-check">
                                                                             <input
@@ -556,8 +598,9 @@ navigatelink="/doctor-login"
  <div className="col-lg-8 col-md-12">
   {selectedLabs.length > 0 ? (
     <div className="selected-labs">
-      {selectedLabs.map((doc) => (
+      {selectedLabs.map((doc,index) => (
        <Doctordes
+       key={`${doc._id}-${index}`}
        hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${doc.Doctorphoto}`}
        mainheading={doc.DoctorName}
        headings={doc.address}
@@ -597,9 +640,9 @@ navigatelink="/doctor-login"
                             </div>
                           </div>
       
-      {filteredDoctors.map((doc) => (
+      {filteredDoctors.map((doc,index) => (
         <Doctordes
-       
+        key={`${doc._id}-${index}`}
          hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${doc.Doctorphoto}`}
        mainheading={doc.DoctorName}
        headings={doc.address}

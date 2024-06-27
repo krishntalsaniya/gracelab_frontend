@@ -12,6 +12,7 @@ import Hospitaldesc from '../hospital/Hospitaldesc';
 import { MdArrowForwardIos } from "react-icons/md";
 import axios from 'axios';
 import Pharmacysec from './Pharmacysec';
+import { IoSearch } from "react-icons/io5";
 
 
 
@@ -25,6 +26,7 @@ function Pharmacy() {
   const [query, setQuery] = useState("");
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredPharmacies, setFilteredPharmacies] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
 
 
   useEffect(() => {
@@ -74,6 +76,8 @@ function Pharmacy() {
     }
   };
   Pharmacylist();
+
+
 
   
   const lablist = async  () => {
@@ -204,7 +208,13 @@ function Pharmacy() {
     const [selectedLocations, setSelectedLocations] = useState([]);
      const [locationSearchTerm, setLocationSearchTerm] = useState('');
 
+ const filteredLocations = pharmacylocation?.filter(city => 
+    city.Name.toLowerCase().includes(searchQuery.toLowerCase())
+  ) || [];
 
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
 
 
     const toggleShowMore = (event) => {
@@ -297,10 +307,23 @@ navigatelink="/pharmacy-login"
 
              <div className="widget widget_search">
                 <form className="search-form">
-                  <Hospitalsearch />
+                  <form className="search-form">
+              <label>
+                <span className="screen-reader-text"></span>
+                <input 
+                  type="search" 
+                  className="search-field" 
+                  placeholder="Search..." 
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+              
+                />
+              </label>
+              <button type="submit"><IoSearch /></button>
+            </form>
                 </form>
                 <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
-                {pharmacylocation?.map((locationpha) => (
+                {filteredLocations?.map((locationpha) => (
                                   <Col lg={12} md={12} xs={12} key={locationpha._id}>
                                     <div className="form-check">
                                       <input

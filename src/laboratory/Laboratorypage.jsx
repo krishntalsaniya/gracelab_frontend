@@ -31,6 +31,8 @@ function Laboratorypage() {
   const [loading, setLoading] = useState(true);
       const [adsData, setAdsData] = useState([]);
   const [hospitalad, setHospitalad] = useState(null);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchQuertest, setSearchQuerytest] = useState('');
 
   const labsPerPage = 5;
 
@@ -208,6 +210,23 @@ const handleTestChange = (event) => {
     (lab) => lab.LabName.toLowerCase().includes(query.toLowerCase())
   );
 console.log("filteredLabs",filteredLabs);
+
+ const filteredLocations = loc?.filter(city => 
+    city.Name.toLowerCase().includes(searchQuery.toLowerCase())
+  ) || [];
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+
+ const filteretest = labTest?.filter(city => 
+    city.TestName.toLowerCase().includes(searchQuertest.toLowerCase())
+  ) || [];
+
+  const handleSearchChangetest = (event) => {
+    setSearchQuerytest(event.target.value);
+  };
   return (
     <>
       <Modalnavigationbar navigatelink="/laboratory-login" />
@@ -249,13 +268,20 @@ console.log("filteredLabs",filteredLabs);
                           <div className="widget-area">
                             <div className="widget widget_search">
                               <form className="search-form">
-                                <label>
-                                  <span className="screen-reader-text"></span>
-                                  <input type="search" className="search-field" placeholder="Search..." />
-                                </label>
-                              </form>
+              <label>
+                <span className="screen-reader-text"></span>
+                <input 
+                  type="search" 
+                  className="search-field" 
+                  placeholder="Search..." 
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                />
+              </label>
+              <button type="submit"><IoSearch /></button>
+            </form>
                               <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
-                                {loc?.map((city) => (
+                                {filteredLocations?.map((city) => (
                                   <Col lg={12} md={12} xs={12} key={city._id}>
                                     <div className="form-check">
                                       <input
@@ -276,51 +302,7 @@ console.log("filteredLabs",filteredLabs);
                           </div>
                         </Collapse>
                       </li>
-                      {/* <li className="accordion-item">
-                        <Link className="accordion-title" onClick={toggleAccordion2}>
-                          {' '}
-                          Laboratory Name{open2 ? <FiMinus className="hospital-icon" /> : <FiPlus className="hospital-icon" />}
-                        </Link>
-                        <Collapse in={open2}>
-                          <div className="widget-area">
-                            <div className="widget widget_search">
-                              <form className="search-form">
-                                <label>
-                                  <span className="screen-reader-text"></span>
-                                  <input
-                                    type="search"
-                                    className="search-field"
-                                    placeholder="Search..."
-                                    onChange={handleInputChange}
-                                  />
-                                </label>
-                                <button type="submit">
-                                  <IoSearch />
-                                </button>
-                              </form>
-                              <div className="row mt-3" style={{ maxHeight: '170px', overflowY: 'auto' }}>
-                                {filteredLabs?.map((labo) => (
-                                  <Col lg={12} md={12} xs={12} key={labo._id}>
-                                    <div className="form-check">
-                                      <input
-                                        type="checkbox"
-                                        className="form-check-input"
-                                        id={`lab-checkbox-${labo.id}`}
-                                        checked={selectedLabs.some((lab) => lab._id === labo._id)}
-                                        onChange={(e) => handleCheckboxChange(e, labo)}
-                                      />
-                                      <label className="form-check-label" htmlFor={`lab-checkbox-${labo.id}`}>
-                                        {labo.LabName}
-                                      </label>
-                                    </div>
-                                  </Col>
-                                ))}
-                                {laboratoryShowMore && labListAll?.map((labo) => <Hospitallable label={labo.LabName} size="12" />)}
-                              </div>
-                            </div>
-                          </div>
-                        </Collapse>
-                      </li> */}
+                   
                       <li className="accordion-item">
                         <Link className="accordion-title" onClick={toggleAccordion3}>
                           {' '}
@@ -329,17 +311,21 @@ console.log("filteredLabs",filteredLabs);
                         <Collapse in={open3}>
                           <div className="widget-area">
                             <div className="widget widget_search">
-                              <form className="search-form">
-                                <label>
-                                  <span className="screen-reader-text"></span>
-                                  <input type="search" className="search-field" placeholder="Search..." />
-                                </label>
-                                <button type="submit">
-                                  <IoSearch />
-                                </button>
-                              </form>
+                             <form className="search-form">
+              <label>
+                <span className="screen-reader-text"></span>
+                <input 
+                  type="search" 
+                  className="search-field" 
+                  placeholder="Search..." 
+                  value={searchQuertest}
+                  onChange={handleSearchChangetest}
+                />
+              </label>
+              <button type="submit"><IoSearch /></button>
+            </form>
                               <div className="row mt-3" style={{ maxHeight: '200px', overflowY: 'auto' }}>
-                                {labTest?.map((laboratoryTest) => (
+                                {filteretest?.map((laboratoryTest) => (
                                   <Col xs={6} key={laboratoryTest._id}>
                                     <div className="form-check">
                                       <input

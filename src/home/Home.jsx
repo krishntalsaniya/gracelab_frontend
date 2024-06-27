@@ -45,12 +45,15 @@ import "swiper/css/effect-flip";
 
 function Home() {
  var settings = {
-    dots: true,
-    infinite: false,
-    speed: 500,
+     dots: true,
+    infinite: true,
+    speed: 2000,
     slidesToShow: 4,
-    slidesToScroll: 4,
-    initialSlide: 0,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 4000, // Scroll one card every 5 seconds
+    cssEase: 'linear',
+    // pauseOnHover: true,
     responsive: [
       {
         breakpoint: 1024,

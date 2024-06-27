@@ -100,7 +100,7 @@ function Camping() {
 
 
 
-      <h1>upcoming camping </h1>
+      <h1 style={{textAlign:'center'}}>upcoming camping </h1>
 
        <div className="container">
         <div className="row">
