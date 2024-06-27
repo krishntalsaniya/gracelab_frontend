@@ -127,7 +127,7 @@ function Hospital() {
                 );
         
                 // Assuming the response contains an array of laboratories
-                const Hospitallist = response.data[0];
+                const Hospitallist = response;
                 console.log("labbbbbb",Hospitallist);
                 const hospitaldata = Hospitallist.data
         
@@ -536,6 +536,7 @@ const handleSpecialtyChange = (event) => {
        locationmap={hospital.Location}
        imagelink={hospital.website}
            Labid={hospital._id}
+           averageRating={hospital.averageRating}
      />
       ))}
     </div>
@@ -576,6 +577,7 @@ const handleSpecialtyChange = (event) => {
        locationmap={hospital.Location}
        imagelink={hospital.website}
            Labid={hospital._id}
+           averageRating={hospital.averageRating}
       />
       ))}
     </div>

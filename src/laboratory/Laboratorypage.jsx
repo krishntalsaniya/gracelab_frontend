@@ -391,7 +391,7 @@ console.log("filteredLabs",filteredLabs);
                       locationmap={lab.Location}
                       imagelink={lab.website}
                       Labid={lab._id}
-                      averageRating={lab.averageRating}
+                      averageRating={lab.averageRating?lab.averageRating:0}
                     />
                   ))}
                 </div>
@@ -417,27 +417,28 @@ console.log("filteredLabs",filteredLabs);
                           </div>
                       
                      
-                  {filteredLabs?.map((lab) => (
-                    <Labsec
-                      key={lab.id}
-                      hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${lab.Labphoto}`}
-                      mainheading={lab.LabName}
-                      headings={lab.address}
-                      starttime1={lab.LabStartTime1}
-                      endtime1={lab.LabEndTime1}
-                      starttime2={lab.LabStartTime2}
-                      endtime2={lab.LabEndTime2}
-                      starttime3={lab.LabStartTime3}
-                      endtime3={lab.LabEndTime3}
-                      dayslab1={lab.DaysLab1}
-                      dayslab2={lab.DaysLab2}
-                      dayslab3={lab.DaysLab3}
-                      locationmap={lab.Location}
-                      imagelink={lab.website}
-                      Labid={lab._id}
-                      averageRating={lab.averageRating}
-                    />
-                  ))}
+                  {filteredLabs?.map((lab,index) => (
+  <Labsec
+    key={`${lab._id}-${index}`}
+    hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${lab.Labphoto}`}
+    mainheading={lab.LabName}
+    headings={lab.address}
+    starttime1={lab.LabStartTime1}
+    endtime1={lab.LabEndTime1}
+    starttime2={lab.LabStartTime2}
+    endtime2={lab.LabEndTime2}
+    starttime3={lab.LabStartTime3}
+    endtime3={lab.LabEndTime3}
+    dayslab1={lab.DaysLab1}
+    dayslab2={lab.DaysLab2}
+    dayslab3={lab.DaysLab3}
+    locationmap={lab.Location}
+    imagelink={lab.website}
+    Labid={lab._id}
+     averageRating={lab.averageRating ? lab.averageRating : 0}  // Ensure averageRating is correctly assigned
+  />
+))}
+
                 </div>
               )}
             </div>

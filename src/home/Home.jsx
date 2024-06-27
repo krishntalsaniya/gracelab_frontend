@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; 
 import { IoCheckmarkDoneSharp,IoLocationSharp  ,IoCall  } from "react-icons/io5";
 import { IoIosMail } from "react-icons/io";
-import { Container, Row,Col ,Image,Card} from 'react-bootstrap';
+import { Container, Row,Col ,Image,Card,CardBody,Button} from 'react-bootstrap';
 import Carousel  from 'react-bootstrap/Carousel';
 import '../css/responsive.css';
 import '../css/style.css';
@@ -21,18 +21,67 @@ import icon3 from '../img/icon3.png'
 import icon4 from '../img/icon4.png'
 import icon5 from '../img/icon5.png'
 import about from '../img/about.png'
+import placeholderimage from '../img/placeholder.jpeg'
 import Network from './Network';
 import Modalpopup from './Modalpopup';
 import Program from './Program';
 import Banner from './Banner';
 import Modalnavigationbar from '../navbar/Modalnavigationbar';
 import axios from 'axios';
+import { Swiper, SwiperSlide } from "swiper/react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import "swiper/css/scrollbar";
+import "swiper/css/effect-fade";
+import "swiper/css/effect-flip";
+
 
 
 
 function Home() {
+ var settings = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 4,
+    initialSlide: 0,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 2
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      }
+    ]
+  };
+
   const [bannerList, setBannerList] = useState([]);
   const [cmsdesc, setcmsdesc] = useState([])
+  const [camp, setcamp] = useState([])
 
      useEffect(() => {
     
@@ -54,6 +103,36 @@ function Home() {
         
       }
       CMScontent();
+
+
+    const campdetails = async() =>
+      {
+       try {
+        const campdetails = await axios.post
+        (
+          `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list-by-params/Camps`,
+          {
+             
+          skip: 0,
+          per_page: 1000,
+          sorton: "Date",
+          sortdir: "desc",
+          match:"",
+          IsActive: true,
+        }
+         
+        );
+        console.log("show camp details:", campdetails.data[0].data);
+
+              
+        setcamp(campdetails.data[0].data)
+        console.log("show camp details this  ",campdetails.data);
+       } catch (error) {
+        console.log("cms data   :", error)
+       }
+        
+      }
+      campdetails();
   }, [])
 
   useEffect(() => {
@@ -193,17 +272,36 @@ function Home() {
  
   <Link onClick={() => handleLinkClick('Join Our Loyalty Program')} to='/tellusmore' className="btn btn-secondary">Tell Us More</Link>
 </Card>
-        <Row className="justify-content-center">
-          <Banner
-            baneerimg={program1}
-          />
-          <Banner
-            baneerimg={program2}
-          />
-          <Banner
-            baneerimg={program3}
-          />
-        </Row>
+   <Slider {...settings}>
+     
+       {camp.map((camping) => (
+           <Link to='/camping'> <Card key={camping.id} style={{ width: '18rem', margin: '0 auto' }}>
+              <Card.Img variant="top" src={`${process.env.REACT_APP_API_URL_GRACELAB}/${camping.Photo}`} alt={camping.placeholderimage ? camping.title : 'Placeholder Image'}
+              onError={(e) => { e.target.src = placeholderimage }}
+              style={{ width: '100%', height: 'auto' }} />
+              <Card.Body className='card-body-camping'>
+                <Card.Title>{camping.title}</Card.Title>
+                <Card.Text>
+                  {`Description: ${camping.Descreption}`}
+                </Card.Text>
+                <Card.Text>
+                  <small className="text-muted">{`No Of Patient: ${camping.NoOfPatients}`}</small>
+                </Card.Text>
+                 <Card.Text>
+              <small className="text-muted">Doctors:</small>
+              <ul>
+                {camping.DoctorsDetails && camping.DoctorsDetails.map((doctor, index) => (
+                  <li key={index}>{doctor.DoctorName}</li>
+                ))}
+              </ul>
+            </Card.Text>
+             
+              </Card.Body>
+            </Card>
+            </Link>
+          ))}
+    
+    </Slider>
       </Container>
     </section>
 

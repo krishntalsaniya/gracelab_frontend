@@ -57,15 +57,15 @@ function Pharmacy() {
       );
 
       // Assuming the response contains an array of laboratories
-      const laboratories = response.data[0];
-      console.log("pharmacy_data : ",laboratories);
+      const laboratories = response;
+      console.log("pharmacy_data : ",response.data);
       const labdata = laboratories.data
 
       console.log("lab data ",labdata)
 
       // Filter active laboratories (if needed)
       const activeLaboratories = labdata.filter(lab => lab.isActive);
-      console.log("location:",activeLaboratories);
+      console.log("activeLaboratories:",activeLaboratories);
      
 
       setPharmacyList(activeLaboratories);
@@ -382,9 +382,9 @@ navigatelink="/pharmacy-login"
   {selectedLabs.length > 0 ? (
     <div className="selected-labs">
      
-      {selectedLabs.map((lab) => (
+      {selectedLabs.map((lab,index) => (
         <Pharmacysec
-          key={lab.id}
+            key={`${lab._id}-${index}`}
           hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${lab.Pharmacyphoto}`}
           mainheading={lab.PharmacyName}
           headings={lab.address}
@@ -400,6 +400,7 @@ navigatelink="/pharmacy-login"
           locationmap={lab.Location}
           imagelink={lab.website}
            Labid={lab._id}
+            averageRating={lab.averageRating}
         />
       ))}
     </div>
@@ -422,9 +423,9 @@ navigatelink="/pharmacy-login"
                             </div>
                           </div>
     
-      {filteredPharmacies.map((lab) => (
+      {filteredLabs.map((lab,index) => (
       <Pharmacysec
-        key={lab.id}
+         key={`${lab._id}-${index}`}
         hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${lab.Pharmacyphoto}`}
         mainheading={lab.PharmacyName}
         headings={lab.address}
@@ -440,6 +441,7 @@ navigatelink="/pharmacy-login"
         locationmap={lab.Location}
         imagelink={lab.website}
         Labid={lab._id}
+         averageRating={lab.averageRating}
       />
     ))}
     </div>

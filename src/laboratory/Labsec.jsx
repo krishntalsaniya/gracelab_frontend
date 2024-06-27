@@ -191,16 +191,16 @@ console.log("Props",props);
                   <IoMdTimer className="map-color" /> {props.starttime3} - {props.endtime3} - {dayName3}
                 </h5>
               </div>
-                <div>
+               
       {/* Render ReactStars with fetched rating */}
       <ReactStars
         count={5}
         size={24}
         activeColor="#ffd700"
-        value={props.averageRating?props.averageRating:4}
+        value={props.averageRating?props.averageRating:0}
         edit={false}
       />
-    </div>
+   
               <Button
                 variant="primary"
                 className="rounded-pill mt-3 float-end"
@@ -210,14 +210,11 @@ console.log("Props",props);
                 Contact
               </Button>
 
-               <Button
-              
+               <Button 
                 className="mt-3 float-end"
-                style={{ borderRadius: '10px' }}
+                style={{ border:'none',background:'none',color:'black' }}
                 onClick={() => setratingShowModal(true)}
-              >
-                rating
-              </Button>
+              >rating </Button>
             </Card.Body>
           </Col>
         </Row>
