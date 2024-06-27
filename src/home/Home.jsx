@@ -47,11 +47,11 @@ function Home() {
  var settings = {
      dots: true,
     infinite: true,
-    speed: 2000,
+    speed: 1000,
     slidesToShow: 4,
-    slidesToScroll: 1,
+    slidesToScroll: 2,
     autoplay: true,
-    autoplaySpeed: 4000, // Scroll one card every 5 seconds
+    autoplaySpeed: 2000, // Scroll one card every 5 seconds
     cssEase: 'linear',
     // pauseOnHover: true,
     responsive: [

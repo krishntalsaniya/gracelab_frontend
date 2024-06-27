@@ -29,6 +29,11 @@ function Footer() {
       }
       CMScontent();
   }, [])
+
+
+   function handleLinkClick(item) {
+  localStorage.setItem('selectedNavItem', item);
+}
   
   return (
     <>
@@ -58,11 +63,11 @@ function Footer() {
             <div className="single-footer-widget">
               <h3>Our Network</h3>
               <ul className="widget-services-list">
-                <li><Link to="/laboratory">Laboratory</Link></li>
-                <li><Link to="/pharmacy">Pharmacy</Link></li>
-                <li><Link to="/doctor">Doctors</Link></li>
-                <li><Link to="/hospital">Hospital</Link></li>
-                <li><Link to="/patient-login">Patient</Link></li>
+                <li><Link to="/laboratory" onClick={() => handleLinkClick('Laboratory')}>Laboratory</Link></li>
+                <li><Link to="/pharmacy" onClick={() => handleLinkClick('Pharmacy')}>Pharmacy</Link></li>
+                <li><Link to="/doctor" onClick={() => handleLinkClick('Doctors')}>Doctors</Link></li>
+                <li><Link to="/hospital" onClick={() => handleLinkClick('Hospital')}>Hospital</Link></li>
+                <li><Link to="/patient-login" onClick={() => handleLinkClick('Patients')}>Patient</Link></li>
               </ul>
             </div>
           </Col>
