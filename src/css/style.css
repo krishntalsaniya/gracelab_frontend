@@ -6984,3 +6984,8 @@ blockquote::before,
   min-height: 250px;
   max-height: 250px;
 }
+
+.card-image-camping {
+  min-height: 200px;
+  max-height: 200px;
+}

@@ -171,6 +171,7 @@ function Modalnavigationbar(props) {
                 <ul className="navbar-nav">
                   <li className="nav-item"><Link to="/" className="nav-link active">Home</Link></li>
                   <li className="nav-item"><Link to="/about" className="nav-link">About Us</Link></li>
+                  <li className="nav-item"><Link to="/camping" className="nav-link">Campaign</Link></li>
                   <li className="nav-item"><Link to="/" className="nav-link">Network <FaAngleDown /></Link>
                     <ul className="dropdown-menu">
                       <li className="nav-item"><Link to="/laboratory" className="nav-link" onClick={() => handleLinkClick('Laboratory')}>Laboratory</Link></li>

@@ -31,6 +31,8 @@ import Pharmacypage from './pharmacypages/Pharmacypage';
 import Doctorpage from './doctorpages/Doctorpage';
 import Labpage from './laboraotrypage/Labpage';
 import Tellusmore from './home/Tellusmore';
+import Camping from './camping/Camping';
+
 
 
 
@@ -72,6 +74,7 @@ function App() {
   <Route path='/doctor-page' element={<Doctorpage />} />
   <Route path='/lab-page' element={<Labpage />} />
   <Route path='/tellusmore' element={<Tellusmore />} />
+  <Route path='/camping' element={<Camping />} />
   <Route path='/about/:_ID' element={<About />} />
 
  
