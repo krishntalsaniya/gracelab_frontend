@@ -267,10 +267,10 @@ function Home() {
       <Container>
          <Card className="section-title">
     
-    <span>LOYALTY PROGRAM</span>
-    <h2>Join Our Loyalty Program</h2>
+    <span>CAMPS PROGRAM</span>
+    <h2> Explore Our Camps</h2>
  
-  <Link onClick={() => handleLinkClick('Join Our Loyalty Program')} to='/tellusmore' className="btn btn-secondary">Tell Us More</Link>
+  <Link onClick={() => handleLinkClick('Explore Our Camps')} to='/tellusmore' className="btn btn-secondary">Tell Us More</Link>
 </Card>
    <Slider {...settings}>
      
@@ -306,6 +306,21 @@ function Home() {
     </section>
 
 {/* about section start */}
+
+{/* loyalty program */}
+
+<section className="boxes-area ptb-70 pb-3">
+      <Container>
+         <Card className="section-title">
+    
+    <span>Loyalty PROGRAM</span>
+    <h2> Join Our Loyalty Program</h2>
+ 
+  <Link onClick={() => handleLinkClick('Join Our Loyalty Program')} to='/tellusmore' className="btn btn-secondary">Tell Us More</Link>
+</Card>
+  
+      </Container>
+    </section>
 
 
 <section className="about-area ptb-70">
