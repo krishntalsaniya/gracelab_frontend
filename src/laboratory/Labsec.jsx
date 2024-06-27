@@ -10,6 +10,7 @@ import { Formik, Form as FormikForm, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 function Labsec(props) {
+  console.log("props",props)
   const [dayName, setDayName] = useState('');
   const [dayName2, setDayName2] = useState('');
   const [dayName3, setDayName3] = useState('');
@@ -27,7 +28,7 @@ function Labsec(props) {
   const handleRatingChange = (newRating) => {
     setRating(newRating);
   };
-
+console.log("Props",props);
   useEffect(() => {
     const fetchDayName = async () => {
       try {
@@ -190,6 +191,16 @@ function Labsec(props) {
                   <IoMdTimer className="map-color" /> {props.starttime3} - {props.endtime3} - {dayName3}
                 </h5>
               </div>
+                <div>
+      {/* Render ReactStars with fetched rating */}
+      <ReactStars
+        count={5}
+        size={24}
+        activeColor="#ffd700"
+        value={props.averageRating?props.averageRating:4}
+        edit={false}
+      />
+    </div>
               <Button
                 variant="primary"
                 className="rounded-pill mt-3 float-end"

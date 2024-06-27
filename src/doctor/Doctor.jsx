@@ -573,6 +573,7 @@ navigatelink="/doctor-login"
        locationmap={doc.Location}
        imagelink={doc.website}
        Labid={doc._id}
+       averageRating={doc.averageRating}
       
      />
       ))}
@@ -614,6 +615,8 @@ navigatelink="/doctor-login"
        locationmap={doc.Location}    
        imagelink={doc.website}   
         Labid={doc._id}
+       averageRating={doc.averageRating}
+
       />
       ))}
     </div>

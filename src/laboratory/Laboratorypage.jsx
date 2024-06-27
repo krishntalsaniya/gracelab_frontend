@@ -51,7 +51,7 @@ function Laboratorypage() {
             isActive: true,
           }
         );
-        const laboratories = response.data.data;
+        const laboratories = response.data;
         setLabListAll(laboratories);
       } catch (error) {
         console.error('Error fetching laboratories:', error);
@@ -207,7 +207,7 @@ const handleTestChange = (event) => {
   const filteredLabs = labListAll?.filter(
     (lab) => lab.LabName.toLowerCase().includes(query.toLowerCase())
   );
-
+console.log("filteredLabs",filteredLabs);
   return (
     <>
       <Modalnavigationbar navigatelink="/laboratory-login" />
@@ -391,6 +391,7 @@ const handleTestChange = (event) => {
                       locationmap={lab.Location}
                       imagelink={lab.website}
                       Labid={lab._id}
+                      averageRating={lab.averageRating}
                     />
                   ))}
                 </div>
@@ -434,6 +435,7 @@ const handleTestChange = (event) => {
                       locationmap={lab.Location}
                       imagelink={lab.website}
                       Labid={lab._id}
+                      averageRating={lab.averageRating}
                     />
                   ))}
                 </div>
