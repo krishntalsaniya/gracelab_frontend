@@ -56,6 +56,11 @@ function Camping() {
     fetchupcomingcamps();
   }, []);
 
+   const handleRedirect = () => {
+    window.open("https://gracelab.barodaweb.org/patient-inquiry", "_blank", "noopener,noreferrer");
+  };
+
+
   return (
     <>
     <Modalnavigationbar />
@@ -72,7 +77,7 @@ function Camping() {
                     alt={camping.title}
                     onError={(e) => { e.target.src = placeholderimage }}
                   />
-                  <Card.Body>
+                  <Card.Body className='card-body-camping'>
                     <Card.Title>{camping.title}</Card.Title>
                     <Card.Text>
                       Description: {camping.Descreption}
@@ -88,8 +93,11 @@ function Camping() {
                         ))}
                       </ul>
                     </Card.Text>
-        
+       
                   </Card.Body>
+                   <div className='register-camping'>
+                    <Link onClick={handleRedirect} className="btn btn-secondary ms-3 btn-login">Register</Link>
+                   </div>
                 </Card>
               </Link>
             </Col>
@@ -114,7 +122,7 @@ function Camping() {
                     alt={camping.title}
                     onError={(e) => { e.target.src = placeholderimage }}
                   />
-                  <Card.Body>
+                  <Card.Body className='card-body-camping'>
                     <Card.Title>{camping.title}</Card.Title>
                     <Card.Text>
                       Description: {camping.Descreption}
@@ -132,6 +140,9 @@ function Camping() {
                     </Card.Text>
         
                   </Card.Body>
+                  <div className='register-camping'>
+                    <Link onClick={handleRedirect} className="btn btn-secondary ms-3 btn-login">Register</Link>
+                   </div>
                 </Card>
               </Link>
             </Col>

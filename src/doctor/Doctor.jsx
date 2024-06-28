@@ -42,6 +42,7 @@ function Doctor() {
   const [hospitalad, setHospitalad] = useState(null);
   const [filteredDoctors, setFilteredDoctors] = useState([]);
    const [specilitysearchQuery, specilitysetSearchQuery] = useState('');
+   const [doctorad, setdoctorad] = useState(null)
   
 
 
@@ -108,7 +109,7 @@ function Doctor() {
                       isActive: true,
                   }
               );
-              console.log("symtoms data ",Symptom.data.Location);
+              console.log("symtoms data by image  ",Symptom.data);
                 
                 setdoctorlist(Symptom.data)
                  console.log("location",Symptom);
@@ -232,9 +233,47 @@ function Doctor() {
    
     }, [query,selectedSpecialties,selectedCities,selectedsymtoms])
 
-  //   useEffect(() => {
-    
-  // }, []);
+    useEffect(() => {
+      const Doctoradimage = async() =>
+            {
+              try {
+                // Define parameters for pagination, sorting, and filtering
+                const pageNo = 1; // Example page number
+                const perPage = 10; // Example number of items per page
+                const column = 'LabName'; // Example column to sort on
+                const sortDirection = 'asc'; // Example sort direction
+               
+                const filter = true; // Example filter for active laboratories
+        
+                const skip = (pageNo - 1) * perPage;
+        
+                const response = await axios.post(
+                  `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list-by-params/listCustomizeAdvertisementByDoctorSpeciality`,
+                                      {
+                      "skip": 0,
+                      "per_page": 100,
+                      "sorton": "createdAt",
+                      "sortdir": "desc",
+                        match: {
+                      Speciality: selectedSpecialties,    
+                  },
+                      "IsActive": true
+                    }
+
+                );  
+                // console.log("customized advertizment: ",response.data[0].data[0].CustomAdsImage);
+        
+                // Assuming the response contains an array of laboratories
+                const doctoradimage = response.data[0].data[0].CustomAdsImage;
+                setdoctorad(`${process.env.REACT_APP_API_URL_GRACELAB}/${doctoradimage}`)
+               
+
+              } catch (error) {
+                console.error('Error fetching laboratories:', error);
+              }
+            }
+            Doctoradimage();
+  }, []);
     
   const handleSpecialtyChange = (event) => {
   const { value, checked } = event.target;
@@ -410,7 +449,7 @@ navigatelink="/doctor-login"
                    <Col lg={12} md={12} xs={12} className="mb-0">
   <div className="ad-image position-relative">
     <Image 
-      src={hospitalad ? `${process.env.REACT_APP_API_URL_GRACELAB}/${hospitalad}` : 'defaultAdImageURL'} 
+      src={hospitalad ? `${process.env.REACT_APP_API_URL_GRACELAB}/${hospitalad}` : doctorad} 
       fluid 
     /> {/* Replace 'defaultAdImageURL' with your default ad image URL */}
     <div className="span-title">

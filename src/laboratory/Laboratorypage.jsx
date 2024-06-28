@@ -33,6 +33,7 @@ function Laboratorypage() {
   const [hospitalad, setHospitalad] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [searchQuertest, setSearchQuerytest] = useState('');
+    const [advertisement, setadvertisement] = useState(null)
 
   const labsPerPage = 5;
 
@@ -142,6 +143,52 @@ function Laboratorypage() {
     labLocation();
   }, [selectedCities, selectedTest, labsPerPage]);
 
+  useEffect(() => {
+     const Laboratoryimage = async() =>
+            {
+              try {
+                // Define parameters for pagination, sorting, and filtering
+                const pageNo = 1; // Example page number
+                const perPage = 10; // Example number of items per page
+                const column = 'LabName'; // Example column to sort on
+                const sortDirection = 'asc'; // Example sort direction
+               
+                const filter = true; // Example filter for active laboratories
+        
+                const skip = (pageNo - 1) * perPage;
+        
+                const response = await axios.post(
+                  `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list-by-params/listCustomizeAdvertisementByLabSpeciality`,
+                                      {
+                      "skip": 0,
+                      "per_page": 100,
+                      "sorton": "createdAt",
+                      "sortdir": "desc",
+                        match: {
+                      Speciality: selectedTest,    
+                  },
+                      "IsActive": true
+                    }
+
+                );  
+                console.log("customized advertizment: ",response);
+
+        
+                // Assuming the response contains an array of laboratories
+                const Adimage = response.data[0].data[0].CustomAdsImage;
+setadvertisement(`${process.env.REACT_APP_API_URL_GRACELAB}/${Adimage}`)
+                console.log("Adimage",Adimage); 
+               
+
+              } catch (error) {
+                console.error('Error fetching laboratories:', error);
+              }
+            }
+
+            Laboratoryimage();
+  }, [])
+  
+
   const handleCityChange = (event) => {
     const { value, checked } = event.target;
     if (checked) {
@@ -246,7 +293,7 @@ console.log("filteredLabs",filteredLabs);
             <Col lg={12} md={12} xs={12} className="mb-0">
   <div className="ad-image position-relative">
     <Image 
-      src={hospitalad ? `${process.env.REACT_APP_API_URL_GRACELAB}/${hospitalad}` : 'defaultAdImageURL'} 
+      src={hospitalad ? `${process.env.REACT_APP_API_URL_GRACELAB}/${hospitalad}` : advertisement} 
       fluid 
     /> {/* Replace 'defaultAdImageURL' with your default ad image URL */}
     <div className="span-title">

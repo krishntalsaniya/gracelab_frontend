@@ -64,6 +64,9 @@ function Modalnavigationbar(props) {
   localStorage.setItem('selectedNavItem', item);
 }
 
+    function handleLinkClicktellusmore(item) {
+  localStorage.setItem('selectedtellusmore', item);
+    }
   return (
     <>
       <div className={`navbar-area ${isSticky ? 'is-sticky' : ''}`}>
@@ -101,7 +104,7 @@ function Modalnavigationbar(props) {
           <Offcanvas.Body>
             <Nav className="justify-content-end flex-grow-1 pe-3">
               <Link to="/" className='mobile-link'>Home</Link>
-              <Link to="/about" className='mobile-link'>About us</Link>
+              <Link to="/tellusmore" className='mobile-link'>About us</Link>
               <NavDropdown className='mobile-link'
                 title="Network"
                 id={`offcanvasNavbarDropdown-expand-${expand}`}
@@ -170,7 +173,7 @@ function Modalnavigationbar(props) {
               <div className="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
                 <ul className="navbar-nav">
                   <li className="nav-item"><Link to="/" className="nav-link active">Home</Link></li>
-                  <li className="nav-item"><Link to="/about" className="nav-link">About Us</Link></li>
+                  <li className="nav-item"><Link to='/about/667e52387a043e58372e16ce' className="nav-link">About Us</Link></li>
                   <li className="nav-item"><Link to="/camping" className="nav-link">Campaign</Link></li>
                   <li className="nav-item"><Link to="/" className="nav-link">Network <FaAngleDown /></Link>
                     <ul className="dropdown-menu">

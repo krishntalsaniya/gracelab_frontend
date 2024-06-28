@@ -36,6 +36,8 @@ function Hospital() {
   const [hospitalad, setHospitalad] = useState(null);
    const [searchQuery, setSearchQuery] = useState('');
    const [specilitysearchQuery, specilitysetSearchQuery] = useState('');
+   const [hospitalsearchQuery, hospitalsetSearchQuery] = useState('');
+   const [hospitalimage, sethospitalimage] = useState(null)
  
     useEffect(() => {
     
@@ -248,6 +250,49 @@ function Hospital() {
      
     }, [query,selectedSpecialties,selectedCities,hospitalName])
     
+    useEffect(() => {
+      const Hospitaladimage = async() =>
+            {
+              try {
+                // Define parameters for pagination, sorting, and filtering
+                const pageNo = 1; // Example page number
+                const perPage = 10; // Example number of items per page
+                const column = 'LabName'; // Example column to sort on
+                const sortDirection = 'asc'; // Example sort direction
+               
+                const filter = true; // Example filter for active laboratories
+        
+                const skip = (pageNo - 1) * perPage;
+        
+                const response = await axios.post(
+                  `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list-by-params/listCustomizeAdvertisementByHospitalSpeciality`,
+                                      {
+                      "skip": 0,
+                      "per_page": 100,
+                      "sorton": "createdAt",
+                      "sortdir": "desc",
+                        match: {
+                      Speciality: selectedSpecialties,    
+                  },
+                      "IsActive": true
+                    }
+
+                );  
+                console.log("customized advertizment: ",response);
+        
+                // Assuming the response contains an array of laboratories
+                const hospitalimage = response.data[0].data[0].CustomAdsImage;
+                console.log("hospitalimage",hospitalimage);
+                sethospitalimage(`${process.env.REACT_APP_API_URL_GRACELAB}/${hospitalimage}`)
+               
+
+              } catch (error) {
+                console.error('Error fetching laboratories:', error);
+              }
+            }
+            Hospitaladimage();
+    }, [])
+    
 const handleSpecialtyChange = (event) => {
   const { value, checked } = event.target;
   
@@ -333,7 +378,13 @@ const handleSpecialtyChange = (event) => {
     };
 
 
+     const filterespecilityhospitalname = hospitalalllist?.filter(city => 
+    city.HospitalName.toLowerCase().includes(hospitalsearchQuery.toLowerCase())
+  ) || [];
 
+  const handlespecialityhospitalname = (event) => {
+    hospitalsetSearchQuery(event.target.value);
+  };
     const toggleAccordion1 = (event) => {
       event.preventDefault();
         setOpen1(!open1);
@@ -384,7 +435,7 @@ const handleSpecialtyChange = (event) => {
               <Col lg={12} md={12} xs={12} className="mb-0">
   <div className="ad-image position-relative">
     <Image className='banner-image' 
-      src={hospitalad ? `${process.env.REACT_APP_API_URL_GRACELAB}/${hospitalad}` : 'defaultAdImageURL'} 
+      src={hospitalad ? `${process.env.REACT_APP_API_URL_GRACELAB}/${hospitalad}` : hospitalimage} 
       fluid 
     /> {/* Replace 'defaultAdImageURL' with your default ad image URL */}
     <div className="span-title">
@@ -503,8 +554,9 @@ const handleSpecialtyChange = (event) => {
   {selectedLabs.length > 0 ? (
     <div className="selected-labs">
       
-      {selectedLabs?.map((hospital) => (
+      {selectedLabs?.map((hospital,index) => (
        <Hospitaldesc
+       key={`${hospital._id}-${index}`}
        hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${hospital.Hospitalphoto}`}
        mainheading={hospital.HospitalName}
        headings={hospital.address} // Adjust this based on your API response structure
@@ -536,16 +588,19 @@ const handleSpecialtyChange = (event) => {
                                     type="search"
                                     className="search-field"
                                     placeholder="Search..."
-                                    onChange={handleInputChange}
+                                   value={hospitalsearchQuery}
+                  onChange={handlespecialityhospitalname}
                                   />
                                 </label>
+                                 <button type="submit"><IoSearch /></button>
                               </form>
                               
                             </div>
                           </div>
      
-      {hospitalalllist?.map((hospital) => (
+      {filterespecilityhospitalname?.map((hospital,index) => (
         <Hospitaldesc
+         key={`${hospital._id}-${index}`}
        hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${hospital.Hospitalphoto}`}
        mainheading={hospital.HospitalName}
        headings={hospital.address} // Adjust this based on your API response structure

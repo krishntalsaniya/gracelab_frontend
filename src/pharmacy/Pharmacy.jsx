@@ -27,6 +27,7 @@ function Pharmacy() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredPharmacies, setFilteredPharmacies] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
+    const [pharmacyad, setpharmacyad] = useState(null)
 
 
   useEffect(() => {
@@ -125,6 +126,54 @@ function Pharmacy() {
     }
   }
   lablist();
+
+
+  const pharmacyad = async  () => {
+
+    try {
+      // Define parameters for pagination, sorting, and filtering
+      const pageNo = 1; // Example page number
+      const perPage = 10; // Example number of items per page
+      const column = 'LabName'; // Example column to sort on
+      const sortDirection = 'asc'; // Example sort direction
+     
+      const filter = true; // Example filter for active laboratories
+
+      const skip = (pageNo - 1) * perPage;
+
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list-by-params/listCustomizeAdvertisementByPharmacyLocation`,
+        {
+          skip: 0,
+          per_page: 10000,
+          sorton: '',
+          sortdir: '',
+          match: {
+           
+            Speciality: selectedCities,
+        },
+          IsActive: true,
+        }
+      );
+      console.log("response locatio data",response);
+
+      // Assuming the response contains an array of laboratories
+      const laboratories = response.data[0].data[0].CustomAdsImage;
+setpharmacyad(`${laboratories}`)
+      console.log("pharmacy_data : ",laboratories);
+      const labdata = laboratories
+
+      console.log("lab data ",labdata)
+
+      // Filter active laboratories (if needed)
+      const activeLaboratories = labdata.filter(lab => lab.isActive);
+
+      setpharmacylist(activeLaboratories);
+    } catch (error) {
+      console.error('Error fetching laboratories:', error);
+    }
+  }
+  pharmacyad();
 
   const Pharmacylocation = async () =>{
 
@@ -287,9 +336,17 @@ navigatelink="/pharmacy-login"
 <section className="services-details-area ptb-50 main-laboratory-section">
 <Container>
       <Row>
-        <Hospitalad
-        hospitaladimage={hospitalad}
-        />
+             <Col lg={12} md={12} xs={12} className="mb-0">
+  <div className="ad-image position-relative">
+    <Image 
+      src={pharmacyad ? `${process.env.REACT_APP_API_URL_GRACELAB}/${pharmacyad}` : ''} 
+      fluid 
+    /> {/* Replace 'defaultAdImageURL' with your default ad image URL */}
+    <div className="span-title">
+      <span>Ad</span>
+    </div>
+  </div>
+</Col>
 
         {/* left side section start */}
 

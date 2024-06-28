@@ -12,6 +12,7 @@ function Tellusmore() {
       const [termsData, setTermsData] = useState([]);
 
       const selectedtellusmore = localStorage.getItem('selectedtellusmore');
+      console.log("selected tell us more",selectedtellusmore);
 
 useEffect(() => {
   const fetchTermsAndConditions = async () => {

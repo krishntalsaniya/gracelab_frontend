@@ -172,6 +172,7 @@ function Home() {
   function handleLinkClickmore(item) {
   localStorage.setItem('selectedNavItem', item);
 }
+localStorage.clear();
   
 
   return (
@@ -353,9 +354,9 @@ function Home() {
                 <li><IoCheckmarkDoneSharp style={{ color: '#ffb923' }} /> Enhanced Patient Satisfaction</li>
               </ul>
               <div className="btn-box">
-              {cmsdesc.map((link)=>(
-                  <Link to={`/about/${link._id}`} className="btn btn-primary">Learn More</Link>
-              ))}
+            
+                  <Link to='about/667e52387a043e58372e16ce' className="btn btn-primary">Learn More</Link>
+             
               </div>
             </div>
           </Col>

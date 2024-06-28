@@ -76,6 +76,7 @@ function App() {
   <Route path='/tellusmore' element={<Tellusmore />} />
   <Route path='/camping' element={<Camping />} />
   <Route path='/about/:_ID' element={<About />} />
+  {/* <Route path='/tellusmore' element={<About />} /> */}
 
  
 </Routes> 

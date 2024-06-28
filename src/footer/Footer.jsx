@@ -9,6 +9,7 @@ import axios from 'axios';
 function Footer() {
   const [cmsdesc, setcmsdesc] = useState([])
   useEffect(() => {
+    localStorage.clear()
     
     const CMScontent = async() =>
       {

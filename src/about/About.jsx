@@ -43,46 +43,18 @@ function About() {
       <section className="about-our-company ptb-120 pb-0">
         <Container>
           <Row className="align-items-center">
-            <Col lg={6} md={12}>
-              <div className="about-content">
-                <span>About Company</span>
-                <h2>Welcome to Grace Labs</h2>
+            <Col lg={12} md={12}>
+              <div className="about-content text-center">
+               
                 <div dangerouslySetInnerHTML={{ __html: bout.blogDesc }} />
-                <p>
-                  Text will be coming soon...Text will be coming soon...Text will be coming soon...Text will be coming soon...
-                  Text will be coming soon...Text will be coming soon...Text will be coming soon...Text will be coming soon...
-                </p>
-                <ul className="about-features-list">
-          
-                </ul>
-              </div>
-            </Col>
-            <Col lg={6} md={12}>
-              <div className="about-company-image">
-                <img src={about2} alt="About Company" />
+              
+                
               </div>
             </Col>
           </Row>
         </Container>
 
-        <div className="about-our-company-inner">
-          <Container>
-            <Row className="align-items-center">
-              <Col lg={6} md={12}>
-                <div className="about-inner-company-image">
-                  <img src={about1} alt="About Company Inner" />
-                </div>
-              </Col>
-              <Col lg={6} md={12}>
-                <div className="about-inner-company-content">
-                  <h2>We Discoveries We Give Your Solution</h2>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis.</p>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                </div>
-              </Col>
-            </Row>
-          </Container>
-        </div>
+      
       </section>
     </>
   );
