@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { FaAngleDown } from "react-icons/fa";
-import { Modal, Row } from 'react-bootstrap';
+import { Col, Modal, Row ,Card,Image} from 'react-bootstrap';
 
 import logo from '../img/logo.jpg';
 import icon1 from '../img/icon1.png'
@@ -13,6 +13,7 @@ import Modalpopup from '../home/Modalpopup';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
+
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
@@ -195,36 +196,66 @@ function Modalnavigationbar(props) {
                   </Modal.Header>
                   <Modal.Body>
                     <Row className="justify-content-center" id="industry">
-                      <Modalpopup
-                        networkimage={icon1}
-                        networktitle="Laboratory"
-                        modalpopuplink="/laboratory-login"
-                        size="3"
-                      />
-                      <Modalpopup
-                        networkimage={icon2}
-                        networktitle="Pharmacy"
-                        modalpopuplink="/pharmacy-login"
-                        size="3"
-                      />
-                      <Modalpopup
-                        networkimage={icon3}
-                        networktitle="Doctors"
-                        modalpopuplink="/doctor-login"
-                        size="3"
-                      />
-                      <Modalpopup
-                        networkimage={icon4}
-                        networktitle="Hospitals"
-                        modalpopuplink="/hospital-login"
-                        size="3"
-                      />
-                      <Modalpopup
-                        networkimage={icon5}
-                        networktitle="Patients"
-                        modalpopuplink="/patient-login"
-                        size="3"
-                      />
+                        <Col lg={3} md={4} sm={6}>
+      <Link to='/laboratory-login' onClick={() => handleLinkClick('Laboratory')}>
+        <Card className="single-services-box-modalpopup text-center">
+          <Card.Body>
+            <div className="icon">
+              <Image src={icon1} alt="Service Icon" />
+            </div>
+            <Card.Title className='networktitle'>Laboratory</Card.Title>
+          </Card.Body>
+        </Card>
+      </Link>
+    </Col>
+                      <Col lg={3} md={4} sm={6}>
+      <Link to='/pharmacy-login' onClick={() => handleLinkClick('Pharmacy')}>
+        <Card className="single-services-box-modalpopup text-center">
+          <Card.Body>
+            <div className="icon">
+              <Image src={icon2} alt="Service Icon" />
+            </div>
+            <Card.Title className='networktitle'>Pharmacy</Card.Title>
+          </Card.Body>
+        </Card>
+      </Link>
+    </Col>
+                     <Col lg={3} md={4} sm={6}>
+      <Link to='/doctor-login' onClick={() => handleLinkClick('Doctors')}>
+        <Card className="single-services-box-modalpopup text-center">
+          <Card.Body>
+            <div className="icon">
+              <Image src={icon3} alt="Service Icon" />
+            </div>
+            <Card.Title className='networktitle'>Doctors</Card.Title>
+          </Card.Body>
+        </Card>
+      </Link>
+    </Col>
+                     <Col lg={3} md={4} sm={6}>
+      <Link to='/hospital-login' onClick={() => handleLinkClick('Hospital')}>
+        <Card className="single-services-box-modalpopup text-center">
+          <Card.Body>
+            <div className="icon">
+              <Image src={icon4} alt="Service Icon" />
+            </div>
+            <Card.Title className='networktitle'>Hospital</Card.Title>
+          </Card.Body>
+        </Card>
+      </Link>
+    </Col>
+                     <Col lg={3} md={4} sm={6}>
+      <Link to='/patient-login' onClick={() => handleLinkClick('Patients')}>
+        <Card className="single-services-box-modalpopup text-center">
+          <Card.Body>
+            <div className="icon">
+              <Image src={icon5} alt="Service Icon" />
+            </div>
+            <Card.Title className='networktitle'>Patient</Card.Title>
+          </Card.Body>
+        </Card>
+      </Link>
+    </Col>
                     </Row>
                   </Modal.Body>
                 </Modal>

@@ -498,6 +498,7 @@ navigatelink="/pharmacy-login"
                                     onChange={handleInputChange}
                                   />
                                 </label>
+                                <button type="submit"><IoSearch /></button>
                               </form>
                               
                             </div>

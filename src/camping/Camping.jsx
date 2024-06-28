@@ -65,6 +65,7 @@ function Camping() {
     <>
     <Modalnavigationbar />
       {/* <h2 className="text-center">Upcoming Camps</h2> */}
+       <h1 className='caming-sec'>Running Camping </h1>
       <div className="container">
         <div className="row">
           {camp.map((camping) => (
@@ -108,7 +109,7 @@ function Camping() {
 
 
 
-      <h1 style={{textAlign:'center'}}>upcoming camping </h1>
+      <h1 className='caming-sec'>Upcoming Camping </h1>
 
        <div className="container">
         <div className="row">

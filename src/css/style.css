@@ -7003,3 +7003,25 @@ blockquote::before,
   text-align: end;
   padding: 15px;
 }
+
+.rating-sec {
+  border: none;
+  background: none;
+  color: black;
+
+}
+
+.contact-sec {
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.modal-title-centered {
+  text-align: center;
+  width: 100%;
+}
+
+.caming-sec {
+  text-align: center;
+  margin-bottom: 20px;
+}

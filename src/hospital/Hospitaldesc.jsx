@@ -19,6 +19,7 @@ function Hospitaldesc(props) {
     name: '',
     email: '',
     contactNumber: '',
+    Description:'',
     file: null,
   });
   
@@ -84,6 +85,7 @@ function Hospitaldesc(props) {
       formDataToSend.append('name', formData.name);
       formDataToSend.append('email', formData.email);
       formDataToSend.append('contactNumber', formData.contactNumber);
+      formDataToSend.append('Description', formData.Description);
       formDataToSend.append('myFile', formData.file); // Ensure 'myFile' matches your backend field name
 
       // Adjust the API endpoint to match your backend route for submitting contact form
@@ -105,6 +107,7 @@ function Hospitaldesc(props) {
           name: '',
           email: '',
           contactNumber: '',
+          Description:'',
           file: null,
         });
       });
@@ -158,6 +161,7 @@ function Hospitaldesc(props) {
             confirmButtonText: 'Ok',
         });
     }
+    setratingShowModal(false);
 };
 
   return (
@@ -204,16 +208,16 @@ function Hospitaldesc(props) {
     </div>
               <Button
                 variant="primary"
-                className="rounded-pill mt-3 float-end"
-                style={{ borderRadius: '10px' }}
+                className="rounded-pill mt-3 float-end contact-sec"
+              
                 onClick={() => setShowModal(true)}
               >
                 Contact
               </Button>
                <Button
               
-                className="mt-3 float-end"
-                style={{ borderRadius: '10px' }}
+                className="mt-3 float-end rating-sec"
+               
                 onClick={() => setratingShowModal(true)}
               >
                 rating
@@ -268,6 +272,18 @@ function Hospitaldesc(props) {
               <Form.Control type="file" name="myFile" onChange={handleFileChange} />
             </Form.Group>
 
+             <Form.Group className="mb-3" controlId="formContactNumber">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter your Description"
+                name="Description"
+                value={formData.Description}
+                onChange={handleInputChange}
+                required
+              />
+            </Form.Group>
+
             <Button variant="primary" type="submit">
               Submit
             </Button>
@@ -277,7 +293,7 @@ function Hospitaldesc(props) {
 
       <Modal show={ratingshowModal} onHide={() => setratingShowModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Rating {props.mainheading}</Modal.Title>
+          <Modal.Title className="modal-title-centered">Rating {props.mainheading}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Formik
@@ -289,20 +305,9 @@ function Hospitaldesc(props) {
           >
            
               <FormikForm>
-                <Form.Group className="mb-3" controlId="formName">
-                  <Form.Label>Describe</Form.Label>
-                  <Field
-                    name="name"
-                    type="text"
-                    placeholder="Enter your name"
-                    className="form-control"
-                  />
-                  <ErrorMessage name="name" component="div" className="text-danger" />
-                </Form.Group>
 
-
-                <Form.Group className="mb-3" controlId="formName">
-                  <Form.Label>Rating </Form.Label>
+                  <Form.Group className="mb-3" controlId="formName">
+                  <Form.Label className="modal-title-centered">Rating </Form.Label>
                  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <ReactStars
       name="star"
@@ -315,6 +320,21 @@ function Hospitaldesc(props) {
     </div>
                   <ErrorMessage name="name" component="div" className="text-danger" />
                 </Form.Group>
+
+                
+                <Form.Group className="mb-3" controlId="formName">
+                  <Form.Label>Describe</Form.Label>
+                  <Field
+                    name="name"
+                    type="text"
+                    placeholder="Enter your name"
+                    className="form-control"
+                  />
+                  <ErrorMessage name="name" component="div" className="text-danger" />
+                </Form.Group>
+
+
+              
               
                 <Button variant="primary" type="submit">
                   Submit

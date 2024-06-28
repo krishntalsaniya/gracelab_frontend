@@ -20,6 +20,7 @@ function Labsec(props) {
     name: '',
     email: '',
     contactNumber: '',
+     Description:'',
     file: null,
   });
    const [rating, setRating] = useState(0);
@@ -69,8 +70,17 @@ console.log("Props",props);
   };
 
   const handleFileChange = (e) => {
-    setFormData({ ...formData, file: e.target.files[0] });
-  };
+  const file = e.target.files[0];
+  const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+
+  if (file && validTypes.includes(file.type)) {
+    setFormData({ ...formData, file });
+  } else {
+    // Provide feedback if the file type is not supported
+    alert('Only JPG, JPEG, and PNG files are supported.');
+    e.target.value = null; // Clear the input
+  }
+};
 
   const validationSchemarating = Yup.object().shape({
   name: Yup.string().required('Name is required'),
@@ -84,6 +94,7 @@ console.log("Props",props);
       formDataToSend.append('name', formData.name);
       formDataToSend.append('email', formData.email);
       formDataToSend.append('contactNumber', formData.contactNumber);
+      formDataToSend.append('Description', formData.Description);
       formDataToSend.append('myFile', formData.file); // Ensure 'myFile' matches your backend field name
 
       // Adjust the API endpoint to match your backend route for submitting contact form
@@ -105,6 +116,7 @@ console.log("Props",props);
           name: '',
           email: '',
           contactNumber: '',
+          Description:'',
           file: null,
         });
       });
@@ -158,6 +170,7 @@ console.log("Props",props);
             confirmButtonText: 'Ok',
         });
     }
+    setratingShowModal(false);
 };
   return (
     <>
@@ -203,16 +216,16 @@ console.log("Props",props);
    
               <Button
                 variant="primary"
-                className="rounded-pill mt-3 float-end"
-                style={{ borderRadius: '10px' }}
+                className="rounded-pill mt-3 float-end contact-sec"
+               
                 onClick={() => setShowModal(true)}
               >
                 Contact
               </Button>
 
                <Button 
-                className="mt-3 float-end"
-                style={{ border:'none',background:'none',color:'black' }}
+                className="mt-3 float-end rating-sec"
+                
                 onClick={() => setratingShowModal(true)}
               >rating </Button>
             </Card.Body>
@@ -265,6 +278,19 @@ console.log("Props",props);
               <Form.Control type="file" name="myFile" onChange={handleFileChange} />
             </Form.Group>
 
+             <Form.Group className="mb-3" controlId="formContactNumber">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter your Description"
+                name="Description"
+                value={formData.Description}
+                onChange={handleInputChange}
+                required
+              />
+            </Form.Group>
+
+
             <Button variant="primary" type="submit">
               Submit
             </Button>
@@ -275,7 +301,7 @@ console.log("Props",props);
       
       <Modal show={ratingshowModal} onHide={() => setratingShowModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Rating {props.mainheading}</Modal.Title>
+          <Modal.Title className="modal-title-centered">Rating {props.mainheading}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Formik
@@ -287,20 +313,9 @@ console.log("Props",props);
           >
            
               <FormikForm>
-                <Form.Group className="mb-3" controlId="formName">
-                  <Form.Label>Describe</Form.Label>
-                  <Field
-                    name="name"
-                    type="text"
-                    placeholder="Enter your name"
-                    className="form-control"
-                  />
-                  <ErrorMessage name="name" component="div" className="text-danger" />
-                </Form.Group>
 
-
-                <Form.Group className="mb-3" controlId="formName">
-                  <Form.Label>Rating </Form.Label>
+                     <Form.Group className="mb-3" controlId="formName">
+                  <Form.Label className="modal-title-centered">Rating </Form.Label>
                  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <ReactStars
       name="star"
@@ -313,6 +328,19 @@ console.log("Props",props);
     </div>
                   <ErrorMessage name="name" component="div" className="text-danger" />
                 </Form.Group>
+                <Form.Group className="mb-3" controlId="formName">
+                  <Form.Label>Describe</Form.Label>
+                  <Field
+                    name="name"
+                    type="text"
+                    placeholder="Enter your name"
+                    className="form-control"
+                  />
+                  <ErrorMessage name="name" component="div" className="text-danger" />
+                </Form.Group>
+
+
+           
               
                 <Button variant="primary" type="submit">
                   Submit

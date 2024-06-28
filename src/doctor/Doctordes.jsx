@@ -124,6 +124,9 @@ useEffect(() => {
         confirmButtonText: 'Ok',
       });
     }
+    setRatingShowModal(false);
+    
+
   };
 // Log final rating star value
 
@@ -174,15 +177,15 @@ useEffect(() => {
 
               <Button
                 variant="primary"
-                className="rounded-pill mt-3 float-end"
-                style={{ borderRadius: '10px' }}
+                className="rounded-pill mt-3 float-end contact-sec"
+               
                 onClick={() => setShowModal(true)}
               >
                 Contact
               </Button>
               <Button
-                className="mt-3 float-end"
-                style={{ border: 'none', background: 'none', color: 'black' }}
+                className="mt-3 float-end rating-sec"
+                
                 onClick={() => setRatingShowModal(true)}
               >
                 Rating
@@ -274,7 +277,7 @@ useEffect(() => {
       {/* Rating Modal */}
       <Modal show={ratingShowModal} onHide={() => setRatingShowModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Rating {props.mainheading}</Modal.Title>
+          <Modal.Title className="modal-title-centered">Rating {props.mainheading}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Formik
@@ -286,18 +289,9 @@ useEffect(() => {
           >
             {({ setFieldValue }) => (
               <FormikForm>
-                <Form.Group className="mb-3" controlId="formName">
-                  <Form.Label>Name</Form.Label>
-                  <Field
-                    name="name"
-                    type="text"
-                    placeholder="Enter your name"
-                    className="form-control"
-                  />
-                  <ErrorMessage name="name" component="div" className="text-danger" />
-                </Form.Group>
+
                 <Form.Group className="mb-3" controlId="formRating">
-                  <Form.Label>Rating</Form.Label>
+                  <Form.Label className="modal-title-centered">Rating</Form.Label>
                   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <ReactStars
                       count={5}
@@ -308,6 +302,18 @@ useEffect(() => {
                     />
                   </div>
                 </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formName">
+                  <Form.Label>Name</Form.Label>
+                  <Field
+                    name="name"
+                    type="text"
+                    placeholder="Enter your name"
+                    className="form-control"
+                  />
+                  <ErrorMessage name="name" component="div" className="text-danger" />
+                </Form.Group>
+                
                 <Button variant="primary" type="submit">
                   Submit
                 </Button>

@@ -502,7 +502,7 @@ navigatelink="/doctor-login"
                 </Col>
               ))}
               
-              {showMore && location?.map((city) => (
+              {/* {showMore && location?.map((city) => (
                 <Hospitallable label={city.Name} size="6" />
               ))}
 
@@ -510,7 +510,7 @@ navigatelink="/doctor-login"
                 <Link onClick={toggleShowMore} className='view-more'>View Less</Link>
               ) : (
                 <Link onClick={toggleShowMore} className='view-more'>View More</Link>
-              )}
+              )} */}
             </div>
           </div>
         </div>
@@ -674,6 +674,7 @@ navigatelink="/doctor-login"
                                     onChange={handleInputChange}
                                   />
                                 </label>
+                                <button type="submit"><IoSearch /></button>
                               </form>
                               
                             </div>
