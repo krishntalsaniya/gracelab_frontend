@@ -4,16 +4,13 @@ import { IoMdTimer } from 'react-icons/io';
 import { Link } from 'react-router-dom';
 import { Card, Col, Image, Row, Button, Modal, Form } from 'react-bootstrap';
 import axios from 'axios';
-import Swal from 'sweetalert2'; // Import SweetAlert
+import Swal from 'sweetalert2';
 import { Formik, Form as FormikForm, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import ReactStars from 'react-rating-stars-component'
-import hospitalplaceholder from '../img/Hospitalplaceholder.jpg'
-
+import ReactStars from 'react-rating-stars-component';
+import hospitalplaceholder from '../img/Hospitalplaceholder.jpg';
 
 function Hospitaldesc(props) {
-
-  
   const [dayName, setDayName] = useState('');
   const [dayName2, setDayName2] = useState('');
   const [dayName3, setDayName3] = useState('');
@@ -22,21 +19,30 @@ function Hospitaldesc(props) {
     name: '',
     email: '',
     contactNumber: '',
-    Description:'',
+    Description: '',
     file: null,
   });
-  
   const [rating, setRating] = useState(0);
-   const [ratingshowModal, setratingShowModal] = useState(false);
+  const [ratingshowModal, setRatingShowModal] = useState(false);
 
-   const handleRatingChange = (newRating) => {
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleFileChange = (e) => {
+    setFormData({ ...formData, file: e.target.files[0] });
+  };
+
+  const handleRatingChange = (newRating) => {
     setRating(newRating);
   };
 
   useEffect(() => {
     const fetchDayName = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/get/Days/${props.dayslab1}`);
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/get/Days/${props.dayslab1}`
+        );
         setDayName(response.data.Days);
       } catch (error) {
         console.error('Error fetching day name:', error);
@@ -47,7 +53,9 @@ function Hospitaldesc(props) {
 
     const fetchDayName2 = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/get/Days/${props.dayslab2}`);
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/get/Days/${props.dayslab2}`
+        );
         setDayName2(response.data.Days);
       } catch (error) {
         console.error('Error fetching day name:', error);
@@ -58,7 +66,9 @@ function Hospitaldesc(props) {
 
     const fetchDayName3 = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/get/Days/${props.dayslab3}`);
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/get/Days/${props.dayslab3}`
+        );
         setDayName3(response.data.Days);
       } catch (error) {
         console.error('Error fetching day name:', error);
@@ -68,37 +78,37 @@ function Hospitaldesc(props) {
     fetchDayName3();
   }, [props.dayslab1, props.dayslab2, props.dayslab3]);
 
-  const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required('Name is required'),
+    email: Yup.string().email('Invalid email address').required('Email is required'),
+    contactNumber: Yup.string()
+      .matches(/^\d+$/, 'Contact No. must contain only digits')
+      .length(10, 'Contact No. must be exactly 10 digits')
+      .required('Contact No. is required'),
+    Description: Yup.string().required('Description is required'),
+    file: Yup.mixed().required('File is required'),
+  });
 
-  const handleFileChange = (e) => {
-    setFormData({ ...formData, file: e.target.files[0] });
-  };
+  const validationSchemaRating = Yup.object().shape({
+    name: Yup.string().required('Name is required'),
+  });
 
-    const validationSchemarating = Yup.object().shape({
-  name: Yup.string().required('Name is required'),
-  
-});
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (values, { resetForm }) => {
     try {
       const formDataToSend = new FormData();
-      formDataToSend.append('name', formData.name);
-      formDataToSend.append('email', formData.email);
-      formDataToSend.append('contactNumber', formData.contactNumber);
-      formDataToSend.append('Description', formData.Description);
-      formDataToSend.append('myFile', formData.file); // Ensure 'myFile' matches your backend field name
+      formDataToSend.append('name', values.name);
+      formDataToSend.append('email', values.email);
+      formDataToSend.append('contactNumber', values.contactNumber);
+      formDataToSend.append('Description', values.Description);
+      formDataToSend.append('myFile', values.file);
 
-      // Adjust the API endpoint to match your backend route for submitting contact form
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/create/Contacthospital/${props.Labid}`,
         formDataToSend
       );
+
       console.log('Form submitted successfully:', response.data);
 
-      // Show SweetAlert popup upon successful submission
       Swal.fire({
         icon: 'success',
         title: 'Form Submitted!',
@@ -106,17 +116,10 @@ function Hospitaldesc(props) {
         confirmButtonText: 'Ok',
       }).then(() => {
         setShowModal(false);
-        setFormData({
-          name: '',
-          email: '',
-          contactNumber: '',
-          Description:'',
-          file: null,
-        });
+        resetForm();
       });
     } catch (error) {
       console.error('Error submitting form:', error);
-      // Handle error state or display error message to user
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
@@ -126,67 +129,57 @@ function Hospitaldesc(props) {
     }
   };
 
-    const handleratingsubmit = async (values, { resetForm }) => {
+  const handleRatingSubmit = async (values, { resetForm }) => {
     try {
-        const formDataToSend = new FormData();
-        formDataToSend.append('name', values.name);
-        formDataToSend.append('rating', rating); // Assuming values.rating is provided from the form
-        formDataToSend.append('Hospital', props.Labid); // Assuming values.Doctor is provided from the form
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/create/ContactRating`,
+        {
+          name: values.name,
+          rating: rating,
+          Hospital: props.Labid,
+        }
+      );
 
-        // Adjust the API endpoint to match your backend route for submitting contact form
-        const response = await axios.post(
-            `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/create/ContactRating`,
-            {
-              "name":values.name,
-              "rating":rating,
-              "Hospital":props.Labid
-            },            
-        );
+      console.log('Rating submitted successfully:', response.data);
 
-        console.log('Form submitted successfully:', response.data);
-
-        // Show SweetAlert popup upon successful submission
-        Swal.fire({
-            icon: 'success',
-            title: 'Form Submitted!',
-            text: 'Your rating has been submitted successfully.',
-            confirmButtonText: 'Ok',
-        }).then(() => {
-            resetForm();
-        });
+      Swal.fire({
+        icon: 'success',
+        title: 'Rating Submitted!',
+        text: 'Your rating has been submitted successfully.',
+        confirmButtonText: 'Ok',
+      }).then(() => {
+        resetForm();
+        setRatingShowModal(false);
+      });
     } catch (error) {
-        console.error('Error submitting form:', error);
-        // Handle error state or display error message to user
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Something went wrong! Please try again.',
-            confirmButtonText: 'Ok',
-        });
+      console.error('Error submitting rating:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong! Please try again.',
+        confirmButtonText: 'Ok',
+      });
     }
-    setratingShowModal(false);
-};
+  };
 
   return (
     <>
       <Card className="single-research-box">
         <Row>
-          
-<Col lg={6} md={6} sm={12}>
-  <div className="research-image">
-    <Link to={props.imagelink} target="_blank">
-      <Image 
-        src={props.hospitalimage} 
-        alt="Hospital Image" 
-        onError={(e) => {
-          e.target.onerror = null; 
-          e.target.src = hospitalplaceholder;
-        }} 
-      />
-    </Link>
-  </div>
-</Col>
-
+          <Col lg={6} md={6} sm={12}>
+            <div className="research-image">
+              <Link to={props.imagelink} target="_blank">
+                <Image
+                  src={props.hospitalimage}
+                  alt="Hospital Image"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = hospitalplaceholder;
+                  }}
+                />
+              </Link>
+            </div>
+          </Col>
           <Col lg={6} md={6} sm={12}>
             <Card.Body className="research-content">
               <h3>
@@ -208,31 +201,24 @@ function Hospitaldesc(props) {
                   <IoMdTimer className="map-color" /> {props.starttime3} - {props.endtime3} - {dayName3}
                 </h5>
               </div>
-                     <div>
-      {/* Render ReactStars with fetched rating */}
-      <ReactStars
-        count={5}
-        size={24}
-        activeColor="#ffd700"
-        value={props.averageRating?props.averageRating:0}
-        edit={false}
-      />
-    </div>
+              <div>
+                <ReactStars
+                  count={5}
+                  size={24}
+                  activeColor="#ffd700"
+                  value={props.averageRating ? props.averageRating : 0}
+                  edit={false}
+                />
+              </div>
               <Button
                 variant="primary"
                 className="rounded-pill mt-3 float-end contact-sec"
-              
                 onClick={() => setShowModal(true)}
               >
                 Contact
               </Button>
-               <Button
-              
-                className="mt-3 float-end rating-sec"
-               
-                onClick={() => setratingShowModal(true)}
-              >
-                rating
+              <Button className="mt-3 float-end rating-sec" onClick={() => setRatingShowModal(true)}>
+                Rate Us
               </Button>
             </Card.Body>
           </Col>
@@ -245,114 +231,133 @@ function Hospitaldesc(props) {
           <Modal.Title>Contact {props.mainheading}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3" controlId="formName">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter your name"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                required
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formEmail">
-              <Form.Label>Email address</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Enter your email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                required
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formContactNumber">
-              <Form.Label>Contact Number</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter your contact number"
-                name="contactNumber"
-                value={formData.contactNumber}
-                onChange={handleInputChange}
-                required
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formFile">
-              <Form.Label>Upload File</Form.Label>
-              <Form.Control type="file" name="myFile" onChange={handleFileChange} />
-            </Form.Group>
-
-             <Form.Group className="mb-3" controlId="formContactNumber">
-              <Form.Label>Description</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter your Description"
-                name="Description"
-                value={formData.Description}
-                onChange={handleInputChange}
-                required
-              />
-            </Form.Group>
-
-            <Button variant="primary" type="submit">
-              Submit
-            </Button>
-          </Form>
+          <Formik
+            initialValues={{
+              name: '',
+              email: '',
+              contactNumber: '',
+              Description: '',
+              file: null,
+            }}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}
+          >
+            {({ values, handleChange, handleSubmit, setFieldValue, errors, touched }) => (
+              <Form noValidate onSubmit={handleSubmit}>
+                <Form.Group className="mb-3" controlId="formName">
+                  <Form.Label>Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter your name"
+                    name="name"
+                    value={values.name}
+                    onChange={handleChange}
+                    isInvalid={touched.name && !!errors.name}
+                  />
+                  <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formEmail">
+                  <Form.Label>Email address</Form.Label>
+                  <Form.Control
+                    type="email"
+                    placeholder="Enter your email"
+                    name="email"
+                    value={values.email}
+                    onChange={handleChange}
+                    isInvalid={touched.email && !!errors.email}
+                  />
+                  <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formContactNumber">
+                  <Form.Label>Contact Number</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter your contact number"
+                    name="contactNumber"
+                    value={values.contactNumber}
+                    onChange={handleChange}
+                    isInvalid={touched.contactNumber && !!errors.contactNumber}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.contactNumber}
+                  </Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formDescription">
+                  <Form.Label>Description</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={3}
+                    placeholder="Enter your message"
+                    name="Description"
+                    value={values.Description}
+                    onChange={handleChange}
+                    isInvalid={touched.Description && !!errors.Description}
+                  />
+                  <Form.Control.Feedback type="invalid">{errors.Description}</Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group controlId="formFile" className="mb-3">
+                  <Form.Label>Upload File</Form.Label>
+                  <Form.Control
+                    type="file"
+                    onChange={(e) => {
+                      setFieldValue('file', e.currentTarget.files[0]);
+                    }}
+                    isInvalid={touched.file && !!errors.file}
+                  />
+                  <Form.Control.Feedback type="invalid">{errors.file}</Form.Control.Feedback>
+                </Form.Group>
+                <Button variant="primary" type="submit" className="rounded-pill mt-3 float-end">
+                  Submit
+                </Button>
+              </Form>
+            )}
+          </Formik>
         </Modal.Body>
       </Modal>
 
-      <Modal show={ratingshowModal} onHide={() => setratingShowModal(false)}>
+      {/* Rating Modal */}
+        <Modal show={ratingshowModal} onHide={() => setRatingShowModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title className="modal-title-centered">Rating {props.mainheading}</Modal.Title>
+          <Modal.Title>Rating {props.mainheading}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Formik
             initialValues={{
               name: '',
             }}
-            validationSchema={validationSchemarating}
-            onSubmit={handleratingsubmit}
+            validationSchema={validationSchemaRating}
+            onSubmit={handleRatingSubmit}
           >
-           
-              <FormikForm>
-
-                  <Form.Group className="mb-3" controlId="formName">
-                  <Form.Label className="modal-title-centered">Rating </Form.Label>
-                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-      <ReactStars
-      name="star"
-        count={5}  // Number of stars to display
-        size={48}  // Size of the stars in pixels
-        activeColor="#ffd700"  // Color of active stars
-        onChange={handleRatingChange}  // Callback when rating changes
-         value={rating}  // Controlled value of the rating
-      />
-    </div>
-                  <ErrorMessage name="name" component="div" className="text-danger" />
+            {({ handleSubmit, handleChange, values, errors, touched }) => (
+              <Form noValidate onSubmit={handleSubmit}>
+                <Form.Group className="mb-3" controlId="formRating">
+                  <Form.Label className='modal-title-centered '>Rate Us</Form.Label>
+                  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <ReactStars
+                      count={5}
+                      size={48}
+                      activeColor="#ffd700"
+                      value={rating}
+                      onChange={handleRatingChange}
+                    />
+                  </div>
                 </Form.Group>
-
-                
-                <Form.Group className="mb-3" controlId="formName">
-                  <Form.Label>Describe</Form.Label>
+                <Form.Group className="mb-3" controlId="formRatingName">
+                  <Form.Label>Name</Form.Label>
                   <Field
                     name="name"
                     type="text"
                     placeholder="Enter your name"
                     className="form-control"
+                    isInvalid={touched.name && !!errors.name}
                   />
                   <ErrorMessage name="name" component="div" className="text-danger" />
                 </Form.Group>
-
-
-              
-              
                 <Button variant="primary" type="submit">
                   Submit
                 </Button>
-              </FormikForm>
-           
+              </Form>
+            )}
           </Formik>
         </Modal.Body>
       </Modal>

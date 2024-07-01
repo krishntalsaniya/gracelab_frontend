@@ -235,9 +235,16 @@ const handleTestChange = (event) => {
 };
 
 
-  const toggleAccordion1 = () => setOpen1(!open1);
-  const toggleAccordion2 = () => setOpen2(!open2);
-  const toggleAccordion3 = () => setOpen3(!open3);
+  const toggleAccordion1 = (event) =>{
+     event.preventDefault();
+      setOpen1(!open1);
+  } 
+
+  const toggleAccordion3 = (event) => 
+    {
+      event.preventDefault();
+      setOpen3(!open3);
+    }
 
   const handleInputChange = (e) => {
     const inputValue = e.target.value;

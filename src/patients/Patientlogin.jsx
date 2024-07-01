@@ -10,47 +10,46 @@ import { MdArrowForwardIos } from "react-icons/md";
 import axios from 'axios';
 
 
-
+  const handleRedirect = () => {
+    window.open('http://PatientGracelab.barodaweb.in','_blank');
+  };
 
 
 function Patientlogin() {
 
     const [showModal, setShowModal] = useState(false);
-    const [email, setemail] = useState('')
-    const [password, setpassword] = useState('')
-    const [error, seterror] = useState('')
-    const [loading, setloading] = useState(false)
+   
 
-    const handlechange = async(e) =>
-      {
-        e.preventDefault();
-        setloading(true);
-        seterror('');
+    // const handlechange = async(e) =>
+    //   {
+    //     e.preventDefault();
+    //     setloading(true);
+    //     seterror('');
 
-        try {
-          const patientlogin = await axios.post(
-            `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/userLoginPatient`,
-            {
-                    email,
-                    password,
-            }
-          )
+    //     try {
+    //       const patientlogin = await axios.post(
+    //         `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/userLoginPatient`,
+    //         {
+    //                 email,
+    //                 password,
+    //         }
+    //       )
 
-          const patientresult = (patientlogin.data)
+    //       const patientresult = (patientlogin.data)
 
-          if (patientresult.isOk) {
-            window.open('http://PatientGracelab.barodaweb.in','_blank');
-          } else {
-            seterror(patientresult.message);
-          }
+    //       if (patientresult.isOk) {
+    //         window.open('http://PatientGracelab.barodaweb.in','_blank');
+    //       } else {
+    //         seterror(patientresult.message);
+    //       }
           
-        } catch (err) {
-          console.error(err);
-          seterror('An error occurred while logging in.');
-        } finally {
-          setloading(false);
-        }
-      };
+    //     } catch (err) {
+    //       console.error(err);
+    //       seterror('An error occurred while logging in.');
+    //     } finally {
+    //       setloading(false);
+    //     }
+    //   };
 
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
@@ -81,7 +80,7 @@ function Patientlogin() {
                     <p className="mb-4">Please login to your account</p>
                   </div>
                 </div>
-                {error && <Alert variant="danger">{error}</Alert>}
+                {/* {error && <Alert variant="danger">{error}</Alert>}
                 <Form className="signin-form" onSubmit={handlechange}>
                   <Form.Group className="mb-3" controlId="formUsername">
                     <Form.Label>Username</Form.Label>
@@ -107,11 +106,9 @@ function Patientlogin() {
                     <Col className="text-end" xs={6}>
                       <Link to="/forgotpassword">Forgot Password?</Link>
                     </Col>
-                  </Row>
-                  <Button type="submit" className="form-control btn btn-sign-in rounded submit px-3" disabled={loading}>
-                      {loading ? 'Signing In...' : 'Sign In'}
-                    </Button>
-                </Form>
+                  </Row> */}
+                  <Button onClick={handleRedirect} type="submit" className="form-control btn btn-sign-in rounded submit px-3">SIGN IN </Button>
+                {/* </Form> */}
                 <p className="text-center accounttop">Don't have an account? <Link to="/patient-signup" className="d-inline-block">Register here</Link></p>
                 <p className="text-center fw-bold">
                 <Link to="#" onClick={handleShow} style={{ color: "#eb268f" }}>Why Registered with us</Link>

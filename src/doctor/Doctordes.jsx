@@ -8,18 +8,17 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import ReactStars from 'react-rating-stars-component';
-import doctorplaceholder from '../img/doctorplaceholder.png'
+import doctorplaceholder from '../img/doctorplaceholder.png';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Name is required'),
-  email: Yup.string()
-    .email('Invalid email address')
-    .required('Email is required'),
+  email: Yup.string().email('Invalid email address').required('Email is required'),
   contactNumber: Yup.string()
     .matches(/^\d+$/, 'Contact No. must contain only digits')
     .length(10, 'Contact No. must be exactly 10 digits')
     .required('Contact No. is required'),
   description: Yup.string().required('Description is required'),
+  file: Yup.mixed().required('File is required'),
 });
 
 const ratingValidationSchema = Yup.object().shape({
@@ -27,18 +26,16 @@ const ratingValidationSchema = Yup.object().shape({
 });
 
 const Doctordes = (props) => {
-  console.log("props",props)
   const [dayName, setDayName] = useState('');
   const [dayName2, setDayName2] = useState('');
   const [dayName3, setDayName3] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [ratingShowModal, setRatingShowModal] = useState(false);
   const [rating, setRating] = useState(0);
-console.log("props Ratings",props.averageRating);
-useEffect(() => {
- setRating(props.averageRating)
-  
-}, [])
+
+  useEffect(() => {
+    setRating(props.averageRating);
+  }, [props.averageRating]);
 
   useEffect(() => {
     const fetchDayNames = async () => {
@@ -69,7 +66,7 @@ useEffect(() => {
       formData.append('email', values.email);
       formData.append('contactNumber', values.contactNumber);
       formData.append('Description', values.description);
-      formData.append('myFile', values.file); // Ensure 'myFile' matches your backend field name
+      formData.append('myFile', values.file);
 
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/create/Contactdoctor/${props.Labid}`,
@@ -126,10 +123,7 @@ useEffect(() => {
       });
     }
     setRatingShowModal(false);
-    
-
   };
-// Log final rating star value
 
   return (
     <>
@@ -138,14 +132,14 @@ useEffect(() => {
           <Col lg={6} md={6} sm={12}>
             <div className="research-image">
               <Link to={props.imagelink} target="_blank">
-                 <Image 
-        src={props.hospitalimage} 
-        alt="Doctor Image" 
-        onError={(e) => {
-          e.target.onerror = null; 
-          e.target.src = doctorplaceholder;
-        }} 
-      />
+                <Image
+                  src={props.hospitalimage}
+                  alt="Doctor Image"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = doctorplaceholder;
+                  }}
+                />
               </Link>
             </div>
           </Col>
@@ -171,32 +165,28 @@ useEffect(() => {
                 </h5>
               </div>
 
-              {/* Render ReactStars with the correct value */}
-               <div>
-      {/* Render ReactStars with fetched rating */}
-      <ReactStars
-        count={5}
-        size={24}
-        activeColor="#ffd700"
-        value={props.averageRating?props.averageRating:4}
-        edit={false}
-      />
-    </div>
+              <div>
+                <ReactStars
+                  count={5}
+                  size={24}
+                  activeColor="#ffd700"
+                  value={props.averageRating ? props.averageRating : 4}
+                  edit={false}
+                />
+              </div>
 
               <Button
                 variant="primary"
                 className="rounded-pill mt-3 float-end contact-sec"
-               
                 onClick={() => setShowModal(true)}
               >
                 Contact
               </Button>
               <Button
                 className="mt-3 float-end rating-sec"
-                
                 onClick={() => setRatingShowModal(true)}
               >
-                Rating
+                Rate Us
               </Button>
             </Card.Body>
           </Col>
@@ -220,7 +210,7 @@ useEffect(() => {
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
           >
-            {({ setFieldValue }) => (
+            {({ setFieldValue, errors, touched }) => (
               <FormikForm>
                 <Form.Group className="mb-3" controlId="formName">
                   <Form.Label>Name</Form.Label>
@@ -228,9 +218,9 @@ useEffect(() => {
                     name="name"
                     type="text"
                     placeholder="Enter your name"
-                    className="form-control"
+                    className={`form-control ${errors.name && touched.name ? 'is-invalid' : ''}`}
                   />
-                  <ErrorMessage name="name" component="div" className="text-danger" />
+                  <ErrorMessage name="name" component="div" className="invalid-feedback" />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formEmail">
                   <Form.Label>Email address</Form.Label>
@@ -238,9 +228,9 @@ useEffect(() => {
                     name="email"
                     type="email"
                     placeholder="Enter your email"
-                    className="form-control"
+                    className={`form-control ${errors.email && touched.email ? 'is-invalid' : ''}`}
                   />
-                  <ErrorMessage name="email" component="div" className="text-danger" />
+                  <ErrorMessage name="email" component="div" className="invalid-feedback" />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formContactNumber">
                   <Form.Label>Contact Number</Form.Label>
@@ -248,20 +238,21 @@ useEffect(() => {
                     name="contactNumber"
                     type="text"
                     placeholder="Enter your contact number"
-                    className="form-control"
+                    className={`form-control ${errors.contactNumber && touched.contactNumber ? 'is-invalid' : ''}`}
                   />
-                  <ErrorMessage name="contactNumber" component="div" className="text-danger" />
+                  <ErrorMessage name="contactNumber" component="div" className="invalid-feedback" />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formFile">
                   <Form.Label>Upload File</Form.Label>
                   <input
                     name="file"
                     type="file"
-                    className="form-control"
+                    className={`form-control ${errors.file && touched.file ? 'is-invalid' : ''}`}
                     onChange={(event) => {
                       setFieldValue('file', event.currentTarget.files[0]);
                     }}
                   />
+                  <ErrorMessage name="file" component="div" className="invalid-feedback" />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formDescription">
                   <Form.Label>Description</Form.Label>
@@ -269,9 +260,9 @@ useEffect(() => {
                     name="description"
                     type="text"
                     placeholder="Enter your Description"
-                    className="form-control"
+                    className={`form-control ${errors.description && touched.description ? 'is-invalid' : ''}`}
                   />
-                  <ErrorMessage name="description" component="div" className="text-danger" />
+                  <ErrorMessage name="description" component="div" className="invalid-feedback" />
                 </Form.Group>
                 <Button variant="primary" type="submit">
                   Submit
@@ -295,11 +286,10 @@ useEffect(() => {
             validationSchema={ratingValidationSchema}
             onSubmit={handleRatingSubmit}
           >
-            {({ setFieldValue }) => (
+            {({ setFieldValue, errors, touched }) => (
               <FormikForm>
-
                 <Form.Group className="mb-3" controlId="formRating">
-                  <Form.Label className="modal-title-centered">Rating</Form.Label>
+                  <Form.Label className="modal-title-centered">Rate Us</Form.Label>
                   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <ReactStars
                       count={5}
@@ -310,18 +300,16 @@ useEffect(() => {
                     />
                   </div>
                 </Form.Group>
-
                 <Form.Group className="mb-3" controlId="formName">
                   <Form.Label>Name</Form.Label>
                   <Field
                     name="name"
                     type="text"
                     placeholder="Enter your name"
-                    className="form-control"
+                    className={`form-control ${errors.name && touched.name ? 'is-invalid' : ''}`}
                   />
-                  <ErrorMessage name="name" component="div" className="text-danger" />
+                  <ErrorMessage name="name" component="div" className="invalid-feedback" />
                 </Form.Group>
-                
                 <Button variant="primary" type="submit">
                   Submit
                 </Button>

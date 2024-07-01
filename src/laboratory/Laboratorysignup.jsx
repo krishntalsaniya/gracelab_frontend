@@ -10,6 +10,8 @@ import * as Yup from 'yup';
 import Swal from 'sweetalert2';
 import { Link, useNavigate } from 'react-router-dom';
 
+
+
 const SignupSchema = Yup.object().shape({
   name: Yup.string().required('Name is required'),
   email: Yup.string()

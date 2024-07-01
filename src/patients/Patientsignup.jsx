@@ -29,8 +29,15 @@ function Patientsignup() {
   });
   const [showModal, setShowModal] = useState(false);
 
-  const handleClose = () => setShowModal(false);
-  const handleShow = () => setShowModal(true);
+  const handleClose = () => 
+  
+    setShowModal(false);
+  
+  const handleShow = (event) => 
+    {
+      event.preventDefault();
+      setShowModal(true);
+    } 
 
   const navigate = useNavigate();
   const [file, setFile] = useState(null);
