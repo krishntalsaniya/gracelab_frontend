@@ -8,6 +8,7 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import ReactStars from 'react-rating-stars-component';
+import doctorplaceholder from '../img/doctorplaceholder.png'
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Name is required'),
@@ -137,7 +138,14 @@ useEffect(() => {
           <Col lg={6} md={6} sm={12}>
             <div className="research-image">
               <Link to={props.imagelink} target="_blank">
-                <Image src={props.hospitalimage} alt="image" />
+                 <Image 
+        src={props.hospitalimage} 
+        alt="Doctor Image" 
+        onError={(e) => {
+          e.target.onerror = null; 
+          e.target.src = doctorplaceholder;
+        }} 
+      />
               </Link>
             </div>
           </Col>

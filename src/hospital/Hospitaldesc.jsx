@@ -8,9 +8,12 @@ import Swal from 'sweetalert2'; // Import SweetAlert
 import { Formik, Form as FormikForm, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import ReactStars from 'react-rating-stars-component'
+import hospitalplaceholder from '../img/Hospitalplaceholder.jpg'
 
 
 function Hospitaldesc(props) {
+
+  
   const [dayName, setDayName] = useState('');
   const [dayName2, setDayName2] = useState('');
   const [dayName3, setDayName3] = useState('');
@@ -168,13 +171,22 @@ function Hospitaldesc(props) {
     <>
       <Card className="single-research-box">
         <Row>
-          <Col lg={6} md={6} sm={12}>
-            <div className="research-image">
-              <Link to={props.imagelink} target="_blank">
-                <Image src={props.hospitalimage} alt="image" />
-              </Link>
-            </div>
-          </Col>
+          
+<Col lg={6} md={6} sm={12}>
+  <div className="research-image">
+    <Link to={props.imagelink} target="_blank">
+      <Image 
+        src={props.hospitalimage} 
+        alt="Hospital Image" 
+        onError={(e) => {
+          e.target.onerror = null; 
+          e.target.src = hospitalplaceholder;
+        }} 
+      />
+    </Link>
+  </div>
+</Col>
+
           <Col lg={6} md={6} sm={12}>
             <Card.Body className="research-content">
               <h3>

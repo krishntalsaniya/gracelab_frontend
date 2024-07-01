@@ -322,7 +322,23 @@ localStorage.clear();
  
   <Link onClick={() => handleLinkClick('Join Our Loyalty Program')} to='/tellusmore' className="btn btn-secondary">Tell Us More</Link>
 </Card>
-  
+<Row>
+<Col lg={4} md={6} sm={6}>
+      <div className="single-box p-0">
+        <Image src={program1} fluid />
+      </div>
+    </Col>
+<Col lg={4} md={6} sm={6}>
+      <div className="single-box p-0">
+        <Image src={program2} fluid />
+      </div>
+    </Col>
+<Col lg={4} md={6} sm={6}>
+      <div className="single-box p-0">
+        <Image src={program3} fluid />
+      </div>
+    </Col>
+  </Row>
       </Container>
     </section>
 

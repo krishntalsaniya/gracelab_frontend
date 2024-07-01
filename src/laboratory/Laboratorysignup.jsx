@@ -37,11 +37,15 @@ const SignupSchema = Yup.object().shape({
   DaysLab1: Yup.string().required('Days is required'),
   DaysLab2: Yup.string().required('Days is required'),
   DaysLab3: Yup.string().required('Days is required'),
+  area: Yup.string().required('area is required'),
+  pdfFile: Yup.string().required('file is required'),
+  photo: Yup.string().required('file is required'),
 });
 
 function Laboratorysignup() {
   const navigate = useNavigate();
   const [file, setFile] = useState(null);
+  const [pdf, setPdf] = useState(null);
   const [daysData, setDaysData] = useState([]);
  
 
@@ -73,6 +77,9 @@ function Laboratorysignup() {
   const handleFileChange = (event) => {
     setFile(event.currentTarget.files[0]);
   };
+  const handlepdfChange = (event) => {
+    setPdf(event.currentTarget.files[0]);
+  };
 
   const handleSubmit = async (values) => {
     try {
@@ -94,7 +101,9 @@ function Laboratorysignup() {
       formData.append("DaysLab2", values.DaysLab2);
       formData.append("DaysLab3", values.DaysLab3);
       formData.append('address', values.address);
+      formData.append('area', values.area);
       formData.append('photo', file);
+      formData.append('pdfFile', pdf);
       formData.append('isActive', false);
 
       const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createLaboratery`, formData, {
@@ -172,7 +181,10 @@ function Laboratorysignup() {
                     address: '',
                     DaysLab1: '',
                     DaysLab2: '',
-                    DaysLab3: ''
+                    DaysLab3: '',
+                    area: '',
+                    pdfFile:'',
+                    photo:'',
                   }}
                   validationSchema={SignupSchema}
                   onSubmit={handleSubmit}
@@ -189,7 +201,7 @@ function Laboratorysignup() {
                       <div className="step-1 d-block">
                         <Row className="justify-content-center">
                           <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Laboratory Name</Form.Label>
+                            <Form.Label>Laboratory Name <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="text"
                               name="name"
@@ -202,7 +214,7 @@ function Laboratorysignup() {
                             <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
                           </Col>
                           <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Laboratory Email Address</Form.Label>
+                            <Form.Label>Laboratory Email Address <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="text"
                               name="email"
@@ -216,7 +228,7 @@ function Laboratorysignup() {
                           </Col>
                          
                           <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Password</Form.Label>
+                            <Form.Label>Password <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="password"
                               name="password"
@@ -230,7 +242,7 @@ function Laboratorysignup() {
                           </Col>
 
                           <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Confirm Password</Form.Label>
+                            <Form.Label>Confirm Password <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="password"
                               name="confirmpass"
@@ -244,7 +256,7 @@ function Laboratorysignup() {
                           </Col>
                          
                           <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Laboratory Licence No.</Form.Label>
+                            <Form.Label>Laboratory Licence No. <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="text"
                               name="licenceno"
@@ -257,7 +269,7 @@ function Laboratorysignup() {
                             <Form.Control.Feedback type="invalid">{errors.licenceno}</Form.Control.Feedback>
                           </Col>
                           <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Laboratory Licence Date</Form.Label>
+                            <Form.Label>Laboratory Licence Date <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="date"
                               name="licencedate"
@@ -269,8 +281,8 @@ function Laboratorysignup() {
                             <Form.Control.Feedback type="invalid">{errors.licencedate}</Form.Control.Feedback>
                           </Col>
 
-                          <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Upload Photo</Form.Label>
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>Upload Photo <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type='file'
                               name="photo"
@@ -284,8 +296,23 @@ function Laboratorysignup() {
                             <Form.Control.Feedback type="invalid">{errors.photo}</Form.Control.Feedback>
                           </Col>
 
-                          <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Contact No.</Form.Label>
+                            <Col lg={4} className="form-group mb-3">
+                            <Form.Label>Upload Licence <span style={{ color: 'red' }}>*</span></Form.Label>
+                            <Form.Control
+                              type='file'
+                              name="pdfFile"
+                              onChange={(event) => {
+                                handlepdfChange(event);
+                                handleChange(event);
+                              }}
+                              onBlur={handleBlur}
+                              isInvalid={touched.pdfFile && errors.pdfFile}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.pdfFile}</Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>Contact No. <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="text"
                               name="contact"
@@ -299,7 +326,7 @@ function Laboratorysignup() {
                           </Col>
 
                           <Col lg={4} className="form-group mb-3">
-                            <Form.Label>Lab Start Time 1</Form.Label>
+                            <Form.Label>Lab Start Time 1 <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="time"
                               name="labStartTime1"
@@ -312,7 +339,7 @@ function Laboratorysignup() {
                           </Col>
 
                           <Col lg={4} className="form-group mb-3">
-                            <Form.Label>Lab End Time 1</Form.Label>
+                            <Form.Label>Lab End Time 1 <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="time"
                               name="labEndTime1"
@@ -324,7 +351,7 @@ function Laboratorysignup() {
                             <Form.Control.Feedback type="invalid">{errors.labEndTime1}</Form.Control.Feedback>
                           </Col>
                           <Col lg={4} className="form-group mb-3">
-                            <Form.Label>Days</Form.Label>
+                            <Form.Label>Days <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               as="select"
                               name="DaysLab1"
@@ -345,7 +372,7 @@ function Laboratorysignup() {
                          
 
                           <Col lg={4} className="form-group mb-3">
-                            <Form.Label>Lab Start Time 2</Form.Label>
+                            <Form.Label>Lab Start Time 2 <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="time"
                               name="labStartTime2"
@@ -358,7 +385,7 @@ function Laboratorysignup() {
                           </Col>
 
                           <Col lg={4} className="form-group mb-3">
-                            <Form.Label>Lab End Time 2</Form.Label>
+                            <Form.Label>Lab End Time 2 <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="time"
                               name="labEndTime2"
@@ -371,7 +398,7 @@ function Laboratorysignup() {
                           </Col>
 
                           <Col lg={4} className="form-group mb-3">
-                            <Form.Label>Days</Form.Label>
+                            <Form.Label>Days <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               as="select"
                               name="DaysLab2"
@@ -391,7 +418,7 @@ function Laboratorysignup() {
                           </Col>
 
                           <Col lg={4} className="form-group mb-3">
-                            <Form.Label>Lab Start Time 3</Form.Label>
+                            <Form.Label>Lab Start Time 3 <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="time"
                               name="labStartTime3"
@@ -404,7 +431,7 @@ function Laboratorysignup() {
                           </Col>
 
                           <Col lg={4} className="form-group mb-3">
-                            <Form.Label>Lab End Time 3</Form.Label>
+                            <Form.Label>Lab End Time 3 <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="time"
                               name="labEndTime3"
@@ -417,7 +444,7 @@ function Laboratorysignup() {
                           </Col>
 
                           <Col lg={4} className="form-group mb-3">
-                            <Form.Label>Days</Form.Label>
+                            <Form.Label>Days <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               as="select"
                               name="DaysLab3"
@@ -438,7 +465,7 @@ function Laboratorysignup() {
 
                           
                           <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Pincode</Form.Label>
+                            <Form.Label>Pincode <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="text"
                               name="pincode"
@@ -450,8 +477,23 @@ function Laboratorysignup() {
                             />
                             <Form.Control.Feedback type="invalid">{errors.pincode}</Form.Control.Feedback>
                           </Col>
+
+
                           <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Address</Form.Label>
+                            <Form.Label>Area <span style={{ color: 'red' }}>*</span></Form.Label>
+                            <Form.Control
+                              type="text"
+                              name="area"
+                              placeholder="Pincode"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.area}
+                              isInvalid={touched.area && errors.area}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.area}</Form.Control.Feedback>
+                          </Col>
+                          <Col lg={12} className="form-group mb-3">
+                            <Form.Label>Address <span style={{ color: 'red' }}>*</span> </Form.Label>
                             <Form.Control
                               as="textarea"
                               rows={3}
@@ -469,7 +511,7 @@ function Laboratorysignup() {
                             
                               <div className="w-100 text-start">
                               <label className="checkbox-wrap checkbox-primary mb-0">
-                                <input type="checkbox" />
+                                <input type="checkbox" required/>
                                 <span className="checkmark"></span> I agree to all statements in <Link to='/terms-condition' className="d-inline-block">Terms condition</Link>
                               </label>
                             </div>  

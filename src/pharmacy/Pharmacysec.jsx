@@ -8,6 +8,7 @@ import Swal from 'sweetalert2'; // Import SweetAlert
 import { Formik, Form as FormikForm, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import ReactStars from 'react-rating-stars-component'
+import pharmacyplaceholder from '../img/pharmacyplaceholder.jpeg'
 
 function Pharmacysec(props) {
   const [dayName, setDayName] = useState('');
@@ -169,7 +170,14 @@ function Pharmacysec(props) {
           <Col lg={6} md={6} sm={12}>
             <div className="research-image">
               <Link to={props.imagelink} target="_blank">
-                <Image src={props.hospitalimage} alt="image" />
+                   <Image 
+        src={props.hospitalimage} 
+        alt="Pharmaacy Image" 
+        onError={(e) => {
+          e.target.onerror = null; 
+          e.target.src = pharmacyplaceholder;
+        }} 
+      />
               </Link>
             </div>
           </Col>

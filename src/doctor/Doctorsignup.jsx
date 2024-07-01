@@ -14,6 +14,8 @@ import Swal from 'sweetalert2';
 
 function Doctorsignup() {
 
+  
+
   // const [specialties, setSpecialties] = useState([]);
 
   // useEffect(() => {
@@ -62,6 +64,19 @@ function Doctorsignup() {
       .matches(/^[0-9]+$/, 'Must be only digits')
       .required('Pincode is required'),
     address: Yup.string().required('Address is required'),
+    OPD1StartTime: Yup.string().required('OPD start time is required'),
+    OPD2StartTime: Yup.string().required('OPD start time is required'),
+    OPD3StartTime: Yup.string().required('OPD start time is required'),
+    OPD1EndTime: Yup.string().required('OPD end time is required'),
+    OPD2EndTime: Yup.string().required('OPD end time is required'),
+    OPD3EndTime: Yup.string().required('OPD end time is required'),
+    DaysDoctor1: Yup.string().required('Days are required'),
+    DaysDoctor2: Yup.string().required('Days are required'),
+    DaysDoctor3: Yup.string().required('Days are required'),
+    area: Yup.string().required('area are required'),
+    Speciality: Yup.string().required('Speciality are required'),
+    photo: Yup.string().required('File are required'),
+    pdfFile: Yup.string().required('Licence are required'),
     // agreeTerms: Yup.boolean()
     //   .oneOf([true], 'Must agree to terms')
     //   .required('Terms and Condition'),
@@ -70,9 +85,54 @@ function Doctorsignup() {
 
   const navigate = useNavigate();
   const [file, setFile] = useState(null);
+  const [pdf, setPdf] = useState(null);
+    const [daysData, setDaysData] = useState([]);
+     const [speciality, setspeciality] = useState([]);
+
+     const listDay = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list/Days`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching days data:', error);
+      return [];
+    }
+  };
+listDay();
+
+ useEffect(() => {
+    const fetchDays = async () => {
+      try {
+        const days = await listDay();
+        setDaysData(days);
+      } catch (error) {
+        console.error('Error setting days data:', error);
+      }
+    };
+
+      const listspeciality = async () => {
+    try {
+      const speciality = await axios.get(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/get/getAllDoctorSpeciality`);
+      console.log("doctor speciality",speciality)
+      setspeciality(speciality.data)
+    } catch (error) {
+      console.error('Error fetching days data:', error);
+    
+    }
+  };
+listspeciality();
+
+    fetchDays();
+  }, []);
+
 
   const handleFileChange = (event) => {
     setFile(event.currentTarget.files[0]);
+  };
+
+
+  const handlePdfChange = (event) => {
+    setPdf(event.currentTarget.files[0]);
   };
   const handleSubmit = async (values) => {
     try {
@@ -86,7 +146,19 @@ function Doctorsignup() {
       formData.append('Education', values.education);
       formData.append('Pincode', values.pincode);
       formData.append('address', values.address);
+      formData.append('OPD1StartTime', values.OPD1StartTime);
+      formData.append('OPD2StartTime', values.OPD2StartTime);
+      formData.append('OPD3StartTime', values.OPD3StartTime);
+      formData.append('OPD1EndTime', values.OPD1EndTime);
+      formData.append('OPD2EndTime', values.OPD2EndTime);
+      formData.append('OPD3EndTime', values.OPD3EndTime);
+      formData.append('DaysDoctor1', values.DaysDoctor1);
+      formData.append('DaysDoctor2', values.DaysDoctor2);
+      formData.append('DaysDoctor3', values.DaysDoctor3);
+      formData.append('area', values.area);
+      formData.append('Speciality', values.Speciality);
       formData.append('photo', file);
+      formData.append('pdfFile', pdf);
       formData.append('isActive', false); 
       const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createDoctor`,formData, {
         headers: {
@@ -159,6 +231,19 @@ function Doctorsignup() {
                           education: '',
                           pincode: '',
                           address: '',
+                          OPD1StartTime:'',
+                          OPD2StartTime:'',
+                          OPD3StartTime:'',
+                          OPD1EndTime:'',
+                          OPD2EndTime:'',
+                          OPD3EndTime:'',
+                          DaysDoctor1:'',
+                          DaysDoctor2:'',
+                          DaysDoctor3:'',
+                          area:'',
+                          Speciality:'',
+                          photo:'',
+                          pdfFile:'',
                           
                         }}
                         validationSchema={SignupSchema}
@@ -176,7 +261,7 @@ function Doctorsignup() {
                             <div className="step-1 d-block">
                               <Row className="justify-content-center">
                               <Col lg={6} className="form-group mb-3">
-                              <Form.Label>Doctors Name</Form.Label>
+                              <Form.Label>Doctors Name <span style={{ color: 'red' }}>*</span></Form.Label>
                               <Form.Control
                                 type="text"
                                 name="doctorsName"
@@ -190,7 +275,7 @@ function Doctorsignup() {
                             </Col>
 
                             <Col lg={6} className="form-group mb-3">
-                              <Form.Label>Hospital Name</Form.Label>
+                              <Form.Label>Hospital Name <span style={{ color: 'red' }}>*</span></Form.Label>
                               <Form.Control
                                 type="text"
                                 name="hospitalName"
@@ -204,7 +289,7 @@ function Doctorsignup() {
                             </Col>
 
                             <Col lg={6} className="form-group mb-3">
-                              <Form.Label>Email Address</Form.Label>
+                              <Form.Label>Email Address <span style={{ color: 'red' }}>*</span></Form.Label>
                               <Form.Control
                                 type="text"
                                 name="email"
@@ -219,7 +304,7 @@ function Doctorsignup() {
 
 
                             <Col lg={6} className="form-group mb-3">
-                              <Form.Label>Contact No.</Form.Label>
+                              <Form.Label>Contact No. <span style={{ color: 'red' }}>*</span></Form.Label>
                               <Form.Control
                                 type="text"
                                 name="contactNo"
@@ -234,7 +319,7 @@ function Doctorsignup() {
 
 
                             <Col lg={6} className="form-group mb-3">
-                              <Form.Label>Password</Form.Label>
+                              <Form.Label>Password <span style={{ color: 'red' }}>*</span></Form.Label>
                               <Form.Control
                                 type="password"
                                 name="password"
@@ -249,7 +334,7 @@ function Doctorsignup() {
 
 
                             <Col lg={6} className="form-group mb-3">
-                              <Form.Label>Confirm password</Form.Label>
+                              <Form.Label>Confirm password <span style={{ color: 'red' }}>*</span></Form.Label>
                               <Form.Control
                                 type="password"
                                 name="confirmPassword"
@@ -263,27 +348,11 @@ function Doctorsignup() {
                             </Col>
 
 
-                            {/* <Col lg={6} className="form-group mb-3">
-                              <Form.Label>Specialty</Form.Label>
-                              <Form.Control
-                                  as="select"
-                                  name="specialty"
-                                  placeholder="Specialty"
-                                  onChange={handleChange}
-                                  value={specialties}
-      >
-        <option value="" disabled hidden>Select an option</option>
-        {specialties.map(specialty => (
-          <option key={specialty.id} value={specialty.id}>{specialty.Details
-          }</option>
-        ))}
-      </Form.Control>
-                              <Form.Control.Feedback type="invalid">{errors.specialty}</Form.Control.Feedback>
-                              </Col> */}
+                       
 
 
                               <Col lg={6} className="form-group mb-3">
-                              <Form.Label>Education</Form.Label>
+                              <Form.Label>Education <span style={{ color: 'red' }}>*</span></Form.Label>
                               <Form.Control
                                 type="text"
                                 name="education"
@@ -298,7 +367,7 @@ function Doctorsignup() {
 
 
                             <Col lg={6} className="form-group mb-3">
-                              <Form.Label>Pincode</Form.Label>
+                              <Form.Label>Pincode <span style={{ color: 'red' }}>*</span></Form.Label>
                               <Form.Control
                                 type="text"
                                 name="pincode"
@@ -311,9 +380,214 @@ function Doctorsignup() {
                               <Form.Control.Feedback type="invalid">{errors.pincode}</Form.Control.Feedback>
                             </Col>
 
+                            <Col lg={4} className="form-group mb-3">
+                            <Form.Label>OPD Start Time 1 <span style={{ color: 'red' }}>*</span></Form.Label>
+                            <Form.Control
+                              type="time"
+                              name="OPD1StartTime"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.OPD1StartTime}
+                              isInvalid={touched.OPD1StartTime && errors.OPD1StartTime}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.OPD1StartTime}</Form.Control.Feedback>
+                          </Col>
 
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>OPD End Time 1 <span style={{ color: 'red' }}>*</span></Form.Label>
+                            <Form.Control
+                              type="time"
+                              name="OPD1EndTime"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.OPD1EndTime}
+                              isInvalid={touched.OPD1EndTime && errors.OPD1EndTime}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.OPD1EndTime}</Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>Days <span style={{ color: 'red' }}>*</span></Form.Label>
+                            <Form.Control
+                              as="select"
+                              name="DaysDoctor1"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.DaysDoctor1}
+                              isInvalid={touched.DaysDoctor1 && errors.DaysDoctor1}
+                            >
+                              <option value="">Select Days</option>
+                              {daysData.map((day) => (
+                                <option key={day._id} value={day._id}>
+                                  {day.Days}
+                                </option>
+                              ))}
+                            </Form.Control>
+                            <Form.Control.Feedback type="invalid">{errors.DaysDoctor1}</Form.Control.Feedback>
+                          </Col>
+
+
+
+
+
+                            <Col lg={4} className="form-group mb-3">
+                            <Form.Label>OPD Start Time 2 <span style={{ color: 'red' }}>*</span></Form.Label>
+                            <Form.Control
+                              type="time"
+                              name="OPD2StartTime"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.OPD2StartTime}
+                              isInvalid={touched.OPD2StartTime && errors.OPD2StartTime}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.OPD2StartTime}</Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>OPD End Time 2 <span style={{ color: 'red' }}>*</span></Form.Label>
+                            <Form.Control
+                              type="time"
+                              name="OPD2EndTime"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.OPD2EndTime}
+                              isInvalid={touched.OPD2EndTime && errors.OPD2EndTime}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.OPD2EndTime}</Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>Days <span style={{ color: 'red' }}>*</span></Form.Label>
+                            <Form.Control
+                              as="select"
+                              name="DaysDoctor2"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.DaysDoctor2}
+                              isInvalid={touched.DaysDoctor2 && errors.DaysDoctor2}
+                            >
+                              <option value="">Select Days</option>
+                              {daysData.map((day) => (
+                                <option key={day._id} value={day._id}>
+                                  {day.Days}
+                                </option>
+                              ))}
+                            </Form.Control>
+                            <Form.Control.Feedback type="invalid">{errors.DaysDoctor2}</Form.Control.Feedback>
+                          </Col>
+
+
+
+                            <Col lg={4} className="form-group mb-3">
+                            <Form.Label>OPD Start Time 3 <span style={{ color: 'red' }}>*</span></Form.Label>
+                            <Form.Control
+                              type="time"
+                              name="OPD3StartTime"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.OPD3StartTime}
+                              isInvalid={touched.OPD3StartTime && errors.OPD3StartTime}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.OPD3StartTime}</Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>OPD End Time 3 <span style={{ color: 'red' }}>*</span></Form.Label>
+                            <Form.Control
+                              type="time"
+                              name="OPD3EndTime"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.OPD3EndTime}
+                              isInvalid={touched.OPD3EndTime && errors.OPD3EndTime}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.OPD3EndTime}</Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>Days <span style={{ color: 'red' }}>*</span></Form.Label>
+                            <Form.Control
+                              as="select"
+                              name="DaysDoctor3"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.DaysDoctor3}
+                              isInvalid={touched.DaysDoctor3 && errors.DaysDoctor3}
+                            >
+                              <option value="">Select Days</option>
+                              {daysData.map((day) => (
+                                <option key={day._id} value={day._id}>
+                                  {day.Days}
+                                </option>
+                              ))}
+                            </Form.Control>
+                            <Form.Control.Feedback type="invalid">{errors.DaysDoctor3}</Form.Control.Feedback>
+                          </Col>
+
+                             <Col lg={6} className="form-group mb-3">
+                              <Form.Label>Area <span style={{ color: 'red' }}>*</span></Form.Label>
+                              <Form.Control
+                                type="text"
+                                name="area"
+                                placeholder='area'
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.area}
+                                isInvalid={touched.area && errors.area}
+                              />
+                              <Form.Control.Feedback type="invalid">{errors.area}</Form.Control.Feedback>
+                            </Col>
+
+                                <Col lg={6} className="form-group mb-3">
+                            <Form.Label>Speciality <span style={{ color: 'red' }}>*</span></Form.Label>
+                            <Form.Control
+                              as="select"
+                              name="Speciality"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.Speciality}
+                              isInvalid={touched.Speciality && errors.Speciality}
+                            >
+                              <option value="">Select Speciality</option>
+                               {Array.isArray(speciality) && speciality.map((item) => (
+          <option key={item._id} value={item._id}>
+            {item.Speciality}
+          </option>
+        ))}
+                            </Form.Control>
+                            <Form.Control.Feedback type="invalid">{errors.Speciality}</Form.Control.Feedback>
+                          </Col>
+
+ <Col lg={6} className="form-group mb-3">
+                            <Form.Label>Upload Image</Form.Label>
+                            <Form.Control
+                              type="file"
+                              name="photo"
+                             onChange={(event) => {
+                                handleFileChange(event);
+                                handleChange(event);
+                              }}
+                              onBlur={handleBlur}
+                              isInvalid={touched.photo && errors.photo}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.photo}</Form.Control.Feedback>
+                          </Col>
+                            <Col lg={6} className="form-group mb-3">
+                            <Form.Label>Upload  Licence Image</Form.Label>
+                            <Form.Control
+                              type="file"
+                              name="pdfFile"
+                              onChange={(event) => {
+                                handlePdfChange(event);
+                                handleChange(event);
+                              }}
+                              onBlur={handleBlur}
+                              isInvalid={touched.pdfFile && errors.pdfFile}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.pdfFile}</Form.Control.Feedback>
+                          </Col>
                             <Col lg={12} className="form-group mb-3">
-                              <Form.Label>Address</Form.Label>
+                              <Form.Label>Address <span style={{ color: 'red' }}>*</span></Form.Label>
                               <Form.Control
                                 type="text"
                                 name="address"
@@ -326,21 +600,12 @@ function Doctorsignup() {
                               <Form.Control.Feedback type="invalid">{errors.address}</Form.Control.Feedback>
                             </Col>
 
-                            <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Upload Doctor Image</Form.Label>
-                            <Form.Control
-                              type="file"
-                              name="photo"
-                              onChange={handleFileChange}
-                              isInvalid={touched.photo && errors.photo}
-                            />
-                            <Form.Control.Feedback type="invalid">{errors.photo}</Form.Control.Feedback>
-                          </Col>
+                           
 
 <Col lg={12} className="form-group d-md-flex mb-4">
                             <div className="w-100 text-start">
                               <label className="checkbox-wrap checkbox-primary mb-0">
-                                <input type="checkbox" />
+                                <input type="checkbox" required />
                                 <span className="checkmark"></span> I agree to all statements in <Link to="/terms-condition" className="d-inline-block">Terms of service</Link>
                               </label>
                             </div>

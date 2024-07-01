@@ -8,6 +8,7 @@ import Swal from 'sweetalert2'; // Import SweetAlert
 import ReactStars from 'react-rating-stars-component'
 import { Formik, Form as FormikForm, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import labplaceholder from '../img/labplaceholder.jpg'
 
 function Labsec(props) {
   console.log("props",props)
@@ -179,7 +180,14 @@ console.log("Props",props);
           <Col lg={6} md={6} sm={12}>
             <div className="research-image">
               <Link to={props.imagelink} target="_blank">
-                <Image src={props.hospitalimage} alt="image" />
+               <Image 
+        src={props.hospitalimage} 
+        alt="Laboratory Image" 
+        onError={(e) => {
+          e.target.onerror = null; 
+          e.target.src = labplaceholder;
+        }} 
+      />
               </Link>
             </div>
           </Col>

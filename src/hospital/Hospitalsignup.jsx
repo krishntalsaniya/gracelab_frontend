@@ -94,6 +94,10 @@ const SignupSchema = Yup.object().shape({
   DaysHospital3: Yup.string().required('days selected required'),  
   pincode: Yup.string().required('Pincode is required'),
   address: Yup.string().required('Address is required'),
+  Speciality: Yup.string().required('Speciality is required'),
+  area: Yup.string().required('Area is required'),
+  photo: Yup.string().required('File are required'),
+  pdfFile: Yup.string().required('Licence are required'),
 });
 
 function Hospitalsignup() {
@@ -101,7 +105,9 @@ function Hospitalsignup() {
   const navigate = useNavigate();
 
   const [file, setFile] = useState(null);
+  const [pdf, setpdf] = useState(null);
   const [daysData, setDaysData] = useState([]);
+  const [speciality, setspeciality] = useState([]);
 
   const listDay = async () => {
     try {
@@ -113,6 +119,9 @@ function Hospitalsignup() {
     }
   };
 
+
+
+
   useEffect(() => {
     const fetchDays = async () => {
       try {
@@ -122,12 +131,25 @@ function Hospitalsignup() {
         console.error('Error setting days data:', error);
       }
     };
-
+    const listspeciality = async () => {
+    try {
+      const speciality = await axios.get(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/get/getAllHospitalSpeciality`);
+      console.log("specccc",speciality)
+      setspeciality(speciality.data)
+    } catch (error) {
+      console.error('Error fetching days data:', error);
+    
+    }
+  };
+listspeciality();
     fetchDays();
   }, []);
 
   const handleFileChange = (event) => {
     setFile(event.currentTarget.files[0]);
+  };
+  const handlePdfChange = (event) => {
+    setpdf(event.currentTarget.files[0]);
   };
   const handleSubmit = async (values) => {
     try {
@@ -149,10 +171,13 @@ function Hospitalsignup() {
       formData.append('DaysHospital1', values.DaysHospital1);
       formData.append('DaysHospital2', values.DaysHospital2);
       formData.append('DaysHospital3', values.DaysHospital3);
+      formData.append('Speciality', values.Speciality);
+      formData.append('area', values.area);
       formData.append('Pincode', values.pincode);
       formData.append('address', values.address);
       formData.append('isActive', false);
       formData.append('photo', file);
+      formData.append('pdfFile', pdf);
       const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createHospital`,formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -205,8 +230,7 @@ function Hospitalsignup() {
                 </div>
                 <Formik
                   initialValues={{
-                    name: '',
-                    
+                    name: '',  
                     email: '',
                     contact: '',
                     password: '',
@@ -224,6 +248,10 @@ function Hospitalsignup() {
                     DaysHospital1: '',
                     DaysHospital2: '',
                     DaysHospital3: '',
+                    Speciality:'',
+                    area:'',
+                    photo:'',
+                    pdfFile:'',
                   }}
                   validationSchema={SignupSchema}
                   onSubmit={handleSubmit}
@@ -240,7 +268,7 @@ function Hospitalsignup() {
                       <div className="step-1 d-block">
                         <Row className="justify-content-center">
                           <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Hospital Name</Form.Label>
+                            <Form.Label>Hospital Name <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="text"
                               name="name"
@@ -266,7 +294,7 @@ function Hospitalsignup() {
                             <Form.Control.Feedback type="invalid">{errors.ownername}</Form.Control.Feedback>
                           </Col> */}
                           <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Hospital Email Address</Form.Label>
+                            <Form.Label>Hospital Email Address <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="text"
                               name="email"
@@ -280,7 +308,7 @@ function Hospitalsignup() {
                           </Col>
                        
                           <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Password</Form.Label>
+                            <Form.Label>Password <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="password"
                               name="password"
@@ -293,7 +321,7 @@ function Hospitalsignup() {
                             <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
                           </Col>
                           <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Confirm Password</Form.Label>
+                            <Form.Label>Confirm Password <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="password"
                               name="confirmpass"
@@ -306,7 +334,7 @@ function Hospitalsignup() {
                             <Form.Control.Feedback type="invalid">{errors.confirmpass}</Form.Control.Feedback>
                           </Col>
                           <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Hospital Licence No.</Form.Label>
+                            <Form.Label>Hospital Licence No. <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="text"
                               name="licenceno"
@@ -319,7 +347,7 @@ function Hospitalsignup() {
                             <Form.Control.Feedback type="invalid">{errors.licenceno}</Form.Control.Feedback>
                           </Col>
                           <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Hospital Licence Date</Form.Label>
+                            <Form.Label>Hospital Licence Date <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="date"
                               name="licencedate"
@@ -331,19 +359,39 @@ function Hospitalsignup() {
                             <Form.Control.Feedback type="invalid">{errors.licencedate}</Form.Control.Feedback>
                           </Col>
 
-                          <Col lg={6} className="form-group mb-3">
+                          <Col lg={4} className="form-group mb-3">
                             <Form.Label>Upload License Image</Form.Label>
                             <Form.Control
                               type="file"
                               name="photo"
-                              onChange={handleFileChange}
+                               onChange={(event) => {
+                                handleFileChange(event);
+                                handleChange(event);
+                              }}
+                               onBlur={handleBlur}
                               isInvalid={touched.photo && errors.photo}
                             />
                             <Form.Control.Feedback type="invalid">{errors.photo}</Form.Control.Feedback>
                           </Col>
 
-                          <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Contact No.</Form.Label>
+
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>Upload License Image</Form.Label>
+                            <Form.Control
+                              type="file"
+                              name="pdfFile"
+                              onChange={(event) => {
+                                handlePdfChange(event);
+                                handleChange(event);
+                              }}
+                               onBlur={handleBlur}
+                              isInvalid={touched.pdfFile && errors.pdfFile}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.pdfFile}</Form.Control.Feedback>
+                          </Col>
+
+                          <Col lg={4} className="form-group mb-3">
+                            <Form.Label>Contact No. <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="text"
                               name="contact"
@@ -356,7 +404,7 @@ function Hospitalsignup() {
                             <Form.Control.Feedback type="invalid">{errors.contact}</Form.Control.Feedback>
                           </Col>
                           <Col lg={4} className="form-group mb-3">
-                            <Form.Label>OPD Start Time 1</Form.Label>
+                            <Form.Label>OPD Start Time 1 <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="time"
                               name="opd1StartTime"
@@ -369,7 +417,7 @@ function Hospitalsignup() {
                           </Col>
 
                           <Col lg={4} className="form-group mb-3">
-                            <Form.Label>OPD End Time 1</Form.Label>
+                            <Form.Label>OPD End Time 1 <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="time"
                               name="opd1EndTime"
@@ -382,7 +430,7 @@ function Hospitalsignup() {
                           </Col>
 
                           <Col lg={4} className="form-group mb-3">
-                            <Form.Label>Days</Form.Label>
+                            <Form.Label>Days <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               as="select"
                               name="DaysHospital1"
@@ -402,7 +450,7 @@ function Hospitalsignup() {
                           </Col>
 
                           <Col lg={4} className="form-group mb-3">
-                            <Form.Label>OPD Start Time 2</Form.Label>
+                            <Form.Label>OPD Start Time 2 <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="time"
                               name="opd2StartTime"
@@ -415,7 +463,7 @@ function Hospitalsignup() {
                           </Col>
 
                           <Col lg={4} className="form-group mb-3">
-                            <Form.Label>OPD End Time 2</Form.Label>
+                            <Form.Label>OPD End Time 2 <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="time"
                               name="opd2EndTime"
@@ -428,7 +476,7 @@ function Hospitalsignup() {
                           </Col>
 
                           <Col lg={4} className="form-group mb-3">
-                            <Form.Label>Days</Form.Label>
+                            <Form.Label>Days <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               as="select"
                               name="DaysHospital2"
@@ -448,7 +496,7 @@ function Hospitalsignup() {
                           </Col>
 
                           <Col lg={4} className="form-group mb-3">
-                            <Form.Label>OPD Start Time 3</Form.Label>
+                            <Form.Label>OPD Start Time 3 <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="time"
                               name="opd3StartTime"
@@ -461,7 +509,7 @@ function Hospitalsignup() {
                           </Col>
 
                           <Col lg={4} className="form-group mb-3">
-                            <Form.Label>OPD End Time 3</Form.Label>
+                            <Form.Label>OPD End Time 3 <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="time"
                               name="opd3EndTime"
@@ -474,7 +522,7 @@ function Hospitalsignup() {
                           </Col>
 
                           <Col lg={4} className="form-group mb-3">
-                            <Form.Label>Days</Form.Label>
+                            <Form.Label>Days <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               as="select"
                               name="DaysHospital3"
@@ -492,8 +540,42 @@ function Hospitalsignup() {
                             </Form.Control>
                             <Form.Control.Feedback type="invalid">{errors.DaysHospital3}</Form.Control.Feedback>
                           </Col>
+
+                           <Col lg={6} className="form-group mb-3">
+                            <Form.Label>Speciality <span style={{ color: 'red' }}>*</span></Form.Label>
+                            <Form.Control
+                              as="select"
+                              name="Speciality"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.Speciality}
+                              isInvalid={touched.Speciality && errors.Speciality}
+                            >
+                              <option value="">Select Speciality</option>
+                               {Array.isArray(speciality) && speciality.map((item) => (
+          <option key={item._id} value={item._id}>
+            {item.Speciality}
+          </option>
+        ))}
+                            </Form.Control>
+                            <Form.Control.Feedback type="invalid">{errors.Speciality}</Form.Control.Feedback>
+                          </Col>
+
                           <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Pincode</Form.Label>
+                            <Form.Label>Area <span style={{ color: 'red' }}>*</span></Form.Label>
+                            <Form.Control
+                              type="text"
+                              name="area"
+                              placeholder="Area."
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.area}
+                              isInvalid={touched.area && errors.area}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.area}</Form.Control.Feedback>
+                          </Col>
+                          <Col lg={6} className="form-group mb-3">
+                            <Form.Label>Pincode <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="text"
                               name="pincode"
@@ -506,7 +588,7 @@ function Hospitalsignup() {
                             <Form.Control.Feedback type="invalid">{errors.pincode}</Form.Control.Feedback>
                           </Col>
                           <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Address</Form.Label>
+                            <Form.Label>Address <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               as="textarea"
                               rows={3}
@@ -524,7 +606,7 @@ function Hospitalsignup() {
                           <Col lg={12} className="form-group d-md-flex mb-4">
                       <div className="w-100 text-start">
                       <label class="checkbox-wrap checkbox-primary mb-0">
-                       <input type="checkbox" />
+                      <input type="checkbox" required/>
                          <span class="checkmark"></span> I agree all statements in <Link to='/terms-condition' class="d-inline-block">Terms of service</Link>
                                                     </label>
                       </div>

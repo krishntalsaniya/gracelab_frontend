@@ -35,14 +35,20 @@ const SignupSchema = Yup.object().shape({
   pharmacyEndTime2: Yup.string().required('time slote is required'),
   pharmacyEndTime3: Yup.string().required('time slote is required'),
   address: Yup.string().required('Address is required'),
+  area: Yup.string().required('area is required'),
   DaysPharmacy1: Yup.string().required('Days selected is required'),
   DaysPharmacy2: Yup.string().required('Days selected is required'),
   DaysPharmacy3: Yup.string().required('Days selected is required'),
+  photo: Yup.string().required('photo is required'),
+  pdfFile: Yup.string().required('Licence is required'),
+ 
+  
 });
 
 function Pharmacysignup() {
   const navigate = useNavigate();
   const [file, setFile] = useState(null);
+  const [pdf, setPdf] = useState(null);
   const [daysData, setDaysData] = useState([]);
 
   const listDay = async () => {
@@ -83,6 +89,9 @@ function Pharmacysignup() {
   const handleFileChange = (event) => {
     setFile(event.currentTarget.files[0]);
   };
+  const handlePdfChange = (event) => {
+    setPdf(event.currentTarget.files[0]);
+  };
 
   const handleSubmit = async (values) => {
     try {
@@ -105,7 +114,11 @@ function Pharmacysignup() {
       formData.append('DaysPharmacy3', values.DaysPharmacy3);
       formData.append('Pincode', values.pincode); // Include pincode
       formData.append('address', values.address);
-      formData.append('photo', file);
+      formData.append('area', values.area);
+      formData.append('photo',file);
+      formData.append('pdfFile',pdf);
+     
+      
       formData.append('isActive', false);
 
       const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createPharmacy`, formData, {
@@ -184,6 +197,11 @@ function Pharmacysignup() {
                     DaysPharmacy1: '',
                     DaysPharmacy2: '',
                     DaysPharmacy3: '',
+                    photo: '',
+                    pdfFile: '',
+                    area: '',
+                 
+                  
                   }}
                   validationSchema={SignupSchema}
                   onSubmit={handleSubmit}
@@ -200,7 +218,7 @@ function Pharmacysignup() {
                       <div className="step-1 d-block">
                         <Row className="justify-content-center">
                           <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Pharmacy Name</Form.Label>
+                            <Form.Label>Pharmacy Name <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="text"
                               name="name"
@@ -226,7 +244,7 @@ function Pharmacysignup() {
                             <Form.Control.Feedback type="invalid">{errors.ownername}</Form.Control.Feedback>
                           </Col> */}
                           <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Pharmacy Email Address</Form.Label>
+                            <Form.Label>Pharmacy Email Address <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="text"
                               name="email"
@@ -240,7 +258,7 @@ function Pharmacysignup() {
                           </Col>
                         
                           <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Password</Form.Label>
+                            <Form.Label>Password <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="password"
                               name="password"
@@ -253,7 +271,7 @@ function Pharmacysignup() {
                             <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
                           </Col>
                           <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Confirm Password</Form.Label>
+                            <Form.Label>Confirm Password <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="password"
                               name="confirmpass"
@@ -266,7 +284,7 @@ function Pharmacysignup() {
                             <Form.Control.Feedback type="invalid">{errors.confirmpass}</Form.Control.Feedback>
                           </Col>
                           <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Pharmacy Licence No.</Form.Label>
+                            <Form.Label>Pharmacy Licence No. <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="text"
                               name="licenceno"
@@ -279,7 +297,7 @@ function Pharmacysignup() {
                             <Form.Control.Feedback type="invalid">{errors.licenceno}</Form.Control.Feedback>
                           </Col>
                           <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Pharmacy Licence Date</Form.Label>
+                            <Form.Label>Pharmacy Licence Date <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="date"
                               name="licencedate"
@@ -293,18 +311,41 @@ function Pharmacysignup() {
                           </Col>
 
                           <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Pharmacy License Image</Form.Label>
+                            <Form.Label>Pharmacy Image <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="file"
                               name="photo"
-                              onChange={handleFileChange}
+                               onChange={(event) => {
+                                handleFileChange(event);
+                                handleChange(event);
+                              }}
+                              onBlur={handleBlur}
                               isInvalid={touched.photo && errors.photo}
                             />
                             <Form.Control.Feedback type="invalid">{errors.photo}</Form.Control.Feedback>
                           </Col>
 
+                            <Col lg={6} className="form-group mb-3">
+                            <Form.Label>Pharmacy Licence Image <span style={{ color: 'red' }}>*</span></Form.Label>
+                            <Form.Control
+                              type="file"
+                              name="pdfFile"
+                               onChange={(event) => {
+                                handlePdfChange(event);
+                                handleChange(event);
+                              }}
+                              onBlur={handleBlur}
+                              isInvalid={touched.pdfFile && errors.pdfFile}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.pdfFile}</Form.Control.Feedback>
+                          </Col>
+
+                          
+
+                         
+
                           <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Contact No.</Form.Label>
+                            <Form.Label>Contact No. <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="text"
                               name="contact"
@@ -317,9 +358,23 @@ function Pharmacysignup() {
                             <Form.Control.Feedback type="invalid">{errors.contact}</Form.Control.Feedback>
                           </Col>
 
+                          <Col lg={6} className="form-group mb-3">
+                            <Form.Label>Area <span style={{ color: 'red' }}>*</span></Form.Label>
+                            <Form.Control
+                              type="text"
+                              name="area"
+                              placeholder="Contact No."
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.area}
+                              isInvalid={touched.area && errors.area}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.area}</Form.Control.Feedback>
+                          </Col>
+
 
                           <Col lg={4} className="form-group mb-3">
-                            <Form.Label>Pharmacy Start Time 1</Form.Label>
+                            <Form.Label>Pharmacy Start Time 1 <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="time"
                               name="pharmacyStartTime1"
@@ -332,7 +387,7 @@ function Pharmacysignup() {
                           </Col>
 
                           <Col lg={4} className="form-group mb-3">
-                            <Form.Label>Pharmacy End Time 1</Form.Label>
+                            <Form.Label>Pharmacy End Time 1 <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="time"
                               name="pharmacyEndTime1"
@@ -345,7 +400,7 @@ function Pharmacysignup() {
                           </Col>
 
                           <Col lg={4} className="form-group mb-3">
-                            <Form.Label>Days</Form.Label>
+                            <Form.Label>Days <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               as="select"
                               name="DaysPharmacy1"
@@ -365,7 +420,7 @@ function Pharmacysignup() {
                           </Col>
 
                           <Col lg={4} className="form-group mb-3">
-                            <Form.Label>Pharmacy Start Time 2</Form.Label>
+                            <Form.Label>Pharmacy Start Time 2 <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="time"
                               name="pharmacyStartTime2"
@@ -378,7 +433,7 @@ function Pharmacysignup() {
                           </Col>
 
                           <Col lg={4} className="form-group mb-3">
-                            <Form.Label>Pharmacy End Time 2</Form.Label>
+                            <Form.Label>Pharmacy End Time 2 <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="time"
                               name="pharmacyEndTime2"
@@ -392,7 +447,7 @@ function Pharmacysignup() {
                           
                           
                           <Col lg={4} className="form-group mb-3">
-                            <Form.Label>Days</Form.Label>
+                            <Form.Label>Days <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               as="select"
                               name="DaysPharmacy2"
@@ -413,7 +468,7 @@ function Pharmacysignup() {
 
                          
                           <Col lg={4} className="form-group mb-3">
-                            <Form.Label>Pharmacy Start Time 3</Form.Label>
+                            <Form.Label>Pharmacy Start Time 3 <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="time"
                               name="pharmacyStartTime3"
@@ -427,7 +482,7 @@ function Pharmacysignup() {
                           
 
                           <Col lg={4} className="form-group mb-3">
-                            <Form.Label>Pharmacy End Time 3</Form.Label>
+                            <Form.Label>Pharmacy End Time 3 </Form.Label>
                             <Form.Control
                               type="time"
                               name="pharmacyEndTime3"
@@ -489,7 +544,7 @@ function Pharmacysignup() {
                           <Col lg={12} className="form-group d-md-flex mb-4">
                             <div className="w-100 text-start">
                               <label className="checkbox-wrap checkbox-primary mb-0">
-                                <input type="checkbox" />
+                                <input type="checkbox" required />
                                 <span className="checkmark"></span> I agree to all statements in <Link to="/terms-condition" className="d-inline-block">Terms of service</Link>
                               </label>
                             </div>
