@@ -404,7 +404,7 @@ listspeciality();
                           </Col>
 
                           <Col lg={4} className="form-group mb-3">
-                            <Form.Label>Upload License Image</Form.Label>
+                            <Form.Label>Upload License Image <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="file"
                               name="photo"
@@ -421,7 +421,7 @@ listspeciality();
 
 
                           <Col lg={4} className="form-group mb-3">
-                            <Form.Label>Upload License Image</Form.Label>
+                            <Form.Label>Upload License Image <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="file"
                               name="pdfFile"

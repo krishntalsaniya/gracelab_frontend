@@ -603,7 +603,7 @@ listspeciality();
                           </Col>
 
  <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Upload Image</Form.Label>
+                            <Form.Label>Upload Image <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="file"
                               name="photo"
@@ -618,7 +618,7 @@ listspeciality();
                             <Form.Control.Feedback type="invalid">{errors.photo}</Form.Control.Feedback>
                           </Col>
                             <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Upload  Licence Image</Form.Label>
+                            <Form.Label>Upload  Licence Image <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="file"
                               name="pdfFile"

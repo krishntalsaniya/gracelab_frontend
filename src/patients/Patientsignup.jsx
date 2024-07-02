@@ -166,7 +166,7 @@ function Patientsignup() {
                     }) => (
                       <Form className="signin-form" onSubmit={handleSubmit}>
                         <Form.Group className="mb-3" controlId="formName">
-                          <Form.Label>Name</Form.Label>
+                          <Form.Label>Name <span style={{ color: 'red' }}>*</span></Form.Label>
                           <Form.Control
                             type="text"
                             name="name"
@@ -182,7 +182,7 @@ function Patientsignup() {
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="formEmail">
-                          <Form.Label>Email id/username</Form.Label>
+                          <Form.Label>Email id/username <span style={{ color: 'red' }}>*</span></Form.Label>
                           <Form.Control
                             type="text"
                             name="email"
@@ -198,7 +198,7 @@ function Patientsignup() {
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="formContact">
-                          <Form.Label>Contact no</Form.Label>
+                          <Form.Label>Contact no <span style={{ color: 'red' }}>*</span></Form.Label>
                           <Form.Control
                             type="text"
                             name="contact"
@@ -214,7 +214,7 @@ function Patientsignup() {
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="formPassword">
-                          <Form.Label>Password</Form.Label>
+                          <Form.Label>Password <span style={{ color: 'red' }}>*</span></Form.Label>
                           <Form.Control
                             type="password"
                             name="password"
@@ -230,7 +230,7 @@ function Patientsignup() {
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="formFile">
-                          <Form.Label>Upload Doctor Image</Form.Label>
+                          <Form.Label>Upload Doctor Image <span style={{ color: 'red' }}>*</span></Form.Label>
                           <Form.Control
                             type="file"
                             name="photo"

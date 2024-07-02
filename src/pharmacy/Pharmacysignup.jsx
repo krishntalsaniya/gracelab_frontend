@@ -520,7 +520,7 @@ function Pharmacysignup() {
                           
 
                           <Col lg={4} className="form-group mb-3">
-                            <Form.Label>Pharmacy End Time 3 </Form.Label>
+                            <Form.Label>Pharmacy End Time 3 <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="time"
                               name="pharmacyEndTime3"
@@ -533,7 +533,7 @@ function Pharmacysignup() {
                           </Col>
 
                           <Col lg={4} className="form-group mb-3">
-                            <Form.Label>Days</Form.Label>
+                            <Form.Label>Days <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               as="select"
                               name="DaysPharmacy3"
@@ -553,7 +553,7 @@ function Pharmacysignup() {
                           </Col>
 
                           <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Pincode</Form.Label>
+                            <Form.Label>Pincode <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="text"
                               name="pincode"
@@ -566,7 +566,7 @@ function Pharmacysignup() {
                             <Form.Control.Feedback type="invalid">{errors.pincode}</Form.Control.Feedback>
                           </Col>
                           <Col lg={6} className="form-group mb-3">
-                            <Form.Label>Address</Form.Label>
+                            <Form.Label>Address <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type="text"
                               name="address"
