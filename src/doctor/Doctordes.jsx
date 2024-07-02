@@ -247,6 +247,7 @@ const Doctordes = (props) => {
                   <input
                     name="file"
                     type="file"
+                     accept=".jpg,.jpeg,.png,.pdf"
                     className={`form-control ${errors.file && touched.file ? 'is-invalid' : ''}`}
                     onChange={(event) => {
                       setFieldValue('file', event.currentTarget.files[0]);

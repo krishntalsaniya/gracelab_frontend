@@ -41,6 +41,7 @@ const SignupSchema = Yup.object().shape({
   DaysPharmacy3: Yup.string().required('Days selected is required'),
   photo: Yup.string().required('photo is required'),
   pdfFile: Yup.string().required('Licence is required'),
+   ReferralCode: Yup.string(),
  
   
 });
@@ -93,7 +94,33 @@ function Pharmacysignup() {
     setPdf(event.currentTarget.files[0]);
   };
 
-  const handleSubmit = async (values) => {
+   const generateUniqueReferenceNo = async () => {
+  try {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // JS months are 0-based
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+
+    // Fetch the count of entries in the database
+    const response = await axios.get(
+      `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/getPharmacyCount`
+    );
+    const count = response.data.count;
+
+    console.log("count", count);
+
+    const sequenceNumber = String(count + 1).padStart(6, "0"); // Add 1 to the count to get the next sequence number
+
+    return `PHA${year}${month}${day}${hours}${sequenceNumber}`;
+  } catch (error) {
+    console.error('Error fetching lab count:', error);
+    // Handle error appropriately, e.g., throw an error or return a default value
+    throw new Error('Failed to generate unique reference number');
+  }
+};
+
+  const handleSubmit = async (values,{setSubmitting}) => {
     try {
       const formData = new FormData();
       formData.append('PharmacyName', values.name);
@@ -115,11 +142,17 @@ function Pharmacysignup() {
       formData.append('Pincode', values.pincode); // Include pincode
       formData.append('address', values.address);
       formData.append('area', values.area);
+      if (values.ReferralCode) {
+        formData.append('ReferralCode', values.ReferralCode);
+      }
       formData.append('photo',file);
       formData.append('pdfFile',pdf);
      
       
       formData.append('isActive', false);
+
+       const uniqueReferenceNo = await generateUniqueReferenceNo();
+    formData.append('PharmacyReferenceNo', uniqueReferenceNo);
 
       const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createPharmacy`, formData, {
         headers: {
@@ -140,11 +173,12 @@ function Pharmacysignup() {
     } catch (error) {
       console.error('Error creating pharmacy:', error);
       Swal.fire({
-        title: "Error!",
-        text: "There was an error registering the pharmacy",
-        icon: "error",
-        confirmButtonText: "OK"
+        title: 'Error!',
+        text: error.response?.data?.message || 'Failed to create Pharmcay',
+        icon: 'error',
+        confirmButtonText: 'OK',
       });
+      setSubmitting(false); // Reset form submission state
     }
   };
 
@@ -200,6 +234,7 @@ function Pharmacysignup() {
                     photo: '',
                     pdfFile: '',
                     area: '',
+                     ReferralCode: '',
                  
                   
                   }}
@@ -213,6 +248,7 @@ function Pharmacysignup() {
                     handleChange,
                     handleBlur,
                     handleSubmit,
+                     isSubmitting,
                   }) => (
                     <Form className="signin-form row" onSubmit={handleSubmit}>
                       <div className="step-1 d-block">
@@ -315,6 +351,7 @@ function Pharmacysignup() {
                             <Form.Control
                               type="file"
                               name="photo"
+                              accept=".jpg,.jpeg,.png"
                                onChange={(event) => {
                                 handleFileChange(event);
                                 handleChange(event);
@@ -330,6 +367,7 @@ function Pharmacysignup() {
                             <Form.Control
                               type="file"
                               name="pdfFile"
+                              accept=".pdf,.docx,.excel"
                                onChange={(event) => {
                                 handlePdfChange(event);
                                 handleChange(event);
@@ -549,9 +587,29 @@ function Pharmacysignup() {
                               </label>
                             </div>
                           </Col>
-                          <Col lg={6} className="form-group">
-                            <Button type="submit" className="form-control btn btn-sign-in rounded submit px-3">Submit Now</Button>
-                          </Col>
+                           <Form.Group className='mb-3'>
+                          <Form.Label>Any Referral code ?</Form.Label>
+                          <Form.Control
+                            type="text"
+                            name="ReferralCode"
+                            placeholder="Referral Code"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.ReferralCode}
+                            isInvalid={touched.ReferralCode && !!errors.ReferralCode}
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.ReferralCode}
+                          </Form.Control.Feedback>
+                        </Form.Group>
+
+                        <Button
+                          type="submit"
+                          className="form-control btn btn-sign-in rounded submit px-3"
+                          disabled={isSubmitting}
+                        >
+                          {isSubmitting ? 'Submitting...' : 'Submit Now'}
+                        </Button>
                         </Row>
                       </div>
                     </Form>

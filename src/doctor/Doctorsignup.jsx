@@ -77,6 +77,7 @@ function Doctorsignup() {
     Speciality: Yup.string().required('Speciality are required'),
     photo: Yup.string().required('File are required'),
     pdfFile: Yup.string().required('Licence are required'),
+    ReferralCode: Yup.string(),
     // agreeTerms: Yup.boolean()
     //   .oneOf([true], 'Must agree to terms')
     //   .required('Terms and Condition'),
@@ -134,7 +135,33 @@ listspeciality();
   const handlePdfChange = (event) => {
     setPdf(event.currentTarget.files[0]);
   };
-  const handleSubmit = async (values) => {
+
+  const generateUniqueReferenceNo = async () => {
+  try {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // JS months are 0-based
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+
+    // Fetch the count of entries in the database
+    const response = await axios.get(
+      `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/getDoctorCount`
+    );
+    const count = response.data.count;
+
+    console.log("count", count);
+
+    const sequenceNumber = String(count + 1).padStart(6, "0"); // Add 1 to the count to get the next sequence number
+
+    return `DOC${year}${month}${day}${hours}${sequenceNumber}`;
+  } catch (error) {
+    console.error('Error fetching lab count:', error);
+    // Handle error appropriately, e.g., throw an error or return a default value
+    throw new Error('Failed to generate unique reference number');
+  }
+};
+  const handleSubmit = async (values,{setSubmitting}) => {
     try {
       const formData = new FormData();
       formData.append('DoctorName', values.doctorsName);
@@ -157,9 +184,17 @@ listspeciality();
       formData.append('DaysDoctor3', values.DaysDoctor3);
       formData.append('area', values.area);
       formData.append('Speciality', values.Speciality);
+       if (values.ReferralCode) {
+        formData.append('ReferralCode', values.ReferralCode);
+      }
       formData.append('photo', file);
       formData.append('pdfFile', pdf);
       formData.append('isActive', false); 
+
+      const uniqueReferenceNo = await generateUniqueReferenceNo();
+    formData.append('DoctorReferenceNo', uniqueReferenceNo);
+
+
       const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createDoctor`,formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -181,6 +216,13 @@ listspeciality();
     } catch (error) {
       console.error('Error creating laboratory:', error);
       // Show error message here
+      Swal.fire({
+        title: 'Error!',
+        text: error.response?.data?.message || 'Failed to create Doctor',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
+      setSubmitting(false); // Reset form submission state
     }
   };
 
@@ -244,6 +286,7 @@ listspeciality();
                           Speciality:'',
                           photo:'',
                           pdfFile:'',
+                          ReferralCode: '',
                           
                         }}
                         validationSchema={SignupSchema}
@@ -256,6 +299,7 @@ listspeciality();
                           handleChange,
                           handleBlur,
                           handleSubmit,
+                          isSubmitting,
                         }) => (
                           <Form className="signin-form row" onSubmit={handleSubmit} >
                             <div className="step-1 d-block">
@@ -563,6 +607,7 @@ listspeciality();
                             <Form.Control
                               type="file"
                               name="photo"
+                              accept=".jpg,.jpeg,.png"
                              onChange={(event) => {
                                 handleFileChange(event);
                                 handleChange(event);
@@ -577,6 +622,7 @@ listspeciality();
                             <Form.Control
                               type="file"
                               name="pdfFile"
+                              accept=".pdf,.docx,.excel"
                               onChange={(event) => {
                                 handlePdfChange(event);
                                 handleChange(event);
@@ -600,6 +646,7 @@ listspeciality();
                               <Form.Control.Feedback type="invalid">{errors.address}</Form.Control.Feedback>
                             </Col>
 
+
                            
 
 <Col lg={12} className="form-group d-md-flex mb-4">
@@ -610,9 +657,31 @@ listspeciality();
                               </label>
                             </div>
                           </Col>
-                      <Col lg={6} className="form-group">
-                      <Button type="submit"  className="form-control btn btn-sign-in rounded submit px-3">Submit Now</Button>
-                      </Col>
+
+                            <Form.Group className='mb-3'>
+                          <Form.Label>Any Referral code ?</Form.Label>
+                          <Form.Control
+                            type="text"
+                            name="ReferralCode"
+                            placeholder="Referral Code"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.ReferralCode}
+                            isInvalid={touched.ReferralCode && !!errors.ReferralCode}
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.ReferralCode}
+                          </Form.Control.Feedback>
+                        </Form.Group>
+
+                        <Button
+                          type="submit"
+                          className="form-control btn btn-sign-in rounded submit px-3"
+                          disabled={isSubmitting}
+                        >
+                          {isSubmitting ? 'Submitting...' : 'Submit Now'}
+                        </Button>
+                    
 
 
                               </Row>

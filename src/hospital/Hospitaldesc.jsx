@@ -287,6 +287,7 @@ function Hospitaldesc(props) {
                   <Form.Label>Upload File <span style={{ color: 'red' }}>*</span></Form.Label>
                   <Form.Control
                     type="file"
+                     accept=".jpg,.jpeg,.png,.pdf"
                     onChange={(e) => {
                       setFieldValue('file', e.currentTarget.files[0]);
                     }}

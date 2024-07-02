@@ -286,6 +286,7 @@ function Labsec(props) {
                   <Form.Control
                     type="file"
                     name="myFile"
+                    accept=".jpg,.jpeg,.png,.pdf"
                     onChange={(event) => {
                       setFieldValue('myFile', event.currentTarget.files[0]);
                     }}

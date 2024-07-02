@@ -12,6 +12,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 
 
+
 const SignupSchema = Yup.object().shape({
   name: Yup.string().required('Name is required'),
   email: Yup.string()
@@ -42,6 +43,7 @@ const SignupSchema = Yup.object().shape({
   area: Yup.string().required('area is required'),
   pdfFile: Yup.string().required('file is required'),
   photo: Yup.string().required('file is required'),
+   ReferralCode: Yup.string(),
 });
 
 function Laboratorysignup() {
@@ -49,6 +51,7 @@ function Laboratorysignup() {
   const [file, setFile] = useState(null);
   const [pdf, setPdf] = useState(null);
   const [daysData, setDaysData] = useState([]);
+
  
 
  
@@ -83,7 +86,35 @@ function Laboratorysignup() {
     setPdf(event.currentTarget.files[0]);
   };
 
-  const handleSubmit = async (values) => {
+
+const generateUniqueReferenceNo = async () => {
+  try {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // JS months are 0-based
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+
+    // Fetch the count of entries in the database
+    const response = await axios.get(
+      `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/getLabCount`
+    );
+    const count = response.data.count;
+
+    console.log("count", count);
+
+    const sequenceNumber = String(count + 1).padStart(6, "0"); // Add 1 to the count to get the next sequence number
+
+    return `LAB${year}${month}${day}${hours}${sequenceNumber}`;
+  } catch (error) {
+    console.error('Error fetching lab count:', error);
+    // Handle error appropriately, e.g., throw an error or return a default value
+    throw new Error('Failed to generate unique reference number');
+  }
+};
+
+
+  const handleSubmit = async (values,{setSubmitting}) => {
     try {
       const formData = new FormData();
       formData.append('LabName', values.name);
@@ -104,9 +135,16 @@ function Laboratorysignup() {
       formData.append("DaysLab3", values.DaysLab3);
       formData.append('address', values.address);
       formData.append('area', values.area);
+      formData.append('Speciality', values.Speciality);
+       if (values.ReferralCode) {
+        formData.append('ReferralCode', values.ReferralCode);
+      }
       formData.append('photo', file);
       formData.append('pdfFile', pdf);
       formData.append('isActive', false);
+
+      const uniqueReferenceNo = await generateUniqueReferenceNo();
+    formData.append('LabReferenceNo', uniqueReferenceNo);
 
       const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createLaboratery`, formData, {
         headers: {
@@ -126,12 +164,13 @@ function Laboratorysignup() {
       });
     } catch (error) {
       console.error('Error creating laboratory:', error);
-      Swal.fire({
-        title: "Error!",
-        text: "An error occurred while registering the laboratory",
-        icon: "error",
-        confirmButtonText: "OK"
+       Swal.fire({
+        title: 'Error!',
+        text: error.response?.data?.message || 'Failed to create Laboratory',
+        icon: 'error',
+        confirmButtonText: 'OK',
       });
+      setSubmitting(false); // Reset form submission state
     }
   };
 
@@ -187,6 +226,8 @@ function Laboratorysignup() {
                     area: '',
                     pdfFile:'',
                     photo:'',
+                     ReferralCode: '',
+                
                   }}
                   validationSchema={SignupSchema}
                   onSubmit={handleSubmit}
@@ -198,6 +239,7 @@ function Laboratorysignup() {
                     handleChange,
                     handleBlur,
                     handleSubmit,
+                    isSubmitting,
                   }) => (
                     <Form className="signin-form row" onSubmit={handleSubmit}>
                       <div className="step-1 d-block">
@@ -283,26 +325,28 @@ function Laboratorysignup() {
                             <Form.Control.Feedback type="invalid">{errors.licencedate}</Form.Control.Feedback>
                           </Col>
 
-                          <Col lg={4} className="form-group mb-3">
+                          <Col lg={6} className="form-group mb-3">
                             <Form.Label>Upload Photo <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
-                              type='file'
-                              name="photo"
-                              onChange={(event) => {
-                                handleFileChange(event);
-                                handleChange(event);
-                              }}
-                              onBlur={handleBlur}
-                              isInvalid={touched.photo && errors.photo}
-                            />
-                            <Form.Control.Feedback type="invalid">{errors.photo}</Form.Control.Feedback>
+                                type='file'
+                                name="photo"
+                                accept=".jpg,.jpeg,.png"
+                                onChange={(event) => {
+                                  handleFileChange(event);
+                                  handleChange(event);
+                                }}
+                                onBlur={handleBlur}
+                                isInvalid={touched.photo && errors.photo}
+                              />
+                              <Form.Control.Feedback type="invalid">{errors.photo}</Form.Control.Feedback>
                           </Col>
 
-                            <Col lg={4} className="form-group mb-3">
+                            <Col lg={6} className="form-group mb-3">
                             <Form.Label>Upload Licence <span style={{ color: 'red' }}>*</span></Form.Label>
                             <Form.Control
                               type='file'
                               name="pdfFile"
+                               accept=".pdf,.docx,.excel"
                               onChange={(event) => {
                                 handlepdfChange(event);
                                 handleChange(event);
@@ -311,20 +355,6 @@ function Laboratorysignup() {
                               isInvalid={touched.pdfFile && errors.pdfFile}
                             />
                             <Form.Control.Feedback type="invalid">{errors.pdfFile}</Form.Control.Feedback>
-                          </Col>
-
-                          <Col lg={4} className="form-group mb-3">
-                            <Form.Label>Contact No. <span style={{ color: 'red' }}>*</span></Form.Label>
-                            <Form.Control
-                              type="text"
-                              name="contact"
-                              placeholder="Contact No."
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.contact}
-                              isInvalid={touched.contact && errors.contact}
-                            />
-                            <Form.Control.Feedback type="invalid">{errors.contact}</Form.Control.Feedback>
                           </Col>
 
                           <Col lg={4} className="form-group mb-3">
@@ -494,7 +524,21 @@ function Laboratorysignup() {
                             />
                             <Form.Control.Feedback type="invalid">{errors.area}</Form.Control.Feedback>
                           </Col>
-                          <Col lg={12} className="form-group mb-3">
+
+                          <Col lg={6} className="form-group mb-3">
+                            <Form.Label>Contact No. <span style={{ color: 'red' }}>*</span></Form.Label>
+                            <Form.Control
+                              type="text"
+                              name="contact"
+                              placeholder="Contact No."
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.contact}
+                              isInvalid={touched.contact && errors.contact}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.contact}</Form.Control.Feedback>
+                          </Col>
+                          <Col lg={6} className="form-group mb-3">
                             <Form.Label>Address <span style={{ color: 'red' }}>*</span> </Form.Label>
                             <Form.Control
                               as="textarea"
@@ -519,9 +563,31 @@ function Laboratorysignup() {
                             </div>  
                          
                           </Col>
-                          <Col lg={6} className="form-group">
-                            <Button type="submit" className="form-control btn btn-sign-in rounded submit px-3">Submit Now</Button>
-                          </Col>
+
+                           
+                           <Form.Group className='mb-3'>
+                          <Form.Label>Any Referral code ?</Form.Label>
+                          <Form.Control
+                            type="text"
+                            name="ReferralCode"
+                            placeholder="Referral Code"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.ReferralCode}
+                            isInvalid={touched.ReferralCode && !!errors.ReferralCode}
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.ReferralCode}
+                          </Form.Control.Feedback>
+                        </Form.Group>
+
+                        <Button
+                          type="submit"
+                          className="form-control btn btn-sign-in rounded submit px-3"
+                          disabled={isSubmitting}
+                        >
+                          {isSubmitting ? 'Submitting...' : 'Submit Now'}
+                        </Button>
                         </Row>
                       </div>
                     </Form>
