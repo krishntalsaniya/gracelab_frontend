@@ -246,7 +246,7 @@ function Labsec(props) {
             {({ values, handleChange, handleSubmit, setFieldValue, errors, touched }) => (
               <Form noValidate onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formName">
-                  <Form.Label>Name</Form.Label>
+                  <Form.Label>Name <span style={{ color: 'red' }}>*</span></Form.Label>
                   <Field
                     type="text"
                     name="name"
@@ -258,7 +258,7 @@ function Labsec(props) {
                   <ErrorMessage name="name" component="div" className="text-danger" />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formEmail">
-                  <Form.Label>Email address</Form.Label>
+                  <Form.Label>Email address <span style={{ color: 'red' }}>*</span></Form.Label>
                   <Field
                     type="email"
                     name="email"
@@ -270,7 +270,7 @@ function Labsec(props) {
                   <ErrorMessage name="email" component="div" className="text-danger" />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formContactNumber">
-                  <Form.Label>Contact Number</Form.Label>
+                  <Form.Label>Contact Number <span style={{ color: 'red' }}>*</span></Form.Label>
                   <Field
                     type="text"
                     name="contactNumber"
@@ -282,7 +282,7 @@ function Labsec(props) {
                   <ErrorMessage name="contactNumber" component="div" className="text-danger" />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formFile">
-                  <Form.Label>Upload File</Form.Label>
+                  <Form.Label>Upload File <span style={{ color: 'red' }}>*</span></Form.Label>
                   <Form.Control
                     type="file"
                     name="myFile"
@@ -294,7 +294,7 @@ function Labsec(props) {
                   <ErrorMessage name="myFile" component="div" className="text-danger" />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formDescription">
-                  <Form.Label>Description</Form.Label>
+                  <Form.Label>Description <span style={{ color: 'red' }}>*</span></Form.Label>
                   <Field
                     type="text"
                     name="Description"

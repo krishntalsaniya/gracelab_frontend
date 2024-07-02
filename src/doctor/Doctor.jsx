@@ -43,6 +43,12 @@ function Doctor() {
   const [filteredDoctors, setFilteredDoctors] = useState([]);
    const [specilitysearchQuery, specilitysetSearchQuery] = useState('');
    const [doctorad, setdoctorad] = useState(null)
+
+   const [visibleDoctors, setVisibleDoctors] = useState(2);
+
+   const showMoreDoctors = () => {
+  setVisibleDoctors(prevVisibleDoctors => prevVisibleDoctors + 2);
+};
   
 
 
@@ -680,28 +686,31 @@ navigatelink="/doctor-login"
                             </div>
                           </div>
       
-      {filteredDoctors.map((doc,index) => (
-        <Doctordes
-        key={`${doc._id}-${index}`}
-         hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${doc.Doctorphoto}`}
-       mainheading={doc.DoctorName}
-       headings={doc.address}
-       starttime1={doc.OPD1StartTime}
-       endtime1={doc.OPD1EndTime}
-       starttime2={doc.OPD2StartTime}
-       endtime2={doc.OPD2EndTime}
-       starttime3={doc.OPD3StartTime}
-       endtime3={doc.OPD3EndTime}
-       dayslab1={doc.DaysDoctor1}
-       dayslab2={doc.DaysDoctor2}
-       dayslab3={doc.DaysDoctor3}
-       locationmap={doc.Location}    
-       imagelink={doc.website}   
-        Labid={doc._id}
-       averageRating={doc.averageRating}
+     {filteredDoctors.slice(0, visibleDoctors).map((doc, index) => (
+  <Doctordes
+    key={`${doc._id}-${index}`}
+    hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${doc.Doctorphoto}`}
+    mainheading={doc.DoctorName}
+    headings={doc.address}
+    starttime1={doc.OPD1StartTime}
+    endtime1={doc.OPD1EndTime}
+    starttime2={doc.OPD2StartTime}
+    endtime2={doc.OPD2EndTime}
+    starttime3={doc.OPD3StartTime}
+    endtime3={doc.OPD3EndTime}
+    dayslab1={doc.DaysDoctor1}
+    dayslab2={doc.DaysDoctor2}
+    dayslab3={doc.DaysDoctor3}
+    locationmap={doc.Location}    
+    imagelink={doc.website}   
+    Labid={doc._id}
+    averageRating={doc.averageRating}
+  />
+))}
 
-      />
-      ))}
+{visibleDoctors < filteredDoctors.length && (
+  <button className="show-more-button" onClick={showMoreDoctors}>Show More</button>
+)}
     </div>
   )}
   

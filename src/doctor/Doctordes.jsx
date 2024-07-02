@@ -213,7 +213,7 @@ const Doctordes = (props) => {
             {({ setFieldValue, errors, touched }) => (
               <FormikForm>
                 <Form.Group className="mb-3" controlId="formName">
-                  <Form.Label>Name</Form.Label>
+                  <Form.Label>Name <span style={{ color: 'red' }}>*</span></Form.Label>
                   <Field
                     name="name"
                     type="text"
@@ -223,7 +223,7 @@ const Doctordes = (props) => {
                   <ErrorMessage name="name" component="div" className="invalid-feedback" />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formEmail">
-                  <Form.Label>Email address</Form.Label>
+                  <Form.Label>Email address <span style={{ color: 'red' }}>*</span></Form.Label>
                   <Field
                     name="email"
                     type="email"
@@ -233,7 +233,7 @@ const Doctordes = (props) => {
                   <ErrorMessage name="email" component="div" className="invalid-feedback" />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formContactNumber">
-                  <Form.Label>Contact Number</Form.Label>
+                  <Form.Label>Contact Number <span style={{ color: 'red' }}>*</span></Form.Label>
                   <Field
                     name="contactNumber"
                     type="text"
@@ -243,7 +243,7 @@ const Doctordes = (props) => {
                   <ErrorMessage name="contactNumber" component="div" className="invalid-feedback" />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formFile">
-                  <Form.Label>Upload File</Form.Label>
+                  <Form.Label>Upload File <span style={{ color: 'red' }}>*</span></Form.Label>
                   <input
                     name="file"
                     type="file"
@@ -255,7 +255,7 @@ const Doctordes = (props) => {
                   <ErrorMessage name="file" component="div" className="invalid-feedback" />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formDescription">
-                  <Form.Label>Description</Form.Label>
+                  <Form.Label>Description <span style={{ color: 'red' }}>*</span></Form.Label>
                   <Field
                     name="description"
                     type="text"

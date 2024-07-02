@@ -245,7 +245,7 @@ function Hospitaldesc(props) {
             {({ values, handleChange, handleSubmit, setFieldValue, errors, touched }) => (
               <Form noValidate onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formName">
-                  <Form.Label>Name</Form.Label>
+                  <Form.Label>Name <span style={{ color: 'red' }}>*</span></Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Enter your name"
@@ -257,7 +257,7 @@ function Hospitaldesc(props) {
                   <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formEmail">
-                  <Form.Label>Email address</Form.Label>
+                  <Form.Label>Email address <span style={{ color: 'red' }}>*</span></Form.Label>
                   <Form.Control
                     type="email"
                     placeholder="Enter your email"
@@ -269,7 +269,7 @@ function Hospitaldesc(props) {
                   <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formContactNumber">
-                  <Form.Label>Contact Number</Form.Label>
+                  <Form.Label>Contact Number <span style={{ color: 'red' }}>*</span></Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Enter your contact number"
@@ -282,8 +282,20 @@ function Hospitaldesc(props) {
                     {errors.contactNumber}
                   </Form.Control.Feedback>
                 </Form.Group>
+
+                  <Form.Group controlId="formFile" className="mb-3">
+                  <Form.Label>Upload File <span style={{ color: 'red' }}>*</span></Form.Label>
+                  <Form.Control
+                    type="file"
+                    onChange={(e) => {
+                      setFieldValue('file', e.currentTarget.files[0]);
+                    }}
+                    isInvalid={touched.file && !!errors.file}
+                  />
+                  <Form.Control.Feedback type="invalid">{errors.file}</Form.Control.Feedback>
+                </Form.Group>
                 <Form.Group className="mb-3" controlId="formDescription">
-                  <Form.Label>Description</Form.Label>
+                  <Form.Label>Description <span style={{ color: 'red' }}>*</span></Form.Label>
                   <Form.Control
                     as="textarea"
                     rows={3}
@@ -295,18 +307,8 @@ function Hospitaldesc(props) {
                   />
                   <Form.Control.Feedback type="invalid">{errors.Description}</Form.Control.Feedback>
                 </Form.Group>
-                <Form.Group controlId="formFile" className="mb-3">
-                  <Form.Label>Upload File</Form.Label>
-                  <Form.Control
-                    type="file"
-                    onChange={(e) => {
-                      setFieldValue('file', e.currentTarget.files[0]);
-                    }}
-                    isInvalid={touched.file && !!errors.file}
-                  />
-                  <Form.Control.Feedback type="invalid">{errors.file}</Form.Control.Feedback>
-                </Form.Group>
-                <Button variant="primary" type="submit" className="rounded-pill mt-3 float-end">
+              
+                <Button variant="primary" type="submit">
                   Submit
                 </Button>
               </Form>

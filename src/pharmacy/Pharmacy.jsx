@@ -29,6 +29,12 @@ function Pharmacy() {
     const [searchQuery, setSearchQuery] = useState('');
     const [pharmacyad, setpharmacyad] = useState(null)
 
+    const [visiblePharmacies, setVisiblePharmacies] = useState(2);
+
+    const showMorePharmacies = () => {
+  setVisiblePharmacies(prevVisiblePharmacies => prevVisiblePharmacies + 2);
+};
+
 
   useEffect(() => {
     
@@ -504,27 +510,31 @@ navigatelink="/pharmacy-login"
                             </div>
                           </div>
     
-      {filteredLabs.map((lab,index) => (
-      <Pharmacysec
-         key={`${lab._id}-${index}`}
-        hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${lab.Pharmacyphoto}`}
-        mainheading={lab.PharmacyName}
-        headings={lab.address}
-        starttime1={lab.PharmacyStartTime1}
-        endtime1={lab.PharmacyEndTime1}
-        starttime2={lab.PharmacyStartTime2}
-        endtime2={lab.PharmacyEndTime2}
-        starttime3={lab.PharmacyStartTime3}
-        endtime3={lab.PharmacyEndTime3}
-        dayslab1={lab.DaysPharmacy1}
-        dayslab2={lab.DaysPharmacy2}
-        dayslab3={lab.DaysPharmacy3}
-        locationmap={lab.Location}
-        imagelink={lab.website}
-        Labid={lab._id}
-         averageRating={lab.averageRating}
-      />
-    ))}
+    {filteredLabs.slice(0, visiblePharmacies).map((lab, index) => (
+  <Pharmacysec
+    key={`${lab._id}-${index}`}
+    hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${lab.Pharmacyphoto}`}
+    mainheading={lab.PharmacyName}
+    headings={lab.address}
+    starttime1={lab.PharmacyStartTime1}
+    endtime1={lab.PharmacyEndTime1}
+    starttime2={lab.PharmacyStartTime2}
+    endtime2={lab.PharmacyEndTime2}
+    starttime3={lab.PharmacyStartTime3}
+    endtime3={lab.PharmacyEndTime3}
+    dayslab1={lab.DaysPharmacy1}
+    dayslab2={lab.DaysPharmacy2}
+    dayslab3={lab.DaysPharmacy3}
+    locationmap={lab.Location}
+    imagelink={lab.website}
+    Labid={lab._id}
+    averageRating={lab.averageRating}
+  />
+))}
+
+{visiblePharmacies < filteredLabs.length && (
+  <button className="show-more-button" onClick={showMorePharmacies}>Show More</button>
+)}
     </div>
   )}
 </div>

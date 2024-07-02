@@ -253,7 +253,7 @@ function Pharmacysec(props) {
             {({ values, handleChange, handleSubmit, setFieldValue, errors, touched }) => (
               <Form noValidate onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formName">
-                  <Form.Label>Name</Form.Label>
+                  <Form.Label>Name <span style={{ color: 'red' }}>*</span></Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Enter your name"
@@ -265,7 +265,7 @@ function Pharmacysec(props) {
                   <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formEmail">
-                  <Form.Label>Email address</Form.Label>
+                  <Form.Label>Email address <span style={{ color: 'red' }}>*</span></Form.Label>
                   <Form.Control
                     type="email"
                     placeholder="Enter your email"
@@ -277,7 +277,7 @@ function Pharmacysec(props) {
                   <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formContactNumber">
-                  <Form.Label>Contact Number</Form.Label>
+                  <Form.Label>Contact Number <span style={{ color: 'red' }}>*</span></Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Enter your contact number"
@@ -291,7 +291,7 @@ function Pharmacysec(props) {
                   </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formFile">
-                  <Form.Label>Upload File</Form.Label>
+                  <Form.Label>Upload File <span style={{ color: 'red' }}>*</span></Form.Label>
                   <Form.Control
                     type="file"
                     name="myFile"
@@ -303,7 +303,7 @@ function Pharmacysec(props) {
                   <Form.Control.Feedback type="invalid">{errors.myFile}</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formDescription">
-                  <Form.Label>Description</Form.Label>
+                  <Form.Label>Description <span style={{ color: 'red' }}>*</span></Form.Label>
                   <Form.Control
                     as="textarea"
                     placeholder="Enter your Description"

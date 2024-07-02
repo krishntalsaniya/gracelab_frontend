@@ -38,6 +38,12 @@ function Hospital() {
    const [specilitysearchQuery, specilitysetSearchQuery] = useState('');
    const [hospitalsearchQuery, hospitalsetSearchQuery] = useState('');
    const [hospitalimage, sethospitalimage] = useState(null)
+
+   const [visibleHospitals, setVisibleHospitals] = useState(2);
+
+   const showMoreHospitals = () => {
+  setVisibleHospitals(prevVisibleHospitals => prevVisibleHospitals + 2);
+};
  
     useEffect(() => {
     
@@ -598,27 +604,31 @@ const handleSpecialtyChange = (event) => {
                             </div>
                           </div>
      
-      {filterespecilityhospitalname?.map((hospital,index) => (
-        <Hospitaldesc
-         key={`${hospital._id}-${index}`}
-       hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${hospital.Hospitalphoto}`}
-       mainheading={hospital.HospitalName}
-       headings={hospital.address} // Adjust this based on your API response structure
-       starttime1={hospital.OPD1StartTime} // Adjust this based on your API response structure
-       endtime1={hospital.OPD1EndTime} // Adjust this based on your API response structure
-       starttime2={hospital.OPD2StartTime} // Adjust this based on your API response structure
-       endtime2={hospital.OPD2EndTime} // Adjust this based on your API response structure
-       starttime3={hospital.OPD3StartTime} // Adjust this based on your API response structure
-       endtime3={hospital.OPD3EndTime} // Adjust this based on your API response structure
-       dayslab1={hospital.DaysHospital1}
-       dayslab2={hospital.DaysHospital2}
-       dayslab3={hospital.DaysHospital3}
-       locationmap={hospital.Location}
-       imagelink={hospital.website}
-           Labid={hospital._id}
-           averageRating={hospital.averageRating}
-      />
-      ))}
+      {filterespecilityhospitalname.slice(0, visibleHospitals).map((hospital, index) => (
+  <Hospitaldesc
+    key={`${hospital._id}-${index}`}
+    hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${hospital.Hospitalphoto}`}
+    mainheading={hospital.HospitalName}
+    headings={hospital.address} // Adjust this based on your API response structure
+    starttime1={hospital.OPD1StartTime} // Adjust this based on your API response structure
+    endtime1={hospital.OPD1EndTime} // Adjust this based on your API response structure
+    starttime2={hospital.OPD2StartTime} // Adjust this based on your API response structure
+    endtime2={hospital.OPD2EndTime} // Adjust this based on your API response structure
+    starttime3={hospital.OPD3StartTime} // Adjust this based on your API response structure
+    endtime3={hospital.OPD3EndTime} // Adjust this based on your API response structure
+    dayslab1={hospital.DaysHospital1}
+    dayslab2={hospital.DaysHospital2}
+    dayslab3={hospital.DaysHospital3}
+    locationmap={hospital.Location}
+    imagelink={hospital.website}
+    Labid={hospital._id}
+    averageRating={hospital.averageRating}
+  />
+))}
+
+{visibleHospitals < filterespecilityhospitalname.length && (
+  <button className="show-more-button" onClick={showMoreHospitals}>Show More</button>
+)}
     </div>
   )}
 </div>
