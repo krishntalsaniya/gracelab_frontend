@@ -83,6 +83,8 @@ const SignupSchema = Yup.object().shape({
   confirmpass: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required('Confirm Password is required'),
   licenceno: Yup.string().required('License No. is required'),
   licencedate: Yup.date().required('License Date is required'),  
+  HospitalRegistrationDate: Yup.date().required('HospitalRegistration  Date is required'),  
+  city: Yup.string().required('city  Date is required'),  
   opd1StartTime: Yup.string().required('time slote is required'),  
   opd2StartTime: Yup.string().required('time slote is required'),  
   opd3StartTime: Yup.string().required('time slote is required'),  
@@ -109,6 +111,7 @@ function Hospitalsignup() {
   const [pdf, setpdf] = useState(null);
   const [daysData, setDaysData] = useState([]);
   const [speciality, setspeciality] = useState([]);
+  const [loc, setLoc] = useState([]);
 
   const listDay = async () => {
     try {
@@ -132,6 +135,19 @@ function Hospitalsignup() {
         console.error('Error setting days data:', error);
       }
     };
+
+     const city = async () =>{
+
+    try {
+        const city = await axios.get(
+        `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/location/city`
+      )
+      setLoc(city.data)
+    } catch (error) {
+       console.error("Error fetching laboratory list:", error);
+    }
+    }
+    city();
     const listspeciality = async () => {
     try {
       const speciality = await axios.get(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/get/getAllHospitalSpeciality`);
@@ -189,6 +205,8 @@ listspeciality();
       formData.append( 'Password', values.password);
       formData.append('HospitalLicenseNumber', values.licenceno);
       formData.append('HospitalLicenseDate', values.licencedate);
+      formData.append('HospitalRegistrationDate', values.HospitalRegistrationDate);
+      formData.append('city', values.city);
       formData.append('OPD1StartTime', values.opd1StartTime);
       formData.append('OPD2StartTime', values.opd2StartTime);
       formData.append('OPD3StartTime', values.opd3StartTime);
@@ -279,6 +297,8 @@ listspeciality();
                     confirmpass: '',
                     licenceno: '',
                     licencedate: '',
+                    HospitalRegistrationDate:'',
+                    city:'',
                     opd1StartTime: '',
                     opd2StartTime: '',
                     opd3StartTime: '',
@@ -401,6 +421,39 @@ listspeciality();
                               isInvalid={touched.licencedate && errors.licencedate}
                             />
                             <Form.Control.Feedback type="invalid">{errors.licencedate}</Form.Control.Feedback>
+                          </Col>
+
+                            <Col lg={6} className="form-group mb-3">
+                            <Form.Label>Hospital Registration Date <span style={{ color: 'red' }}>*</span></Form.Label>
+                            <Form.Control
+                              type="date"
+                              name="HospitalRegistrationDate"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.HospitalRegistrationDate}
+                              isInvalid={touched.HospitalRegistrationDate && errors.HospitalRegistrationDate}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.HospitalRegistrationDate}</Form.Control.Feedback>
+                          </Col>
+
+                           <Col lg={6} className="form-group mb-3">
+                            <Form.Label>City <span style={{ color: 'red' }}>*</span></Form.Label>
+                            <Form.Control
+                              as="select"
+                              name="city"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.city}
+                              isInvalid={touched.city && errors.city}
+                            >
+                              <option value="">Select City</option>
+                              {loc.map((city) => (
+                                <option key={city._id} value={city._id}>
+                                  {city.Name}
+                                </option>
+                              ))}
+                            </Form.Control>
+                            <Form.Control.Feedback type="invalid">{errors.city}</Form.Control.Feedback>
                           </Col>
 
                           <Col lg={4} className="form-group mb-3">

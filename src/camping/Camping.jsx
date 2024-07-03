@@ -71,7 +71,7 @@ function Camping() {
           {camp.map((camping) => (
             <Col key={camping.id} lg={4} className="mb-4">
               <Link to="/camping">
-                <Card style={{ width: '100%',maxHeight:'450',minHeight:'450' }}>
+                <Card style={{ width: '100%',maxHeight:'450',minHeight:'450' }} className='camping-card'>
                   <Card.Img className='card-image-camping'
                     variant="top"
                     src={`${process.env.REACT_APP_API_URL_GRACELAB}/${camping.Photo}`}
@@ -116,7 +116,7 @@ function Camping() {
           {upcomingcamps.map((camping) => (
             <Col key={camping.id} lg={4} className="mb-4">
               <Link to="/camping">
-                <Card style={{ width: '100%',maxHeight:'450',minHeight:'450' }}>
+                <Card style={{ width: '100%',maxHeight:'450',minHeight:'450' }} className='camping-card'>
                   <Card.Img className='card-image-camping'
                     variant="top"
                     src={`${process.env.REACT_APP_API_URL_GRACELAB}/${camping.Photo}`}

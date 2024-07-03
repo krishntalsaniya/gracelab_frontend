@@ -27,6 +27,8 @@ const SignupSchema = Yup.object().shape({
   confirmpass: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required('Confirm Password is required'),
   licenceno: Yup.string().required('License No. is required'),
   licencedate: Yup.date().required('License Date is required'),
+  PharmacyRegistrationDate: Yup.date().required('PharmacyRegistration Date is required'),
+  city: Yup.string().required('city is required'),
   pincode: Yup.string().required('Pincode is required'),
   pharmacyStartTime1: Yup.string().required('time slote is required'),
   pharmacyStartTime2: Yup.string().required('time slote is required'),
@@ -51,6 +53,7 @@ function Pharmacysignup() {
   const [file, setFile] = useState(null);
   const [pdf, setPdf] = useState(null);
   const [daysData, setDaysData] = useState([]);
+   const [loc, setLoc] = useState([]);
 
   const listDay = async () => {
     try {
@@ -83,6 +86,19 @@ function Pharmacysignup() {
         console.error('Error setting days data:', error);
       }
     };
+
+    const city = async () =>{
+
+    try {
+        const city = await axios.get(
+        `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/location/city`
+      )
+      setLoc(city.data)
+    } catch (error) {
+       console.error("Error fetching laboratory list:", error);
+    }
+    }
+    city();
 
     fetchDays();
   }, []);
@@ -130,6 +146,8 @@ function Pharmacysignup() {
       formData.append('Password', values.password);
       formData.append('PharmacyLicenseNumber', values.licenceno);
       formData.append('PharmacyLicenseDate', values.licencedate);
+      formData.append('PharmacyRegistrationDate', values.PharmacyRegistrationDate);
+      formData.append('city', values.city);
       formData.append('PharmacyStartTime1', values.pharmacyStartTime1);
       formData.append('PharmacyStartTime2', values.pharmacyStartTime2);
       formData.append('PharmacyStartTime3', values.pharmacyStartTime3);
@@ -220,6 +238,8 @@ function Pharmacysignup() {
                     confirmpass: '',
                     licenceno: '',
                     licencedate: '',
+                    PharmacyRegistrationDate: '',
+                    city: '',
                     pharmacyStartTime1: '',
                     pharmacyStartTime2: '',
                     pharmacyStartTime3: '',
@@ -344,6 +364,40 @@ function Pharmacysignup() {
                               isInvalid={touched.licencedate && errors.licencedate}
                             />
                             <Form.Control.Feedback type="invalid">{errors.licencedate}</Form.Control.Feedback>
+                          </Col>
+
+                           <Col lg={6} className="form-group mb-3">
+                            <Form.Label>Pharmacy Registration Date <span style={{ color: 'red' }}>*</span></Form.Label>
+                            <Form.Control
+                              type="date"
+                              name="PharmacyRegistrationDate"
+                              placeholder="Pharmacy Registration Date"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.PharmacyRegistrationDate}
+                              isInvalid={touched.PharmacyRegistrationDate && errors.PharmacyRegistrationDate}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.PharmacyRegistrationDate}</Form.Control.Feedback>
+                          </Col>
+
+                           <Col lg={6} className="form-group mb-3">
+                            <Form.Label>City <span style={{ color: 'red' }}>*</span></Form.Label>
+                            <Form.Control
+                              as="select"
+                              name="city"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.city}
+                              isInvalid={touched.city && errors.city}
+                            >
+                              <option value="">Select Days</option>
+                              {loc.map((city) => (
+                                <option key={city._id} value={city._id}>
+                                  {city.Name}
+                                </option>
+                              ))}
+                            </Form.Control>
+                            <Form.Control.Feedback type="invalid">{errors.city}</Form.Control.Feedback>
                           </Col>
 
                           <Col lg={6} className="form-group mb-3">
@@ -588,7 +642,7 @@ function Pharmacysignup() {
                             </div>
                           </Col>
                            <Form.Group className='mb-3'>
-                          <Form.Label>Any Referral code ?</Form.Label>
+                          <Form.Label>Any Referral code ? (optional)</Form.Label>
                           <Form.Control
                             type="text"
                             name="ReferralCode"

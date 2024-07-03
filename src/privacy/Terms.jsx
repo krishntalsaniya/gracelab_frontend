@@ -4,6 +4,8 @@ import Pagetitle from '../patients/Pagetitle';
 import { MdArrowForwardIos } from 'react-icons/md';
 import { Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+
 
 function Terms() {
   const [termsData, setTermsData] = useState([]);
@@ -37,14 +39,20 @@ useEffect(() => {
     <>
       <Modalnavigationbar />
       <div className="page-title-area">
-        <Pagetitle
-          heading="Terms & Condition"
-          pagetitlelink="/"
-          title1="Home"
-          title2="Terms"
-          IconComponent={MdArrowForwardIos}
-        />
+        <div className="container">
+          <div className="page-title-content">
+            <h2>{termsData.length > 0 ? termsData[0].Network : 'Loading...'}</h2>
+            <ul>
+              <li>
+                <MdArrowForwardIos className='arrowright' />
+                <Link to='/'>Home</Link>
+              </li>
+              <li>Terms</li>
+            </ul>
+          </div>
+        </div>
       </div>
+     
 
       <section className="services-area ptb-70 pb-5">
         <Container>

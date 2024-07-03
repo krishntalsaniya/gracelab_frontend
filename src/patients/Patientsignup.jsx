@@ -256,7 +256,7 @@ function Patientsignup() {
                         </Col>
 
                         <Form.Group className='mb-3'>
-                          <Form.Label>Any Referral code ?</Form.Label>
+                          <Form.Label>Any Referral code ? (optional)</Form.Label>
                           <Form.Control
                             type="text"
                             name="ReferralCode"

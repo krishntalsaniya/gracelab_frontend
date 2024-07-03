@@ -1,16 +1,13 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Modalnavigationbar from '../navbar/Modalnavigationbar';
-import Pagetitle from '../patients/Pagetitle';
 import { MdArrowForwardIos } from "react-icons/md";
-import about1 from '../img/image1.jpg';
-import about2 from '../img/image2.jpg';
 import { Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 function About() {
   const { _ID } = useParams();
-  const [bout, setBout] = useState({ blogDesc: "" }); // Initialize with a default structure
+  const [bout, setBout] = useState({ blogDesc: "", blogTitle: "" }); // Initialize with a default structure
 
   useEffect(() => {
     const fetchAbout = async () => {
@@ -31,13 +28,18 @@ function About() {
     <>
       <Modalnavigationbar />
       <div className="page-title-area">
-        <Pagetitle
-          heading="About Us"
-          pagetitlelink="/"
-          title1="Home"
-          title2="About"
-          IconComponent={MdArrowForwardIos}
-        />
+        <div className="container">
+          <div className="page-title-content">
+            <h2>{bout.blogTitle || 'Loading...'}</h2>
+            <ul>
+              <li>
+                <MdArrowForwardIos className='arrowright' />
+                <Link to='/'>Home</Link>
+              </li>
+             <li>{bout.blogTitle || 'Loading...'}</li>
+            </ul>
+          </div>
+        </div>
       </div>
 
       <section className="about-our-company ptb-120 pb-0">
@@ -45,16 +47,11 @@ function About() {
           <Row className="align-items-center">
             <Col lg={12} md={12}>
               <div className="about-content text-center">
-               
                 <div dangerouslySetInnerHTML={{ __html: bout.blogDesc }} />
-              
-                
               </div>
             </Col>
           </Row>
         </Container>
-
-      
       </section>
     </>
   );

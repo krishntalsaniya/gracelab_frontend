@@ -64,6 +64,7 @@ function Doctorsignup() {
       .matches(/^[0-9]+$/, 'Must be only digits')
       .required('Pincode is required'),
     address: Yup.string().required('Address is required'),
+     city: Yup.string().required('city are required'),
     OPD1StartTime: Yup.string().required('OPD start time is required'),
     OPD2StartTime: Yup.string().required('OPD start time is required'),
     OPD3StartTime: Yup.string().required('OPD start time is required'),
@@ -75,12 +76,13 @@ function Doctorsignup() {
     DaysDoctor3: Yup.string().required('Days are required'),
     area: Yup.string().required('area are required'),
     Speciality: Yup.string().required('Speciality are required'),
+    DoctorRegistrationDate: Yup.date().required('DoctorRegistrationDate are required'),
+    DoctorLicenseDate: Yup.date().required('DoctorLicenseDate are required'),
     photo: Yup.string().required('File are required'),
     pdfFile: Yup.string().required('Licence are required'),
+   
     ReferralCode: Yup.string(),
-    // agreeTerms: Yup.boolean()
-    //   .oneOf([true], 'Must agree to terms')
-    //   .required('Terms and Condition'),
+
   });
 
 
@@ -89,7 +91,7 @@ function Doctorsignup() {
   const [pdf, setPdf] = useState(null);
     const [daysData, setDaysData] = useState([]);
      const [speciality, setspeciality] = useState([]);
-
+const [loc, setLoc] = useState([]);
      const listDay = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list/Days`);
@@ -110,6 +112,19 @@ listDay();
         console.error('Error setting days data:', error);
       }
     };
+
+    const city = async () =>{
+
+    try {
+        const city = await axios.get(
+        `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/location/city`
+      )
+      setLoc(city.data)
+    } catch (error) {
+       console.error("Error fetching laboratory list:", error);
+    }
+    }
+    city();
 
       const listspeciality = async () => {
     try {
@@ -184,8 +199,11 @@ listspeciality();
       formData.append('DaysDoctor3', values.DaysDoctor3);
       formData.append('area', values.area);
       formData.append('Speciality', values.Speciality);
+      formData.append('DoctorRegistrationDate', values.DoctorRegistrationDate);
+      formData.append('DoctorLicenseDate', values.DoctorLicenseDate);
        if (values.ReferralCode) {
         formData.append('ReferralCode', values.ReferralCode);
+        formData.append('city', values.city);
       }
       formData.append('photo', file);
       formData.append('pdfFile', pdf);
@@ -272,7 +290,9 @@ listspeciality();
                           confirmPassword: '',
                           education: '',
                           pincode: '',
+                          
                           address: '',
+                          city: '',
                           OPD1StartTime:'',
                           OPD2StartTime:'',
                           OPD3StartTime:'',
@@ -284,9 +304,12 @@ listspeciality();
                           DaysDoctor3:'',
                           area:'',
                           Speciality:'',
+                          DoctorRegistrationDate:'',
+                          DoctorLicenseDate:'',
                           photo:'',
                           pdfFile:'',
                           ReferralCode: '',
+                          
                           
                         }}
                         validationSchema={SignupSchema}
@@ -598,9 +621,43 @@ listspeciality();
             {item.Speciality}
           </option>
         ))}
+
                             </Form.Control>
                             <Form.Control.Feedback type="invalid">{errors.Speciality}</Form.Control.Feedback>
                           </Col>
+
+                            <Col lg={6} className="form-group mb-3">
+                              <Form.Label>Doctor Registration Date <span style={{ color: 'red' }}>*</span></Form.Label>
+                              <Form.Control
+                                type="date"
+                                name="DoctorRegistrationDate"
+                                placeholder='DoctorRegistrationDate'
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.DoctorRegistrationDate}
+                                isInvalid={touched.DoctorRegistrationDate && errors.DoctorRegistrationDate}
+                              />
+                              <Form.Control.Feedback type="invalid">{errors.DoctorRegistrationDate}</Form.Control.Feedback>
+                            </Col>
+
+                             <Col lg={6} className="form-group mb-3">
+                              <Form.Label>Doctor Licence Date <span style={{ color: 'red' }}>*</span></Form.Label>
+                              <Form.Control
+                                type="date"
+                                name="DoctorLicenseDate"
+                                placeholder='DoctorLicenseDate'
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.DoctorLicenseDate}
+                                isInvalid={touched.DoctorLicenseDate && errors.DoctorLicenseDate}
+                              />
+                              <Form.Control.Feedback type="invalid">{errors.DoctorLicenseDate}</Form.Control.Feedback>
+                            </Col>
+
+
+                          
+
+                          
 
  <Col lg={6} className="form-group mb-3">
                             <Form.Label>Upload Image <span style={{ color: 'red' }}>*</span></Form.Label>
@@ -632,7 +689,7 @@ listspeciality();
                             />
                             <Form.Control.Feedback type="invalid">{errors.pdfFile}</Form.Control.Feedback>
                           </Col>
-                            <Col lg={12} className="form-group mb-3">
+                            <Col lg={6} className="form-group mb-3">
                               <Form.Label>Address <span style={{ color: 'red' }}>*</span></Form.Label>
                               <Form.Control
                                 type="text"
@@ -645,6 +702,26 @@ listspeciality();
                               />
                               <Form.Control.Feedback type="invalid">{errors.address}</Form.Control.Feedback>
                             </Col>
+
+                              <Col lg={6} className="form-group mb-3">
+                            <Form.Label>City <span style={{ color: 'red' }}>*</span></Form.Label>
+                            <Form.Control
+                              as="select"
+                              name="city"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.city}
+                              isInvalid={touched.city && errors.city}
+                            >
+                              <option value="">Select City</option>
+                              {loc.map((city) => (
+                                <option key={city._id} value={city._id}>
+                                  {city.Name}
+                                </option>
+                              ))}
+                            </Form.Control>
+                            <Form.Control.Feedback type="invalid">{errors.city}</Form.Control.Feedback>
+                          </Col>
 
 
                            
@@ -659,7 +736,7 @@ listspeciality();
                           </Col>
 
                             <Form.Group className='mb-3'>
-                          <Form.Label>Any Referral code ?</Form.Label>
+                          <Form.Label>Any Referral code ? (optional)</Form.Label>
                           <Form.Control
                             type="text"
                             name="ReferralCode"

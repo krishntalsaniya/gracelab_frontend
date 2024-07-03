@@ -29,6 +29,8 @@ const SignupSchema = Yup.object().shape({
   confirmpass: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required('Confirm Password is required'),
   licenceno: Yup.string().required('License No. is required'),
   licencedate: Yup.date().required('License Date is required'),
+  LabRegistrationDate: Yup.date().required('Lab Registration Date is required'),
+  city: Yup.string().required('city is required'),
   labStartTime1: Yup.string().required('Time Slot is required'),
   labStartTime2: Yup.string().required('Time Slot is required'),
   labStartTime3: Yup.string().required('Time Slot is required'),
@@ -51,6 +53,7 @@ function Laboratorysignup() {
   const [file, setFile] = useState(null);
   const [pdf, setPdf] = useState(null);
   const [daysData, setDaysData] = useState([]);
+  const [loc, setLoc] = useState([]);
 
  
 
@@ -75,6 +78,22 @@ function Laboratorysignup() {
         console.error('Error setting days data:', error);
       }
     };
+
+     const labLocation = async () => {
+      try {
+        const labt = await axios.get(
+          `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/location/city`
+        );
+        console.log("location signup: ",labt);
+        // const allLabListIsActive = labt.data.filter(
+        //   (laboratoruisActive) => laboratoruisActive.isActive
+        // );
+        setLoc(labt.data);
+      } catch (error) {
+        console.error("Error fetching laboratory list:", error);
+      }
+    };
+    labLocation();
 
     fetchDays();
   }, []);
@@ -123,6 +142,8 @@ const generateUniqueReferenceNo = async () => {
       formData.append('Password', values.password);
       formData.append('LabLicenseNumber', values.licenceno);
       formData.append('LabLicenseDate', values.licencedate);
+      formData.append('LabRegistrationDate', values.LabRegistrationDate);
+      formData.append('city', values.city);
       formData.append('LabStartTime1', values.labStartTime1);
       formData.append('LabStartTime2', values.labStartTime2);
       formData.append('LabStartTime3', values.labStartTime3);
@@ -212,6 +233,8 @@ const generateUniqueReferenceNo = async () => {
                     confirmpass: '',
                     licenceno: '',
                     licencedate: '',
+                    LabRegistrationDate:'',
+                    city:'',
                     labStartTime1: '',
                     labStartTime2: '',
                     labStartTime3: '',
@@ -324,6 +347,40 @@ const generateUniqueReferenceNo = async () => {
                             />
                             <Form.Control.Feedback type="invalid">{errors.licencedate}</Form.Control.Feedback>
                           </Col>
+
+                            <Col lg={6} className="form-group mb-3">
+                            <Form.Label>Laboratory Registration Date <span style={{ color: 'red' }}>*</span></Form.Label>
+                            <Form.Control
+                              type="date"
+                              name="LabRegistrationDate"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.LabRegistrationDate}
+                              isInvalid={touched.LabRegistrationDate && errors.LabRegistrationDate}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.LabRegistrationDate}</Form.Control.Feedback>
+                          </Col>
+
+                           <Col lg={6} className="form-group mb-3">
+                            <Form.Label>City <span style={{ color: 'red' }}>*</span></Form.Label>
+                            <Form.Control
+                              as="select"
+                              name="city"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.city}
+                              isInvalid={touched.city && errors.city}
+                            >
+                              <option value="">Select City</option>
+                              {loc.map((city) => (
+                                <option key={city._id} value={city._id}>
+                                  {city.Name}
+                                </option>
+                              ))}
+                            </Form.Control>
+                            <Form.Control.Feedback type="invalid">{errors.city}</Form.Control.Feedback>
+                          </Col>
+
 
                           <Col lg={6} className="form-group mb-3">
                             <Form.Label>Upload Photo <span style={{ color: 'red' }}>*</span></Form.Label>
@@ -566,7 +623,7 @@ const generateUniqueReferenceNo = async () => {
 
                            
                            <Form.Group className='mb-3'>
-                          <Form.Label>Any Referral code ?</Form.Label>
+                          <Form.Label>Any Referral code ?(optional)</Form.Label>
                           <Form.Control
                             type="text"
                             name="ReferralCode"
