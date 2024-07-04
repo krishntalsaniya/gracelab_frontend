@@ -196,7 +196,7 @@ const Doctordes = (props) => {
       {/* Contact Modal */}
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Contact {props.mainheading}</Modal.Title>
+          <Modal.Title className='modal-title-centered'>Contact {props.mainheading}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Formik
@@ -302,7 +302,7 @@ const Doctordes = (props) => {
                   </div>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formName">
-                  <Form.Label>Name</Form.Label>
+                  <Form.Label>Description</Form.Label>
                   <Field
                     name="name"
                     type="text"

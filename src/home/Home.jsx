@@ -47,45 +47,43 @@ import "swiper/css/navigation";
 import "swiper/css/scrollbar";
 import "swiper/css/effect-fade";
 import "swiper/css/effect-flip";
+import { useMediaQuery } from 'react-responsive';
 
 function Home() {
-  var settings = {
-    dots: true,
-    infinite: true,
-    speed: 1000,
-    slidesToShow: 4,
-    slidesToScroll: 2,
-    autoplay: true,
-    autoplaySpeed: 2000, // Scroll one card every 5 seconds
-    cssEase: "linear",
-    pauseOnHover: true,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-          infinite: true,
-          dots: true,
-        },
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          initialSlide: 2,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-    ],
-  };
+ const settings = {
+  dots: true,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 4,
+  slidesToScroll: 1,
+  responsive: [
+    {
+      breakpoint: 1200,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        infinite: true,
+        dots: true
+      }
+    },
+    {
+      breakpoint: 992,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 1,
+        infinite: true,
+        dots: true
+      }
+    },
+    {
+      breakpoint: 768,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1
+      }
+    }
+  ]
+};
 
   const [bannerList, setBannerList] = useState([]);
   const [campList, setcampList] = useState([]);
@@ -203,10 +201,17 @@ function Home() {
   }
   localStorage.clear();
 
-  const numSlides = Math.ceil(Loyalty.length / 3);
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 600px)' });
+  const isMediumScreen = useMediaQuery({ query: '(min-width: 600px) and (max-width: 768px)' });
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 768px)' });
 
-  // Create an array of slide indices to map over
-  const slideIndices = Array.from({ length: numSlides }, (_, index) => index);
+  // Determine the number of items per slide
+  const itemsPerSlide = isSmallScreen ? 1 : isMediumScreen ? 2 : 3;
+  
+
+  // Calculate the number of slides needed
+  const numSlides = Math.ceil(Loyalty.length / itemsPerSlide);
+  const slideIndices = Array.from({ length: numSlides }, (_, index) => index)
 
   return (
     <>
@@ -377,57 +382,114 @@ function Home() {
               </Col>
             </Row>
           ))}
-          <Slider {...settings} className="mt-4">
-            {camp.map((camping) => (
-              <Link to="/camping" key={camping.id}>
-                <Card className="camping-card">
-                  <Card.Img
-                    variant="top"
-                    src={`${process.env.REACT_APP_API_URL_GRACELAB}/${camping.Photo}`}
-                    alt={
-                      camping.placeholderimage
-                        ? camping.title
-                        : "Placeholder Image"
-                    }
-                    onError={(e) => {
-                      e.target.src = placeholderimage;
-                    }}
-                    style={{ width: "100%", height: "auto" }}
-                  />
-                  <Card.Body className="card-home-camping">
-                    <Card.Title>{camping.title}</Card.Title>
-                    <Card.Text>
-                      {expandedDescriptions[camping._id]
-                        ? camping.Descreption
-                        : `${camping.Descreption.substring(0, 20)}...`}
-                      {camping.Descreption.length > 100 && (
-                        <span
-                          style={{ color: "#eb268f", cursor: "pointer" }}
-                          onClick={() => toggleDescription(camping._id)}
-                        >
-                          {expandedDescriptions[camping._id]
-                            ? " Read Less"
-                            : " Read More"}
-                        </span>
-                      )}
-                    </Card.Text>
-                    <Card.Text>
-                      <small className="text-muted">{`No Of Patient: ${camping.NoOfPatients}`}</small>
-                    </Card.Text>
-                    <Card.Text>
-                      <small className="text-muted">Doctors:</small>
-                      <ul>
-                        {camping.DoctorsDetails &&
-                          camping.DoctorsDetails.map((doctor, index) => (
-                            <li key={index}>{doctor.DoctorName}</li>
-                          ))}
-                      </ul>
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-              </Link>
+            {/* <Slider {...settings} className="mt-4">
+      {camp.map((camping) => (
+        <Link to="/camping" key={camping.id}>
+          <Card className="camping-card">
+            <Card.Img
+              variant="top"
+              src={`${process.env.REACT_APP_API_URL_GRACELAB}/${camping.Photo}`}
+              alt={
+                camping.placeholderimage
+                  ? camping.title
+                  : "Placeholder Image"
+              }
+              onError={(e) => {
+                e.target.src = placeholderimage;
+              }}
+              style={{ width: "100%", height: "auto" }}
+            />
+            <Card.Body className="card-home-camping">
+              <Card.Title>{camping.title}</Card.Title>
+              <Card.Text>
+                {expandedDescriptions[camping._id]
+                  ? camping.Descreption
+                  : `${camping.Descreption.substring(0, 20)}...`}
+                {camping.Descreption.length > 100 && (
+                  <span
+                    style={{ color: "#eb268f", cursor: "pointer" }}
+                    onClick={() => toggleDescription(camping._id)}
+                  >
+                    {expandedDescriptions[camping._id]
+                      ? " Read Less"
+                      : " Read More"}
+                  </span>
+                )}
+              </Card.Text>
+              <Card.Text>
+                <small className="text-muted">{`No Of Patient: ${camping.NoOfPatients}`}</small>
+              </Card.Text>
+              <Card.Text>
+                <small className="text-muted">Doctors:</small>
+                <ul>
+                  {camping.DoctorsDetails &&
+                    camping.DoctorsDetails.map((doctor, index) => (
+                      <li key={index}>{doctor.DoctorName}</li>
+                    ))}
+                </ul>
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        </Link>
+      ))}
+    </Slider> */}
+
+
+
+       <Carousel className="mt-4">
+      {slideIndices.map((slideIndex) => (
+        <Carousel.Item key={slideIndex}>
+          <Row>
+            {camp.slice(slideIndex * itemsPerSlide, (slideIndex + 1) * itemsPerSlide).map((camping, index) => (
+              <Col key={index} lg={12 / itemsPerSlide} md={12 / itemsPerSlide} sm={12 / itemsPerSlide}>
+                <Link to="/camping" key={camping.id}>
+                  <Card className="camping-card">
+                    <Card.Img
+                    className="card-camp-image"
+                      variant="top"
+                      src={`${process.env.REACT_APP_API_URL_GRACELAB}/${camping.Photo}`}
+                      alt={camping.placeholderimage ? camping.title : 'Placeholder Image'}
+                      onError={(e) => {
+                        e.target.src = 'placeholderimage';
+                      }}
+                      // style={{ width: '100%'}}
+                    />
+                    <Card.Body className="card-home-camping">
+                      <Card.Title>{camping.title}</Card.Title>
+                      <Card.Text>
+                        {expandedDescriptions[camping._id]
+                          ? camping.Descreption
+                          : `${camping.Descreption.substring(0, 20)}...`}
+                        {camping.Descreption.length > 100 && (
+                          <span
+                            style={{ color: '#eb268f', cursor: 'pointer' }}
+                            onClick={() => toggleDescription(camping._id)}
+                          >
+                            {expandedDescriptions[camping._id] ? ' Read Less' : ' Read More'}
+                          </span>
+                        )}
+                      </Card.Text>
+                      <Card.Text>
+                        <small className="text-muted">{`No Of Patient: ${camping.NoOfPatients}`}</small>
+                      </Card.Text>
+                      <Card.Text>
+                        <small className="text-muted">Doctors:</small>
+                        <ul>
+                          {camping.DoctorsDetails &&
+                            camping.DoctorsDetails.map((doctor, index) => (
+                              <li key={index}>{doctor.DoctorName}</li>
+                            ))}
+                        </ul>
+                      </Card.Text>
+                    </Card.Body>
+                  </Card>
+                </Link>
+              </Col>
             ))}
-          </Slider>
+          </Row>
+        </Carousel.Item>
+      ))}
+    </Carousel>
         </Container>
       </section>
 
@@ -457,31 +519,31 @@ function Home() {
           </div>
         </Col>
       ))} */}
-            <Carousel>
-              {slideIndices.map((slideIndex) => (
-                <Carousel.Item key={slideIndex}>
-                  <Row>
-                    {Loyalty.slice(slideIndex * 3, (slideIndex + 1) * 3).map(
-                      (image, index) => (
-                        <Col key={index} lg={4} md={6} sm={6}>
-                          <div className="single-box p-0">
-                            <img
-                              className="d-block w-100"
-                              src={`${process.env.REACT_APP_API_URL_GRACELAB}/${image.bannerImage}`}
-                              alt={
-                                image.placeholderimage
-                                  ? image.title
-                                  : "Placeholder Image"
-                              }
-                            />
-                          </div>
-                        </Col>
-                      )
-                    )}
-                  </Row>
-                </Carousel.Item>
-              ))}
-            </Carousel>
+             <Carousel>
+      {slideIndices.map((slideIndex) => (
+        <Carousel.Item key={slideIndex}>
+          <Row>
+            {Loyalty.slice(slideIndex * itemsPerSlide, (slideIndex + 1) * itemsPerSlide).map(
+              (image, index) => (
+                <Col key={index} lg={12 / itemsPerSlide} md={12 / itemsPerSlide} sm={12 / itemsPerSlide}>
+                  <div className="single-box p-0">
+                    <img
+                      className="d-block w-100"
+                      src={`${process.env.REACT_APP_API_URL_GRACELAB}/${image.bannerImage}`}
+                      alt={
+                        image.placeholderimage
+                          ? image.title
+                          : "Placeholder Image"
+                      }
+                    />
+                  </div>
+                </Col>
+              )
+            )}
+          </Row>
+        </Carousel.Item>
+      ))}
+    </Carousel>
           </Row>
         </Container>
       </section>

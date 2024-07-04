@@ -229,7 +229,7 @@ function Labsec(props) {
       {/* Contact Modal */}
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Contact {props.mainheading}</Modal.Title>
+          <Modal.Title className='modal-title-centered'>Contact {props.mainheading}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Formik
@@ -331,7 +331,7 @@ function Labsec(props) {
             {({ values, handleChange, handleSubmit, errors, touched }) => (
               <Form noValidate onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formRating">
-                  <Form.Label>Rating</Form.Label>
+                  <Form.Label className='modal-title-centered'>Rate Us</Form.Label>
                   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <ReactStars
                       count={5}
@@ -344,7 +344,7 @@ function Labsec(props) {
                   <ErrorMessage name="name" component="div" className="text-danger" />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formRatingDescription">
-                  <Form.Label>Describe</Form.Label>
+                  <Form.Label>Description</Form.Label>
                   <Field
                     type="text"
                     name="name"

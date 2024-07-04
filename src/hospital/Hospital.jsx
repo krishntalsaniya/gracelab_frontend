@@ -123,7 +123,7 @@ function Hospital() {
                   `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list-by-params/listHospitalSpecialityBySpeciality`,
                   {
                     skip: skip,
-                    per_page: perPage,
+                    per_page: 10000,
                     sorton: column,
                     sortdir: sortDirection,
                     match: {
@@ -171,7 +171,7 @@ function Hospital() {
                   `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list-by-params/listHospitalSpecialityBySpeciality`,
                   {
                     skip: skip,
-                    per_page: perPage,
+                    per_page: 10000,
                     sorton: column,
                     sortdir: sortDirection,
                     match: {
@@ -229,7 +229,7 @@ function Hospital() {
                   `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list-by-params/listCustomizeAdvertisementByHospitalSpeciality`,
                                       {
                       "skip": 0,
-                      "per_page": 100,
+                      "per_page": 1000,
                       "sorton": "createdAt",
                       "sortdir": "desc",
                         match: {
@@ -274,7 +274,7 @@ function Hospital() {
                   `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list-by-params/listCustomizeAdvertisementByHospitalSpeciality`,
                                       {
                       "skip": 0,
-                      "per_page": 100,
+                      "per_page": 1000,
                       "sorton": "createdAt",
                       "sortdir": "desc",
                         match: {

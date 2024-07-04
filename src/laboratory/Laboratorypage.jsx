@@ -36,7 +36,7 @@ function Laboratorypage() {
 const [visibleCount, setVisibleCount] = useState(5); // Initialize with 5 locations
 const [showMore, setShowMore] = useState(false); // Track whether to show more locations
 
-
+// this is show more button 
   const [visibleLabs, setVisibleLabs] = useState(2);
 
   const labsPerPage = 5;
@@ -56,7 +56,7 @@ const [showMore, setShowMore] = useState(false); // Track whether to show more l
           `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listLaborateriesByLocation`,
           {
             skip: 0,
-            per_page: labsPerPage,
+            per_page: 10000,
             sorton: "LabName",
             sortdir: "asc",
             match: {

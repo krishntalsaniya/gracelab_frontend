@@ -6987,8 +6987,13 @@ blockquote::before,
 }
 
 .card-image-camping {
-  min-height: 200px;
-  max-height: 200px;
+  min-height: 200px !important;
+  max-height: 200px !important;
+}
+
+.carousel .card-camp-image {
+  min-height: 200px !important;
+  max-height: 200px !important;
 }
 
 .widget-area-searchbox {
@@ -7063,7 +7068,7 @@ blockquote::before,
 }
 
 .camping-card {
-  width: 18rem;
+  /* width: 18rem; */
   margin: 0 auto;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.1),
     0 10px 10px rgba(0, 0, 0, 0.02);

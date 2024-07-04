@@ -115,7 +115,7 @@ function Camping() {
         <div className="row">
           {upcomingcamps.map((camping) => (
             <Col key={camping.id} lg={4} className="mb-4">
-              <Link to="/camping">
+              <Link>
                 <Card style={{ width: '100%',maxHeight:'450',minHeight:'450' }} className='camping-card'>
                   <Card.Img className='card-image-camping'
                     variant="top"

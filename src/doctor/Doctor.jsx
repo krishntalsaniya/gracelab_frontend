@@ -104,7 +104,7 @@ function Doctor() {
                   `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listDoctorsBySpeciality`,
                   {
                       skip: 0,
-                      per_page: 1000,
+                      per_page: 10000,
                       sorton: "DoctorName",
                       sortdir: "asc",
                       match: {
@@ -129,7 +129,7 @@ function Doctor() {
             const Doctorlist = async () => {
               try {
                   const pageNo = 1;
-                  const perPage = 10;
+                  const perPage = 1000;
                   const column = 'DoctorName';
                   const sortDirection = 'asc';
                   const filter = true;
@@ -200,7 +200,7 @@ function Doctor() {
               try {
                 // Define parameters for pagination, sorting, and filtering
                 const pageNo = 1; // Example page number
-                const perPage = 10; // Example number of items per page
+                const perPage = 1000; // Example number of items per page
                 const column = 'LabName'; // Example column to sort on
                 const sortDirection = 'asc'; // Example sort direction
                
@@ -212,7 +212,7 @@ function Doctor() {
                   `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list-by-params/listCustomizeAdvertisementByDoctorSpeciality`,
                                       {
                       "skip": 0,
-                      "per_page": 100,
+                      "per_page": 1000,
                       "sorton": "createdAt",
                       "sortdir": "desc",
                         match: {

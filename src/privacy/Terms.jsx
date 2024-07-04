@@ -47,7 +47,7 @@ useEffect(() => {
                 <MdArrowForwardIos className='arrowright' />
                 <Link to='/'>Home</Link>
               </li>
-              <li>Terms</li>
+              <li>{termsData.length > 0 ? termsData[0].Network : 'Loading...'}</li>
             </ul>
           </div>
         </div>

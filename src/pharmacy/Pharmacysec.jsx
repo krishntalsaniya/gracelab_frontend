@@ -236,7 +236,7 @@ function Pharmacysec(props) {
       {/* Contact Modal */}
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Contact {props.mainheading}</Modal.Title>
+          <Modal.Title className='modal-title-centered'>Contact {props.mainheading}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Formik
@@ -342,7 +342,7 @@ function Pharmacysec(props) {
             {({ handleSubmit, handleChange, values, errors, touched }) => (
               <Form noValidate onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formRating">
-                  <Form.Label className='modal-title-centered '>Rate Us</Form.Label>
+                  <Form.Label className='modal-title-centered'>Rate Us</Form.Label>
                   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <ReactStars
                       count={5}
@@ -354,7 +354,7 @@ function Pharmacysec(props) {
                   </div>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formRatingName">
-                  <Form.Label>Name</Form.Label>
+                  <Form.Label>Description</Form.Label>
                   <Field
                     name="name"
                     type="text"

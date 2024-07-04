@@ -151,7 +151,7 @@ function Pharmacy() {
         `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list-by-params/listCustomizeAdvertisementByPharmacyLocation`,
         {
           skip: 0,
-          per_page: 10000,
+          per_page: 100000,
           sorton: '',
           sortdir: '',
           match: {
