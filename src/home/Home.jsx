@@ -377,6 +377,8 @@ function Home() {
               </Col>
             </Row>
           ))}
+
+          
           <Slider {...settings} className="mt-4">
             {camp.map((camping) => (
               <Link to="/camping" key={camping.id}>
