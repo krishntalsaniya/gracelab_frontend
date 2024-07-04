@@ -465,7 +465,7 @@ function Modalnavigationbar(props) {
                       </Col>
                       <Col lg={3} md={4} sm={6}>
                         <Link
-                          to="/patient"
+                          to="/patient-login"
                           onClick={() => handleLinkClick("Patients")}
                         >
                           <Card className="single-services-box-modalpopup text-center">

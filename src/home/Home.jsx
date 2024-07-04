@@ -206,12 +206,16 @@ function Home() {
   const isLargeScreen = useMediaQuery({ query: '(min-width: 768px)' });
 
   // Determine the number of items per slide
-  const itemsPerSlide = isSmallScreen ? 1 : isMediumScreen ? 2 : 3;
+  // const itemsPerSlide = isSmallScreen ? 1 : isMediumScreen ? 2 : 3;
+  const itemsPerSlide = 3; // Number of items per slide
+const slideIndices = Array.from({ length: Math.ceil(camp.length / itemsPerSlide) }, (_, index) => index);
   
 
   // Calculate the number of slides needed
   const numSlides = Math.ceil(Loyalty.length / itemsPerSlide);
-  const slideIndices = Array.from({ length: numSlides }, (_, index) => index)
+
+  
+  const slideIndicesloyalti = Array.from({ length: numSlides }, (_, index) => index)
 
   return (
     <>
@@ -355,10 +359,11 @@ function Home() {
               </Col>
               <Col lg={6} md={12}>
                 <div className="about-content">
-                  <h2>{upcoming.CampVenueDetails.Society}</h2>
-                  <p>{`Date : ${upcoming.Date}`}</p>
-                  <p>{upcoming.Descreption}</p>
-                  <p>{`No Of Patient:  ${upcoming.NoOfPatients}`}</p>
+                   <h2>{upcoming.CampVenueDetails?.Society || ""}</h2>
+       <p>{`Date : ${upcoming.Date ? new Date(upcoming.Date).toISOString().split('T')[0] : ""}`}</p>
+
+        <p>{upcoming.Descreption || ""}</p>
+        <p>{`No Of Patient:  ${upcoming.NoOfPatients || ""}`}</p>
 
                   <ul className="about-features-list">
                     {upcoming.DoctorsDetails &&
@@ -436,60 +441,58 @@ function Home() {
 
 
 
-       <Carousel className="mt-4">
-      {slideIndices.map((slideIndex) => (
-        <Carousel.Item key={slideIndex}>
-          <Row>
-            {camp.slice(slideIndex * itemsPerSlide, (slideIndex + 1) * itemsPerSlide).map((camping, index) => (
-              <Col key={index} lg={12 / itemsPerSlide} md={12 / itemsPerSlide} sm={12 / itemsPerSlide}>
-                <Link to="/camping" key={camping.id}>
-                  <Card className="camping-card">
-                    <Card.Img
+     <Carousel className="mt-4">
+    {slideIndices.map((slideIndex) => (
+      <Carousel.Item key={slideIndex}>
+        <Row>
+          {camp.slice(slideIndex * itemsPerSlide, (slideIndex + 1) * itemsPerSlide).map((camping, index) => (
+            <Col key={index} lg={12 / itemsPerSlide} md={12 / itemsPerSlide} sm={12}>
+              <Link to="/camping" key={camping.id}>
+                <Card className="">
+                  <Card.Img
                     className="card-camp-image"
-                      variant="top"
-                      src={`${process.env.REACT_APP_API_URL_GRACELAB}/${camping.Photo}`}
-                      alt={camping.placeholderimage ? camping.title : 'Placeholder Image'}
-                      onError={(e) => {
-                        e.target.src = 'placeholderimage';
-                      }}
-                      // style={{ width: '100%'}}
-                    />
-                    <Card.Body className="card-home-camping">
-                      <Card.Title>{camping.title}</Card.Title>
-                      <Card.Text>
-                        {expandedDescriptions[camping._id]
-                          ? camping.Descreption
-                          : `${camping.Descreption.substring(0, 20)}...`}
-                        {camping.Descreption.length > 100 && (
-                          <span
-                            style={{ color: '#eb268f', cursor: 'pointer' }}
-                            onClick={() => toggleDescription(camping._id)}
-                          >
-                            {expandedDescriptions[camping._id] ? ' Read Less' : ' Read More'}
-                          </span>
-                        )}
-                      </Card.Text>
-                      <Card.Text>
-                        <small className="text-muted">{`No Of Patient: ${camping.NoOfPatients}`}</small>
-                      </Card.Text>
-                      <Card.Text>
-                        <small className="text-muted">Doctors:</small>
-                        <ul>
-                          {camping.DoctorsDetails &&
-                            camping.DoctorsDetails.map((doctor, index) => (
-                              <li key={index}>{doctor.DoctorName}</li>
-                            ))}
-                        </ul>
-                      </Card.Text>
-                    </Card.Body>
-                  </Card>
-                </Link>
-              </Col>
-            ))}
-          </Row>
-        </Carousel.Item>
-      ))}
-    </Carousel>
+                    variant="top"
+                    src={`${process.env.REACT_APP_API_URL_GRACELAB}/${camping.Photo}`}
+                     alt={camping.title}
+                    onError={(e) => { e.target.src = placeholderimage }
+                  }
+                  />
+                  <Card.Body className="card-home-camping">
+                    <Card.Title>{camping.title}</Card.Title>
+                    <Card.Text>
+                      {expandedDescriptions[camping._id]
+                        ? camping.Descreption
+                        : `${camping.Descreption.substring(0, 20)}...`}
+                      {camping.Descreption.length > 100 && (
+                        <span
+                          style={{ color: '#eb268f', cursor: 'pointer' }}
+                          onClick={() => toggleDescription(camping._id)}
+                        >
+                          {expandedDescriptions[camping._id] ? ' Read Less' : ' Read More'}
+                        </span>
+                      )}
+                    </Card.Text>
+                    <Card.Text>
+                      <small className="text-muted">{`No Of Patient: ${camping.NoOfPatients}`}</small>
+                    </Card.Text>
+                    <Card.Text>
+                      <small className="text-muted">Doctors:</small>
+                      <ul>
+                        {camping.DoctorsDetails &&
+                          camping.DoctorsDetails.map((doctor, index) => (
+                            <li key={index}>{doctor.DoctorName}</li>
+                          ))}
+                      </ul>
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              </Link>
+            </Col>
+          ))}
+        </Row>
+      </Carousel.Item>
+    ))}
+  </Carousel>
         </Container>
       </section>
 
@@ -520,7 +523,7 @@ function Home() {
         </Col>
       ))} */}
              <Carousel>
-      {slideIndices.map((slideIndex) => (
+      {slideIndicesloyalti.map((slideIndex) => (
         <Carousel.Item key={slideIndex}>
           <Row>
             {Loyalty.slice(slideIndex * itemsPerSlide, (slideIndex + 1) * itemsPerSlide).map(
