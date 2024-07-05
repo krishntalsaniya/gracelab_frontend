@@ -42,6 +42,7 @@ const SignupSchema = Yup.object().shape({
   DaysLab1: Yup.string().required('Days is required'),
   DaysLab2: Yup.string().required('Days is required'),
   DaysLab3: Yup.string().required('Days is required'),
+  LabTests: Yup.string().required('LabTests is required'),
   area: Yup.string().required('area is required'),
   pdfFile: Yup.string().required('file is required'),
   photo: Yup.string().required('file is required'),
@@ -54,7 +55,7 @@ function Laboratorysignup() {
   const [pdf, setPdf] = useState(null);
   const [daysData, setDaysData] = useState([]);
   const [loc, setLoc] = useState([]);
-
+  const [labTest, setLabTest] = useState([]);
  
 
  
@@ -94,6 +95,22 @@ function Laboratorysignup() {
       }
     };
     labLocation();
+
+      const fetchLaboratoryTest = async () => {
+      try {
+        const test = await axios.get(
+          `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/get/getAllLabTests`
+        );
+        const laboratoryTest = test.data.filter(
+          (laboratoryTestActive) => laboratoryTestActive.IsActive
+        );
+        setLabTest(laboratoryTest);
+        console.log("lab test:",test);
+      } catch (error) {
+        console.error("Error fetching laboratory tests:", error);
+      }
+    };
+    fetchLaboratoryTest();
 
     fetchDays();
   }, []);
@@ -156,6 +173,7 @@ const generateUniqueReferenceNo = async () => {
       formData.append("DaysLab3", values.DaysLab3);
       formData.append('address', values.address);
       formData.append('area', values.area);
+      formData.append('LabTests', values.LabTests);
       formData.append('Speciality', values.Speciality);
        if (values.ReferralCode) {
         formData.append('ReferralCode', values.ReferralCode);
@@ -250,6 +268,7 @@ const generateUniqueReferenceNo = async () => {
                     pdfFile:'',
                     photo:'',
                      ReferralCode: '',
+                     LabTests: '',
                 
                   }}
                   validationSchema={SignupSchema}
@@ -573,7 +592,7 @@ const generateUniqueReferenceNo = async () => {
                             <Form.Control
                               type="text"
                               name="area"
-                              placeholder="Pincode"
+                              placeholder="Area"
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.area}
@@ -596,6 +615,26 @@ const generateUniqueReferenceNo = async () => {
                             <Form.Control.Feedback type="invalid">{errors.contact}</Form.Control.Feedback>
                           </Col>
                           <Col lg={6} className="form-group mb-3">
+                            <Form.Label>Lab Test <span style={{ color: 'red' }}>*</span></Form.Label>
+                            <Form.Control
+                              as="select"
+                              name="LabTests"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.LabTests}
+                              isInvalid={touched.LabTests && errors.LabTests}
+                            >
+                              <option value="">Select Lab Test</option>
+                              {labTest?.map((test) => (
+                                <option key={test._id} value={test._id}>
+                                  {test.TestName}
+                                </option>
+                              ))}
+                            </Form.Control>
+                            <Form.Control.Feedback type="invalid">{errors.LabTests}</Form.Control.Feedback>
+                          </Col>
+                          
+                          <Col lg={12} className="form-group mb-3">
                             <Form.Label>Address <span style={{ color: 'red' }}>*</span> </Form.Label>
                             <Form.Control
                               as="textarea"
@@ -609,6 +648,8 @@ const generateUniqueReferenceNo = async () => {
                             />
                             <Form.Control.Feedback type="invalid">{errors.address}</Form.Control.Feedback>
                           </Col>
+
+                            
                          
                           <Col lg={12} className="form-group d-md-flex mb-4">
                             

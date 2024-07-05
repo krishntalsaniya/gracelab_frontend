@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useSyncExternalStore,useEffect } from 'react';
 import Pagetitle from './Pagetitle';
 import { Container, Row, Col, Form, Button, Modal } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
@@ -24,10 +24,23 @@ function Patientsignup() {
       .length(10, 'Contact No. must be exactly 10 digits')
       .required('Contact No. is required'),
     password: Yup.string().required('Password is required'),
+    PatientRegistrationDate: Yup.string().required('PatientRegistration Date is required'),
+    area: Yup.string().required('area is required'),
+    panCard: Yup.string()
+    .required('PAN card is required')
+    .matches(
+      /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/,
+      'PAN card must be in the format ABCDE1234F'
+    ),
+    aadharCard: Yup.string()
+    .required('Aadhar card is required')
+    .matches(/^\d{12}$/, 'Aadhar card must be exactly 12 digits'),
+    city: Yup.string().required('city is required'),
     ReferralCode: Yup.string(),
   });
 
   const [showModal, setShowModal] = useState(false);
+   const [loc, setLoc] = useState([]);
   const handleClose = () => setShowModal(false);
   const handleShow = (event) => {
     event.preventDefault();
@@ -40,6 +53,25 @@ function Patientsignup() {
   const handleFileChange = (event) => {
     setFile(event.currentTarget.files[0]);
   };
+useEffect(() => {
+
+    const labLocation = async () => {
+      try {
+        const labt = await axios.get(
+          `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/location/city`
+        );
+        console.log("location signup: ",labt);
+        // const allLabListIsActive = labt.data.filter(
+        //   (laboratoruisActive) => laboratoruisActive.isActive
+        // );
+        setLoc(labt.data);
+      } catch (error) {
+        console.error("Error fetching laboratory list:", error);
+      }
+    };
+    labLocation();
+ 
+}, [])
 
    const generateUniqueReferenceNo = async () => {
   try {
@@ -67,6 +99,8 @@ function Patientsignup() {
   }
 };
 
+
+
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       const formData = new FormData();
@@ -74,6 +108,11 @@ function Patientsignup() {
       formData.append('personalEmail', values.email);
       formData.append('ContactNo', values.contact);
       formData.append('Password', values.password);
+      formData.append('PatientRegistrationDate', values.PatientRegistrationDate);
+      formData.append('area', values.area);
+      formData.append('panCard', values.panCard);
+      formData.append('aadharCard', values.aadharCard);
+      formData.append('city', values.city);
       if (values.ReferralCode) {
         formData.append('ReferralCode', values.ReferralCode);
       }
@@ -151,6 +190,11 @@ function Patientsignup() {
                       contact: '',
                       password: '',
                       ReferralCode: '',
+                      PatientRegistrationDate: '',
+                      area: '',
+                      panCard: '',
+                      aadharCard: '',
+                      city: '',
                     }}
                     validationSchema={SignupSchema}
                     onSubmit={handleSubmit}
@@ -196,6 +240,90 @@ function Patientsignup() {
                             {errors.email}
                           </Form.Control.Feedback>
                         </Form.Group>
+
+                           <Form.Group className="mb-3" controlId="formEmail">
+                          <Form.Label>Patient Registration Date <span style={{ color: 'red' }}>*</span></Form.Label>
+                          <Form.Control
+                            type="date"
+                            name="PatientRegistrationDate"
+                            placeholder="Patient Email"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.PatientRegistrationDate}
+                            isInvalid={touched.PatientRegistrationDate && !!errors.PatientRegistrationDate}
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.PatientRegistrationDate}
+                          </Form.Control.Feedback>
+                        </Form.Group>
+
+                           <Form.Group className="mb-3" controlId="formEmail">
+                          <Form.Label>Area<span style={{ color: 'red' }}>*</span></Form.Label>
+                          <Form.Control
+                            type="text"
+                            name="area"
+                            placeholder="Area"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.area}
+                            isInvalid={touched.area && !!errors.area}
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.area}
+                          </Form.Control.Feedback>
+                        </Form.Group>
+
+                           <Form.Group className="mb-3" controlId="formEmail">
+                          <Form.Label>Pan Card<span style={{ color: 'red' }}>*</span></Form.Label>
+                          <Form.Control
+                            type="text"
+                            name="panCard"
+                            placeholder="Pan card"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.panCard}
+                            isInvalid={touched.panCard && !!errors.panCard}
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.panCard}
+                          </Form.Control.Feedback>
+                        </Form.Group>
+
+                         <Form.Group className="mb-3" controlId="formEmail">
+                          <Form.Label>Aadhar Card<span style={{ color: 'red' }}>*</span></Form.Label>
+                          <Form.Control
+                            type="text"
+                            name="aadharCard"
+                            placeholder="Aadhar card"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.aadharCard}
+                            isInvalid={touched.aadharCard && !!errors.aadharCard}
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.aadharCard}
+                          </Form.Control.Feedback>
+                        </Form.Group>
+
+                         <Form.Group className="mb-3" controlId="formEmail">
+                            <Form.Label>City <span style={{ color: 'red' }}>*</span></Form.Label>
+                            <Form.Control
+                              as="select"
+                              name="city"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.city}
+                              isInvalid={touched.city && errors.city}
+                            >
+                              <option value="">Select City</option>
+                              {loc.map((city) => (
+                                <option key={city._id} value={city._id}>
+                                  {city.Name}
+                                </option>
+                              ))}
+                            </Form.Control>
+                            <Form.Control.Feedback type="invalid">{errors.city}</Form.Control.Feedback>
+                           </Form.Group>
 
                         <Form.Group className="mb-3" controlId="formContact">
                           <Form.Label>Contact no <span style={{ color: 'red' }}>*</span></Form.Label>

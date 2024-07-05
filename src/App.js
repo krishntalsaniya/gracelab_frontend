@@ -75,7 +75,7 @@ function App() {
   <Route path='/lab-page' element={<Labpage />} />
   <Route path='/tellusmore' element={<Tellusmore />} />
   <Route path='/camping' element={<Camping />} />
-  <Route path='/about/:_ID' element={<About />} />
+  <Route path='/cms/:_ID' element={<About />} />
   {/* <Route path='/tellusmore' element={<About />} /> */}
 
  

@@ -76,6 +76,7 @@ function Doctorsignup() {
     DaysDoctor3: Yup.string().required('Days are required'),
     area: Yup.string().required('area are required'),
     Speciality: Yup.string().required('Speciality are required'),
+    DiseasesSymptoms: Yup.string().required('Diseases Symptoms are required'),
     DoctorRegistrationDate: Yup.date().required('DoctorRegistrationDate are required'),
     DoctorLicenseDate: Yup.date().required('DoctorLicenseDate are required'),
     photo: Yup.string().required('File are required'),
@@ -92,6 +93,7 @@ function Doctorsignup() {
     const [daysData, setDaysData] = useState([]);
      const [speciality, setspeciality] = useState([]);
 const [loc, setLoc] = useState([]);
+ const [symptomwise, setsymptomwise] = useState(null);
      const listDay = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list/Days`);
@@ -137,6 +139,23 @@ listDay();
     }
   };
 listspeciality();
+
+ const Doctorsymtoms = async () => {
+      try {
+        const Doctorsymtoms = await axios.get(
+          `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list/DiseasesSymptoms`
+        );
+
+        const specilityisactive = Doctorsymtoms.data.filter(
+          (specialityisactive) => specialityisactive.IsActive
+        );
+        setsymptomwise(specilityisactive);
+        console.log("doctor symtoms", Doctorsymtoms);
+      } catch (error) {
+        console.log("doctor symtoms  :", error);
+      }
+    };
+    Doctorsymtoms();
 
     fetchDays();
   }, []);
@@ -201,6 +220,7 @@ listspeciality();
       formData.append('Speciality', values.Speciality);
       formData.append('DoctorRegistrationDate', values.DoctorRegistrationDate);
       formData.append('DoctorLicenseDate', values.DoctorLicenseDate);
+      formData.append('DiseasesSymptoms', values.DiseasesSymptoms);
        if (values.ReferralCode) {
         formData.append('ReferralCode', values.ReferralCode);
         formData.append('city', values.city);
@@ -309,6 +329,7 @@ listspeciality();
                           photo:'',
                           pdfFile:'',
                           ReferralCode: '',
+                          DiseasesSymptoms: '',
                           
                           
                         }}
@@ -689,19 +710,7 @@ listspeciality();
                             />
                             <Form.Control.Feedback type="invalid">{errors.pdfFile}</Form.Control.Feedback>
                           </Col>
-                            <Col lg={6} className="form-group mb-3">
-                              <Form.Label>Address <span style={{ color: 'red' }}>*</span></Form.Label>
-                              <Form.Control
-                                type="text"
-                                name="address"
-                                placeholder='Address'
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.address}
-                                isInvalid={touched.address && errors.address}
-                              />
-                              <Form.Control.Feedback type="invalid">{errors.address}</Form.Control.Feedback>
-                            </Col>
+                           
 
                               <Col lg={6} className="form-group mb-3">
                             <Form.Label>City <span style={{ color: 'red' }}>*</span></Form.Label>
@@ -722,6 +731,40 @@ listspeciality();
                             </Form.Control>
                             <Form.Control.Feedback type="invalid">{errors.city}</Form.Control.Feedback>
                           </Col>
+
+                             <Col lg={6} className="form-group mb-3">
+                            <Form.Label>Diseases Symptoms <span style={{ color: 'red' }}>*</span></Form.Label>
+                            <Form.Control
+                              as="select"
+                              name="DiseasesSymptoms"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.DiseasesSymptoms}
+                              isInvalid={touched.DiseasesSymptoms && errors.DiseasesSymptoms}
+                            >
+                              <option value="">Select Diseases Symptoms</option>
+                              {symptomwise?.map((symptom) => (
+                                <option key={symptom._id} value={symptom._id}>
+                                  {symptom.Symptom}
+                                </option>
+                              ))}
+                            </Form.Control>
+                            <Form.Control.Feedback type="invalid">{errors.DiseasesSymptoms}</Form.Control.Feedback>
+                          </Col>
+
+                           <Col lg={12} className="form-group mb-3">
+                              <Form.Label>Address <span style={{ color: 'red' }}>*</span></Form.Label>
+                              <Form.Control
+                                type="text"
+                                name="address"
+                                placeholder='Address'
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.address}
+                                isInvalid={touched.address && errors.address}
+                              />
+                              <Form.Control.Feedback type="invalid">{errors.address}</Form.Control.Feedback>
+                            </Col>
 
 
                            

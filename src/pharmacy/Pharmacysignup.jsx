@@ -390,7 +390,7 @@ function Pharmacysignup() {
                               value={values.city}
                               isInvalid={touched.city && errors.city}
                             >
-                              <option value="">Select Days</option>
+                              <option value="">Select City</option>
                               {loc.map((city) => (
                                 <option key={city._id} value={city._id}>
                                   {city.Name}
@@ -455,7 +455,7 @@ function Pharmacysignup() {
                             <Form.Control
                               type="text"
                               name="area"
-                              placeholder="Contact No."
+                              placeholder="Area"
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.area}

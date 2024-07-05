@@ -54,7 +54,7 @@ function Footer() {
       <ul className="useful-links-list">
         {cmsdesc.map((link, index) => (
           <li key={index}>
-            <Link to={`/about/${link._id}`}>{link.blogTitle}</Link>
+            <Link to={`/cms/${link._id}`}>{link.blogTitle}</Link>
           </li>
         ))}
       </ul>

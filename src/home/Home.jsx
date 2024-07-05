@@ -545,7 +545,7 @@ const slideIndices = Array.from({ length: Math.ceil(camp.length / itemsPerSlide)
           </div>
         </Col>
       ))} */}
-             <Carousel>
+           <Carousel className="mt-4" controls={Loyalty.length > itemsPerSlide}>
       {slideIndicesloyalti.map((slideIndex) => (
         <Carousel.Item key={slideIndex}>
           <Row>
@@ -556,11 +556,10 @@ const slideIndices = Array.from({ length: Math.ceil(camp.length / itemsPerSlide)
                     <img
                       className="d-block w-100"
                       src={`${process.env.REACT_APP_API_URL_GRACELAB}/${image.bannerImage}`}
-                      alt={
-                        image.placeholderimage
-                          ? image.title
-                          : "Placeholder Image"
-                      }
+                      alt={image.title ? image.title : "Placeholder Image"}
+                      onError={(e) => {
+                        e.target.src = placeholderimage; // Ensure placeholderimage is defined
+                      }}
                     />
                   </div>
                 </Col>
