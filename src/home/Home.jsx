@@ -92,6 +92,27 @@ function Home() {
   const [camp, setcamp] = useState([]);
   const [expandedDescriptions, setExpandedDescriptions] = useState({});
 
+  const [itemsPerSlide, setItemsPerSlide] = useState(3);
+
+  useEffect(() => {
+    const updateItemsPerSlide = () => {
+      if (window.innerWidth < 576) {
+        setItemsPerSlide(1); // Mobile view
+      } else if (window.innerWidth < 768) {
+        setItemsPerSlide(2); // Tablet view
+      } else {
+        setItemsPerSlide(3); // Desktop view
+      }
+    };
+
+    updateItemsPerSlide(); // Initial check
+
+    window.addEventListener('resize', updateItemsPerSlide);
+    return () => {
+      window.removeEventListener('resize', updateItemsPerSlide);
+    };
+  }, []);
+
   const toggleDescription = (id) => {
     setExpandedDescriptions((prev) => ({
       ...prev,
@@ -207,7 +228,7 @@ function Home() {
 
   // Determine the number of items per slide
   // const itemsPerSlide = isSmallScreen ? 1 : isMediumScreen ? 2 : 3;
-  const itemsPerSlide = 3; // Number of items per slide
+  // Number of items per slide
 const slideIndices = Array.from({ length: Math.ceil(camp.length / itemsPerSlide) }, (_, index) => index);
   
 
@@ -347,6 +368,7 @@ const slideIndices = Array.from({ length: Math.ceil(camp.length / itemsPerSlide)
             <Row key={index} className="align-items-center">
               <Col lg={6} md={12}>
                 <div className="about-image">
+                 <Link to="/camping">
                   <Image
                     src={`${process.env.REACT_APP_API_URL_GRACELAB}/${upcoming.Photo}`}
                     alt={
@@ -355,6 +377,7 @@ const slideIndices = Array.from({ length: Math.ceil(camp.length / itemsPerSlide)
                         : "Placeholder Image"
                     }
                   />
+                 </Link>
                 </div>
               </Col>
               <Col lg={6} md={12}>
@@ -462,7 +485,7 @@ const slideIndices = Array.from({ length: Math.ceil(camp.length / itemsPerSlide)
                     <Card.Text>
                       {expandedDescriptions[camping._id]
                         ? camping.Descreption
-                        : `${camping.Descreption.substring(0, 20)}...`}
+                        : `${camping.Descreption.substring(0, 100)}...`}
                       {camping.Descreption.length > 100 && (
                         <span
                           style={{ color: '#eb268f', cursor: 'pointer' }}
@@ -529,7 +552,7 @@ const slideIndices = Array.from({ length: Math.ceil(camp.length / itemsPerSlide)
             {Loyalty.slice(slideIndex * itemsPerSlide, (slideIndex + 1) * itemsPerSlide).map(
               (image, index) => (
                 <Col key={index} lg={12 / itemsPerSlide} md={12 / itemsPerSlide} sm={12 / itemsPerSlide}>
-                  <div className="single-box p-0">
+                  <div className="single-box p-0 loylti-program">
                     <img
                       className="d-block w-100"
                       src={`${process.env.REACT_APP_API_URL_GRACELAB}/${image.bannerImage}`}

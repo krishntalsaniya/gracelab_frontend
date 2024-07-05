@@ -46,7 +46,7 @@ function About() {
         <Container>
           <Row className="align-items-center">
             <Col lg={12} md={12}>
-              <div className="about-content text-center">
+              <div className="about-content">
                 <div dangerouslySetInnerHTML={{ __html: bout.blogDesc }} />
               </div>
             </Col>

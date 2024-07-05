@@ -206,6 +206,7 @@ const [showMore, setShowMore] = useState(false); // Track whether to show more l
     } else {
       setSelectedCities(selectedCities.filter((city) => city !== value));
     }
+    setLabListAll([]);
   };
 
   const handleTestChange = (event) => {

@@ -117,6 +117,13 @@ function Modalnavigationbar(props) {
                     >
                       About us
                     </Link>
+
+                    <Link
+                      to="/camping"
+                      className="mobile-link"
+                    >
+                      Campaign
+                    </Link>
                     <NavDropdown
                       className="mobile-link"
                       title="Network"
@@ -159,9 +166,9 @@ function Modalnavigationbar(props) {
                       </Link>
                     </NavDropdown>
                     {/* <Link to="/Registration" className='mobile-link'>Registration</Link> */}
-                    <Link to="/contact" className="mobile-link">
+                    {/* <Link to="/contact" className="mobile-link">
                       Contact
-                    </Link>
+                    </Link> */}
                     <Link
                       to={props.navigatelink}
                       className="btn btn-secondary ms-3 btn-login"
@@ -369,11 +376,11 @@ function Modalnavigationbar(props) {
                     </ul>
                   </li>
                   {/* <li className="nav-item"><Link to="/sterling-hospital" className="nav-link">hospital</Link></li> */}
-                  <li className="nav-item">
+                  {/* <li className="nav-item">
                     <Link to="/contact" className="nav-link">
                       Contact
                     </Link>
-                  </li>
+                  </li> */}
                 </ul>
                 <Link
                   to={props.navigatelink}

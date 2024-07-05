@@ -92,7 +92,7 @@ function Pharmacysec(props) {
   });
 
   const validationSchemaRating = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
+    name: Yup.string().required('required'),
   });
 
  const handleSubmit = async (values, { resetForm }) => {
@@ -193,7 +193,10 @@ function Pharmacysec(props) {
               <div className="location-marker-section">
                 <Link to={props.locationmap} target="_blank">
                   <h5 className="mt-3 d-inline-block me-2">
-                    <FaMapMarker className="map-color" /> {props.headings}
+                  <div className="heading-container">
+      <FaMapMarker className="map-color" />
+      <div className="heading-text">{props.headings}</div>
+    </div>
                   </h5>
                 </Link>
               </div>
@@ -351,7 +354,9 @@ function Pharmacysec(props) {
                       value={rating}
                       onChange={handleRatingChange}
                     />
+                   
                   </div>
+                   <ErrorMessage name="name" component="div" className="text-danger" />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formRatingName">
                   <Form.Label>Description</Form.Label>

@@ -104,7 +104,7 @@ function Pharmacy() {
         `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listPharmaciesByCity`,
         {
           skip: skip,
-          per_page: perPage,
+          per_page: 10000,
           sorton: column,
           sortdir: sortDirection,
           match: {

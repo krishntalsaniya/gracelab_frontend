@@ -65,7 +65,7 @@ function Camping() {
     <>
     <Modalnavigationbar />
       {/* <h2 className="text-center">Upcoming Camps</h2> */}
-       <h1 className='caming-sec'>Running Camping </h1>
+       <h1 className='caming-sec'>Completed Camping </h1>
       <div className="container">
         <div className="row">
           {camp.map((camping) => (

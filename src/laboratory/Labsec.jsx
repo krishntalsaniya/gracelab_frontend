@@ -93,7 +93,7 @@ function Labsec(props) {
   });
 
   const validationSchemaRating = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
+    name: Yup.string().required('required'),
   });
 
   const handleSubmit = async (values, { resetForm }) => {
@@ -164,6 +164,7 @@ function Labsec(props) {
       });
     }
   };
+  console.log("Average Rating",props.averageRating);
 
   return (
     <>
@@ -191,7 +192,10 @@ function Labsec(props) {
               <div className="location-marker-section">
                 <Link to={props.locationmap} target="_blank">
                   <h5 className="mt-3 d-inline-block me-2">
-                    <FaMapMarker className="map-color" /> {props.headings}
+                    <div className="heading-container">
+      <FaMapMarker className="map-color" />
+      <div className="heading-text">{props.headings}</div>
+    </div>
                   </h5>
                 </Link>
               </div>
@@ -205,12 +209,13 @@ function Labsec(props) {
                 </h5>
               </div>
               <ReactStars
-                count={5}
-                size={24}
-                activeColor="#ffd700"
-                value={props.averageRating ? props.averageRating : 0}
-                edit={false}
-              />
+      count={5}
+      size={24}
+      activeColor="#ffd700"
+      value={props.averageRating ? parseFloat(props.averageRating) : 0}
+      edit={false}
+      //  isHalf={true} // Enable half stars
+    />
               <Button
                 variant="primary"
                 className="rounded-pill mt-3 float-end contact-sec"

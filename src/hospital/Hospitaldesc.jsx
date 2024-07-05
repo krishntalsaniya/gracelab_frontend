@@ -188,7 +188,10 @@ function Hospitaldesc(props) {
               <div className="location-marker-section">
                 <Link to={props.locationmap} target="_blank">
                   <h5 className="mt-3 d-inline-block me-2">
-                    <FaMapMarker className="map-color" /> {props.headings}
+                    <div className="heading-container">
+      <FaMapMarker className="map-color" />
+      <div className="heading-text">{props.headings}</div>
+    </div>
                   </h5>
                 </Link>
               </div>

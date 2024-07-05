@@ -1153,6 +1153,7 @@ a:hover {
 .about-content {
   padding-left: 30px;
   text-align: left;
+  margin: 30px;
 }
 
 .about-content span {
@@ -7084,4 +7085,28 @@ blockquote::before,
   transform: translateY(-10px);
   /* Moves the card slightly up */
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2), 0 15px 15px rgba(0, 0, 0, 0.1);
+}
+
+.heading-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  /* Adjust the gap as needed */
+}
+
+.heading-text {
+  text-align: justify;
+}
+
+.map-color {
+  font-size: 15px;
+
+}
+
+.about-image img {
+  border-radius: 10px !important;
+}
+
+.loylti-program img {
+  height: 350px !important;
 }
