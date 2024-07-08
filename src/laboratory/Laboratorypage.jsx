@@ -371,7 +371,7 @@ function Laboratorypage() {
                                 {filteredLocations
                                   ?.slice(0, visibleCount)
                                   .map((city) => (
-                                    <Col lg={12} md={12} xs={12} key={city._id}>
+                                    <Col sm={6} lg={window.innerWidth >= 1024 ? 12 : 6} xs={12} key={city._id}>
                                       <div className="form-check">
                                         <input
                                           type="checkbox"

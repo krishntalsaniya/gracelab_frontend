@@ -527,7 +527,7 @@ function Doctor() {
                                 }}
                               >
                                 {filteredLocations?.map((city) => (
-                                  <Col lg={12} md={12} xs={12} key={city._id}>
+                                  <Col sm={6} lg={6} xs={12} key={city._id}>
                                     <div className="form-check">
                                       <input
                                         type="checkbox"
@@ -599,7 +599,7 @@ function Doctor() {
                                 }}
                               >
                                 {filterespecility?.map((specialty) => (
-                                  <Col xs={6} key={specialty._id}>
+                                  <Col  xs={12} sm={6} md={6} lg={window.innerWidth >= 1024 ? 12 : 6} key={specialty._id}>
                                     <div className="form-check">
                                       <input
                                         type="checkbox"
@@ -674,7 +674,7 @@ function Doctor() {
                                 }}
                               >
                                 {filtersymtom?.map((specialty) => (
-                                  <Col xs={6} key={specialty._id}>
+                                  <Col xs={12} sm={6} lg={6} md={6} key={specialty._id}>
                                     <div className="form-check">
                                       <input
                                         type="checkbox"

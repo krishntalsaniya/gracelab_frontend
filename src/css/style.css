@@ -1152,7 +1152,7 @@ a:hover {
 
 .about-content {
   padding-left: 30px;
-  text-align: left;
+  text-align: justify;
   margin: 30px;
 }
 
@@ -3849,6 +3849,7 @@ blockquote::before,
 
 .research-details-desc {
   margin-top: 50px;
+  text-align: justify;
 }
 
 .research-details-desc h3 {
@@ -7002,7 +7003,7 @@ blockquote::before,
 }
 
 .card-body-camping {
-  min-height: 330px !important;
+  min-height: 250px !important;
   max-height: 240px !important;
 }
 

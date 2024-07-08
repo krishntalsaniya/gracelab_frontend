@@ -387,7 +387,7 @@ navigatelink="/pharmacy-login"
                 </form>
                 <div className="row mt-3" style={{ maxHeight: '150px', overflowY: 'auto' }}>
                 {filteredLocations?.map((locationpha) => (
-                                  <Col lg={12} md={12} xs={12} key={locationpha._id}>
+                                  <Col sm={6} lg={window.innerWidth >= 1024 ? 12 : 6} xs={12} key={locationpha._id}>
                                     <div className="form-check">
                                       <input
                                         type="checkbox"
