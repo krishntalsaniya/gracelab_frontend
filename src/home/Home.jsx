@@ -625,7 +625,7 @@ const slideIndices = Array.from({ length: Math.ceil(camp.length / itemsPerSlide)
                 </ul>
                 <div className="btn-box">
                   <Link
-                    to="about/667e52387a043e58372e16ce"
+                    to="/cms/667e52387a043e58372e16ce"
                     className="btn btn-primary btn-login"
                   >
                     Learn More
