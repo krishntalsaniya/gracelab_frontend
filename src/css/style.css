@@ -3746,8 +3746,8 @@ blockquote::before,
   transition: 0.5s;
   border-radius: 5px 10px 10px 5px;
   width: 100% !important;
-  min-height: 289px !important;
-  max-height: 294px !important;
+  min-height: 306px !important;
+  max-height: 306px !important;
   /* max-height: 179px !important; */
 }
 
@@ -7100,6 +7100,7 @@ blockquote::before,
 
 .map-color {
   font-size: 15px;
+  width: 30px;
 
 }
 

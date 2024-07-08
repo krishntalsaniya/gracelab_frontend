@@ -33,18 +33,18 @@ function Laboratorypage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchQuertest, setSearchQuerytest] = useState("");
   const [advertisement, setadvertisement] = useState(null);
-const [visibleCount, setVisibleCount] = useState(5); // Initialize with 5 locations
-const [showMore, setShowMore] = useState(false); // Track whether to show more locations
+  const [visibleCount, setVisibleCount] = useState(5); // Initialize with 5 locations
+  const [showMore, setShowMore] = useState(false); // Track whether to show more locations
 
-// this is show more button 
+  // this is show more button
   const [visibleLabs, setVisibleLabs] = useState(2);
 
   const labsPerPage = 5;
 
- const handleToggleView = () => {
-  setShowMore((prevShowMore) => !prevShowMore);
-  setVisibleCount((prevShowMore) => (prevShowMore ? 5 : loc.length)); // Show all or initial 5 based on current state
-};
+  const handleToggleView = () => {
+    setShowMore((prevShowMore) => !prevShowMore);
+    setVisibleCount((prevShowMore) => (prevShowMore ? 5 : loc.length)); // Show all or initial 5 based on current state
+  };
 
   const showMoreLabs = () => {
     setVisibleLabs((prevVisibleLabs) => prevVisibleLabs + 2);
@@ -330,74 +330,78 @@ const [showMore, setShowMore] = useState(false); // Track whether to show more l
                 <div className="services-list">
                   <div className="services-details-faq">
                     <ul className="accordion">
-                    <li className="accordion-item">
-  <Link
-    className="accordion-title active"
-    onClick={toggleAccordion1}
-  >
-    {" "}
-    Location
-    {open1 ? (
-      <FiMinus className="hospital-icon" />
-    ) : (
-      <FiPlus className="hospital-icon" />
-    )}
-  </Link>
-  <Collapse in={open1}>
-    <div className="widget-area">
-      <div className="widget widget_search">
-        <form className="search-form">
-          <label>
-            <span className="screen-reader-text"></span>
-            <input
-              type="search"
-              className="search-field"
-              placeholder="Search..."
-              value={searchQuery}
-              onChange={handleSearchChange}
-            />
-          </label>
-          <button>
-            <IoSearch />
-          </button>
-        </form>
-        <div
-          className="row mt-3"
-          style={{
-            maxHeight: "150px",
-            overflowY: "auto",
-          }}
-        >
-          {filteredLocations?.slice(0, visibleCount).map((city) => (
-            <Col lg={12} md={12} xs={12} key={city._id}>
-              <div className="form-check">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id={`city-${city._id}`}
-                  value={city._id}
-                  onChange={handleCityChange}
-                />
-                <label
-                  className="form-check-label"
-                  htmlFor={`city-${city._id}`}
-                >
-                  {city.Name}
-                </label>
-              </div>
-            </Col>
-          ))}
-        </div>
-        {filteredLocations.length > 5 && (
-          <button onClick={handleToggleView} className="btn btn-link">
-            {showMore ? 'View Less' : 'View More'}
-          </button>
-        )}
-      </div>
-    </div>
-  </Collapse>
-</li>
-
+                      <li className="accordion-item">
+                        <Link
+                          className="accordion-title active"
+                          onClick={toggleAccordion1}
+                        >
+                          {" "}
+                          Location
+                          {open1 ? (
+                            <FiMinus className="hospital-icon" />
+                          ) : (
+                            <FiPlus className="hospital-icon" />
+                          )}
+                        </Link>
+                        <Collapse in={open1}>
+                          <div className="widget-area">
+                            <div className="widget widget_search">
+                              <form className="search-form">
+                                <label>
+                                  <span className="screen-reader-text"></span>
+                                  <input
+                                    type="search"
+                                    className="search-field"
+                                    placeholder="Search..."
+                                    value={searchQuery}
+                                    onChange={handleSearchChange}
+                                  />
+                                </label>
+                                <button>
+                                  <IoSearch />
+                                </button>
+                              </form>
+                              <div
+                                className="row mt-3"
+                                style={{
+                                  maxHeight: "150px",
+                                  overflowY: "auto",
+                                }}
+                              >
+                                {filteredLocations
+                                  ?.slice(0, visibleCount)
+                                  .map((city) => (
+                                    <Col lg={12} md={12} xs={12} key={city._id}>
+                                      <div className="form-check">
+                                        <input
+                                          type="checkbox"
+                                          className="form-check-input"
+                                          id={`city-${city._id}`}
+                                          value={city._id}
+                                          onChange={handleCityChange}
+                                        />
+                                        <label
+                                          className="form-check-label"
+                                          htmlFor={`city-${city._id}`}
+                                        >
+                                          {city.Name}
+                                        </label>
+                                      </div>
+                                    </Col>
+                                  ))}
+                              </div>
+                              {filteredLocations.length > 5 && (
+                                <button
+                                  onClick={handleToggleView}
+                                  className="btn btn-link"
+                                >
+                                  {showMore ? "View Less" : "View More"}
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        </Collapse>
+                      </li>
 
                       <li className="accordion-item">
                         <Link
