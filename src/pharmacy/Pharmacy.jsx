@@ -500,7 +500,7 @@ navigatelink="/pharmacy-login"
                                   <input
                                     type="search"
                                     className="search-field"
-                                    placeholder="Search..."
+                                    placeholder="Search Pharmacy..."
                                     onChange={handleInputChange}
                                   />
                                 </label>

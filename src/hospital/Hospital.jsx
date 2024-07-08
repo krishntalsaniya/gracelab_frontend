@@ -593,7 +593,7 @@ const handleSpecialtyChange = (event) => {
                                   <input
                                     type="search"
                                     className="search-field"
-                                    placeholder="Search..."
+                                    placeholder="Search Hospital..."
                                    value={hospitalsearchQuery}
                   onChange={handlespecialityhospitalname}
                                   />

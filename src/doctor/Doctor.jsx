@@ -753,7 +753,7 @@ function Doctor() {
                           <input
                             type="search"
                             className="search-field"
-                            placeholder="Search..."
+                            placeholder="Search Doctor..."
                             onChange={handleInputChange}
                           />
                         </label>

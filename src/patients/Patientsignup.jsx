@@ -106,7 +106,7 @@ useEffect(() => {
       const formData = new FormData();
       formData.append('PatientName', values.name);
       formData.append('personalEmail', values.email);
-      formData.append('ContactNo', values.contact);
+      formData.append('mobileNumber', values.contact);
       formData.append('Password', values.password);
       formData.append('PatientRegistrationDate', values.PatientRegistrationDate);
       formData.append('area', values.area);
@@ -120,7 +120,7 @@ useEffect(() => {
       formData.append('photo', file);
 
       const uniqueReferenceNo = await generateUniqueReferenceNo();
-    formData.append('HospitalReferenceNo', uniqueReferenceNo);
+    formData.append('PatientReferenceNo', uniqueReferenceNo);
 
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/createPatient`,

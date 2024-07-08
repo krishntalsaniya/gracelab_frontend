@@ -357,7 +357,7 @@ const [showMore, setShowMore] = useState(false); // Track whether to show more l
               onChange={handleSearchChange}
             />
           </label>
-          <button type="submit">
+          <button>
             <IoSearch />
           </button>
         </form>
@@ -514,7 +514,7 @@ const [showMore, setShowMore] = useState(false); // Track whether to show more l
                           <input
                             type="search"
                             className="search-field"
-                            placeholder="Search..."
+                            placeholder="Search Laboratory..."
                             onChange={handleInputChange}
                           />
                         </label>

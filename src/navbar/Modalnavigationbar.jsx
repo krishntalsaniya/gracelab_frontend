@@ -112,7 +112,7 @@ function Modalnavigationbar(props) {
                       Home
                     </Link>
                     <Link
-                      to="/about/667e52387a043e58372e16ce"
+                      to="/cms/667e52387a043e58372e16ce"
                       className="mobile-link"
                     >
                       About us

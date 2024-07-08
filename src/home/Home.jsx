@@ -243,7 +243,7 @@ const slideIndices = Array.from({ length: Math.ceil(camp.length / itemsPerSlide)
       <Modalnavigationbar />
       <Carousel>
         {bannerList.map((banner) => (
-          <Carousel.Item key={banner._id}>
+          <Carousel.Item key={banner._id} className="banner-carousal">
             <img
               src={`${process.env.REACT_APP_API_URL_GRACELAB}/${banner.bannerImage}`}
               alt={banner.Title}
@@ -358,7 +358,7 @@ const slideIndices = Array.from({ length: Math.ceil(camp.length / itemsPerSlide)
             <Link
               onClick={() => handleLinkClick("Explore Our Camps")}
               to="/tellusmore"
-              className="btn btn-secondary"
+              className="btn btn-secondary tell-us-more-btn"
             >
               Tell Us More
             </Link>

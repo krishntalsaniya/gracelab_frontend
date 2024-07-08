@@ -1185,7 +1185,7 @@ a:hover {
 .about-content h2 {
   margin-bottom: 0;
   font-weight: 700;
-  font-size: 38px;
+  /* font-size: 38px; */
 }
 
 .about-content p {
@@ -7109,4 +7109,60 @@ blockquote::before,
 
 .loylti-program img {
   height: 350px !important;
+}
+
+
+/* @media (min-width: 320px) and (max-width: 768px) {
+  .tell-us-more-btn {
+    display: block !important;
+    top: 85px !important;
+    right: 70px !important;
+
+  }
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .tell-us-more-btn {
+    max-width: 100%;
+    /* Take full width */
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .tell-us-more-btn {
+    max-width: 200px;
+    /* Adjust as needed */
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .tell-us-more-btn {
+    max-width: 300px;
+    /* Adjust as needed */
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .tell-us-more-btn {
+    max-width: 400px;
+    /* Adjust as needed */
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .tell-us-more-btn {
+    max-width: 500px;
+    /* Adjust as needed */
+  }
+}
+
+
+.tell-us-more-btn {
+  display: inline-block;
+
+  margin: 10px 0;
+
 }
