@@ -382,13 +382,24 @@ const slideIndices = Array.from({ length: Math.ceil(camp.length / itemsPerSlide)
               </Col>
               <Col lg={6} md={12}>
                 <div className="about-content">
-                   <h2>{upcoming.CampVenueDetails?.Society || ""}</h2>
-       <p>{`Date : ${upcoming.Date ? new Date(upcoming.Date).toISOString().split('T')[0] : ""}`}</p>
+                     <h5>
+      <strong >Camp Venue: </strong>
+  {(upcoming.CampVenueDetails?.Society || "").length > 30
+    ? `${upcoming.CampVenueDetails.Society.substring(0, 30)}...`
+    : upcoming.CampVenueDetails?.Society || ""}
+</h5>
+       <p>
+  <strong>Date</strong>{` : ${upcoming.Date ? new Date(upcoming.Date).toISOString().split('T')[0] : ""}`}
+</p>
 
         <p>{upcoming.Descreption || ""}</p>
-        <p>{`No Of Patient:  ${upcoming.NoOfPatients || ""}`}</p>
+         <Card.Text>
+         <small style={{ fontWeight: 'bold', fontSize: '13px' }}>{`No Of Patient: ${upcoming.NoOfPatients}`}</small>
+
+        </Card.Text>
 
                   <ul className="about-features-list">
+                    
                     {upcoming.DoctorsDetails &&
                       upcoming.DoctorsDetails.map((doctor, index) => (
                        <li key={index} style={{ listStyle: "none", display: "flex", alignItems: "center" }}>
