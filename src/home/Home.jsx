@@ -483,6 +483,9 @@ const slideIndices = Array.from({ length: Math.ceil(camp.length / itemsPerSlide)
                   <Card.Body className="card-home-camping">
                     <Card.Title>{camping.title}</Card.Title>
                     <Card.Text>
+                      <p>{`Date : ${camping.Date ? new Date(camping.Date).toISOString().split('T')[0] : ""}`}</p>
+                    </Card.Text>
+                    <Card.Text>
                       {expandedDescriptions[camping._id]
                         ? camping.Descreption
                         : `${camping.Descreption.substring(0, 100)}...`}
@@ -498,15 +501,18 @@ const slideIndices = Array.from({ length: Math.ceil(camp.length / itemsPerSlide)
                     <Card.Text>
                       <small className="text-muted">{`No Of Patient: ${camping.NoOfPatients}`}</small>
                     </Card.Text>
-                    <Card.Text>
-                      <small className="text-muted">Doctors:</small>
-                      <ul>
-                        {camping.DoctorsDetails &&
-                          camping.DoctorsDetails.map((doctor, index) => (
-                            <li key={index}>{doctor.DoctorName}</li>
-                          ))}
-                      </ul>
-                    </Card.Text>
+                  <Card.Text>
+  <small className="text-muted">Doctors:</small>
+  <div className="row">
+    {camping.DoctorsDetails &&
+      camping.DoctorsDetails.map((doctor, index) => (
+        <div className="col-12 col-lg-6" key={index}>
+          <li>{doctor.DoctorName}</li>
+        </div>
+      ))}
+  </div>
+</Card.Text>
+
                   </Card.Body>
                 </Card>
               </Link>
