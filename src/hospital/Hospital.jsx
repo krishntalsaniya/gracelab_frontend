@@ -44,6 +44,43 @@ function Hospital() {
    const showMoreHospitals = () => {
   setVisibleHospitals(prevVisibleHospitals => prevVisibleHospitals + 2);
 };
+ const filterespecilityhospitalname = hospitalalllist?.filter(city => 
+    city.HospitalName.toLowerCase().includes(hospitalsearchQuery.toLowerCase())
+  ) || [];
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const hospitalsPerPage = 2; // Number of hospitals per page
+
+  // Calculate indices of hospitals to display on the current page
+  const indexOfLastHospital = currentPage * hospitalsPerPage;
+  const indexOfFirstHospital = indexOfLastHospital - hospitalsPerPage;
+  const currentHospitals = filterespecilityhospitalname.slice(indexOfFirstHospital, indexOfLastHospital);
+
+  // Function to handle page change
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // Pagination component
+  const Pagination = ({ totalHospitals, hospitalsPerPage, paginate, currentPage }) => {
+    const pageNumbers = [];
+
+    for (let i = 1; i <= Math.ceil(totalHospitals / hospitalsPerPage); i++) {
+      pageNumbers.push(i);
+    }
+
+    return (
+      <nav>
+        <ul className="pagination">
+          {pageNumbers.map(number => (
+            <li key={number} className={`page-item ${currentPage === number ? 'active' : ''}`}>
+              <button onClick={() => paginate(number)} className="page-link">
+                {number}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    );
+  };
  
     useEffect(() => {
     
@@ -384,9 +421,7 @@ const handleSpecialtyChange = (event) => {
     };
 
 
-     const filterespecilityhospitalname = hospitalalllist?.filter(city => 
-    city.HospitalName.toLowerCase().includes(hospitalsearchQuery.toLowerCase())
-  ) || [];
+    
 
   const handlespecialityhospitalname = (event) => {
     hospitalsetSearchQuery(event.target.value);
@@ -604,31 +639,34 @@ const handleSpecialtyChange = (event) => {
                             </div>
                           </div>
      
-      {filterespecilityhospitalname.slice(0, visibleHospitals).map((hospital, index) => (
-  <Hospitaldesc
-    key={`${hospital._id}-${index}`}
-    hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${hospital.Hospitalphoto}`}
-    mainheading={hospital.HospitalName}
-    headings={hospital.address} // Adjust this based on your API response structure
-    starttime1={hospital.OPD1StartTime} // Adjust this based on your API response structure
-    endtime1={hospital.OPD1EndTime} // Adjust this based on your API response structure
-    starttime2={hospital.OPD2StartTime} // Adjust this based on your API response structure
-    endtime2={hospital.OPD2EndTime} // Adjust this based on your API response structure
-    starttime3={hospital.OPD3StartTime} // Adjust this based on your API response structure
-    endtime3={hospital.OPD3EndTime} // Adjust this based on your API response structure
-    dayslab1={hospital.DaysHospital1}
-    dayslab2={hospital.DaysHospital2}
-    dayslab3={hospital.DaysHospital3}
-    locationmap={hospital.Location}
-    imagelink={hospital.website}
-    Labid={hospital._id}
-    averageRating={hospital.averageRating}
-  />
-))}
+      {currentHospitals.map((hospital, index) => (
+        <Hospitaldesc
+          key={`${hospital._id}-${index}`}
+          hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${hospital.Hospitalphoto}`}
+          mainheading={hospital.HospitalName}
+          headings={hospital.address} // Adjust this based on your API response structure
+          starttime1={hospital.OPD1StartTime} // Adjust this based on your API response structure
+          endtime1={hospital.OPD1EndTime} // Adjust this based on your API response structure
+          starttime2={hospital.OPD2StartTime} // Adjust this based on your API response structure
+          endtime2={hospital.OPD2EndTime} // Adjust this based on your API response structure
+          starttime3={hospital.OPD3StartTime} // Adjust this based on your API response structure
+          endtime3={hospital.OPD3EndTime} // Adjust this based on your API response structure
+          dayslab1={hospital.DaysHospital1}
+          dayslab2={hospital.DaysHospital2}
+          dayslab3={hospital.DaysHospital3}
+          locationmap={hospital.Location}
+          imagelink={hospital.website}
+          Labid={hospital._id}
+          averageRating={hospital.averageRating}
+        />
+      ))}
 
-{visibleHospitals < filterespecilityhospitalname.length && (
-  <button className="show-more-button" onClick={showMoreHospitals}>Show More</button>
-)}
+      <Pagination
+        totalHospitals={filterespecilityhospitalname.length}
+        hospitalsPerPage={hospitalsPerPage}
+        paginate={paginate}
+        currentPage={currentPage}
+      />
     </div>
   )}
 </div>
