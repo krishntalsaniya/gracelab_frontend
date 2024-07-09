@@ -164,7 +164,7 @@ function Home() {
             IsActive: true,
           }
         );
-        console.log("show camp details:", campdetails.data[0].data);
+        console.log("show camp details:", campdetails);
 
         setcamp(campdetails.data[0].data);
         console.log("show camp details this  ", campdetails.data);
@@ -472,7 +472,7 @@ const slideIndices = Array.from({ length: Math.ceil(camp.length / itemsPerSlide)
           {camp.slice(slideIndex * itemsPerSlide, (slideIndex + 1) * itemsPerSlide).map((camping, index) => (
             <Col key={index} lg={12 / itemsPerSlide} md={12 / itemsPerSlide} sm={12}>
               <Link to="/camping" key={camping.id}>
-               <Card className="">
+               <Card className="camping-card">
       <Card.Img
         className="card-camp-image"
         variant="top"
@@ -481,11 +481,22 @@ const slideIndices = Array.from({ length: Math.ceil(camp.length / itemsPerSlide)
         onError={(e) => { e.target.src = placeholderimage }}
       />
       <Card.Body className="card-home-camping">
-        <Card.Title>{camping.title}</Card.Title>
+     <p>
+      <strong style={{ fontSize: 'bold' }}>Camp Venue: </strong>
+  {(camping.CampVenueDetails?.Society || "").length > 20
+    ? `${camping.CampVenueDetails.Society.substring(0, 20)}...`
+    : camping.CampVenueDetails?.Society || ""}
+</p>
+
         <Card.Text>
-          <p>{`Date : ${camping.Date ? new Date(camping.Date).toISOString().split('T')[0] : ""}`}</p>
+   <p>
+  <strong>Date</strong>{` : ${camping.Date ? new Date(camping.Date).toISOString().split('T')[0] : ""}`}
+</p>
+
+
         </Card.Text>
         <Card.Text>
+          <strong style={{ fontSize: 'bold' }}>Camp Desc: </strong>
           {expandedDescriptions[camping._id]
             ? camping.Descreption
             : `${camping.Descreption.substring(0, 100)}...`}
@@ -499,10 +510,11 @@ const slideIndices = Array.from({ length: Math.ceil(camp.length / itemsPerSlide)
           )}
         </Card.Text>
         <Card.Text>
-          <small className="text-muted">{`No Of Patient: ${camping.NoOfPatients}`}</small>
+         <small style={{ fontWeight: 'bold', fontSize: '13px' }}>{`No Of Patient: ${camping.NoOfPatients}`}</small>
+
         </Card.Text>
         <Card.Text>
-          <small className="text-muted">Doctors:</small>
+          <small className="text-muted" style={{ fontWeight: 'bold'}}>Doctors:</small>
           <div className="row">
             {camping.DoctorsDetails &&
               camping.DoctorsDetails.map((doctor, index) => (

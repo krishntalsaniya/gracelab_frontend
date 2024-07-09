@@ -7004,13 +7004,13 @@ blockquote::before,
 }
 
 .card-body-camping {
-  min-height: 250px !important;
-  max-height: 240px !important;
+  min-height: 275px !important;
+  max-height: 275px !important;
 }
 
 .card-home-camping {
-  min-height: 240px !important;
-  max-height: 240px !important;
+  min-height: 290px !important;
+  max-height: 290px !important;
 }
 
 .register-camping {
@@ -7083,11 +7083,6 @@ blockquote::before,
   /* Adds smooth transition effects */
 }
 
-.camping-card:hover {
-  transform: translateY(-10px);
-  /* Moves the card slightly up */
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2), 0 15px 15px rgba(0, 0, 0, 0.1);
-}
 
 .heading-container {
   display: flex;
@@ -7168,4 +7163,17 @@ blockquote::before,
 
   margin: 10px 0;
 
+}
+
+.camping-card {
+  border-radius: 10px;
+  /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* Soft shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  /* Smooth transition */
+
+  /* Additional styles */
+  background-color: #ffffff;
+  /* White background */
 }

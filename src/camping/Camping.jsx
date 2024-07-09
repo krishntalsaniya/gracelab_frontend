@@ -86,12 +86,18 @@ function Camping() {
                       e.target.src = placeholderimage;
                     }}
                   />
-                  <Card.Body className="card-body-camping">
-                    <Card.Title>{camping.title}</Card.Title>
-                    <Card.Text>Description: {camping.Descreption}</Card.Text>
-                    <p>{`Date : ${camping.Date ? new Date(camping.Date).toISOString().split('T')[0] : ""}`}</p>
+                  <Card.Body className="card-body-camping" >
+                    <p>
+      <strong style={{ fontSize: 'bold' }}>Camp Venue: </strong>
+ {camping.CampVenueDetails?.Society || ""}
+</p>
+
+ <p>
+  <strong>Date</strong>{` : ${camping.Date ? new Date(camping.Date).toISOString().split('T')[0] : ""}`}
+</p>
+                    <Card.Text>Camp Desc: {camping.Descreption}</Card.Text>
                     <Card.Text>
-                      <small className="text-muted">{`No Of Patients: ${camping.NoOfPatients}`}</small>
+                    <small style={{ fontWeight: 'bold', fontSize: '13px' }}>{`No Of Patient: ${camping.NoOfPatients}`}</small>
                     </Card.Text>
                     <Card.Text>
                       <small className="text-muted">Doctors:</small>
@@ -139,17 +145,18 @@ function Camping() {
                     }}
                   />
                   <Card.Body className="card-body-camping">
-                    <Card.Title>{camping.title}</Card.Title>
-                    <Card.Text>Description: {camping.Descreption}</Card.Text>
+                     <p>
+      <strong style={{ fontSize: 'bold' }}>Camp Venue: </strong>
+ {camping.CampVenueDetails?.Society || ""}
+</p>
+                     <Card.Text>Camp Desc: {camping.Descreption}</Card.Text>
                     <Card.Text>
-                      <p>{`Date : ${
-                        camping.Date
-                          ? new Date(camping.Date).toISOString().split("T")[0]
-                          : ""
-                      }`}</p>
+                     <p>
+  <strong>Date</strong>{` : ${camping.Date ? new Date(camping.Date).toISOString().split('T')[0] : ""}`}
+</p>
                     </Card.Text>
-                    <Card.Text>
-                      <small className="text-muted">{`No Of Patients: ${camping.NoOfPatients}`}</small>
+                   <Card.Text>
+                    <small style={{ fontWeight: 'bold', fontSize: '13px' }}>{`No Of Patient: ${camping.NoOfPatients}`}</small>
                     </Card.Text>
                     <Card.Text>
                       <small className="text-muted">Doctors:</small>
