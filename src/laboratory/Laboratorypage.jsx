@@ -25,7 +25,7 @@ function Laboratorypage() {
   const [open3, setOpen3] = useState(true);
   const [laboratoryShowMore, laboratorySetShowMore] = useState(false);
   const [popularTestShowMore, popularTestSetShowMore] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
+  // const [currentPage, setCurrentPage] = useState(1);
   const [selectedLabs, setSelectedLabs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [adsData, setAdsData] = useState([]);
@@ -38,8 +38,47 @@ function Laboratorypage() {
 
   // this is show more button
   const [visibleLabs, setVisibleLabs] = useState(2);
+   const [currentPage, setCurrentPage] = useState(1);
+  const labsPerPage = 2;
 
-  const labsPerPage = 5;
+   const filteredLabs = labListAll?.filter((lab) =>
+    lab.LabName.toLowerCase().includes(query.toLowerCase())
+  );
+  console.log("filteredLabs", filteredLabs);
+
+  // Get current labs
+  const indexOfLastLab = currentPage * labsPerPage;
+  const indexOfFirstLab = indexOfLastLab - labsPerPage;
+  const currentLabs = filteredLabs.slice(indexOfFirstLab, indexOfLastLab);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // Pagination Component
+  const Pagination = ({ totalLabs, labsPerPage, paginate, currentPage }) => {
+    const pageNumbers = [];
+
+    for (let i = 1; i <= Math.ceil(totalLabs / labsPerPage); i++) {
+      pageNumbers.push(i);
+    }
+
+    return (
+      <nav>
+        <ul className="pagination">
+          {pageNumbers.map(number => (
+            <li key={number} className={`page-item ${currentPage === number ? 'active' : ''}`}>
+              <a onClick={() => paginate(number)} href="#" className="page-link">
+                {number}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    );
+  };
+
+
+  // const labsPerPage = 5;
 
   const handleToggleView = () => {
     setShowMore((prevShowMore) => !prevShowMore);
@@ -271,10 +310,7 @@ function Laboratorypage() {
     }
   };
 
-  const filteredLabs = labListAll?.filter((lab) =>
-    lab.LabName.toLowerCase().includes(query.toLowerCase())
-  );
-  console.log("filteredLabs", filteredLabs);
+ 
 
   const filteredLocations =
     loc?.filter((city) =>
@@ -529,33 +565,34 @@ function Laboratorypage() {
                     </div>
                   </div>
 
-                  {filteredLabs?.slice(0, visibleLabs).map((lab, index) => (
-                    <Labsec
-                      key={`${lab._id}-${index}`}
-                      hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${lab.Labphoto}`}
-                      mainheading={lab.LabName}
-                      headings={lab.address}
-                      starttime1={lab.LabStartTime1}
-                      endtime1={lab.LabEndTime1}
-                      starttime2={lab.LabStartTime2}
-                      endtime2={lab.LabEndTime2}
-                      starttime3={lab.LabStartTime3}
-                      endtime3={lab.LabEndTime3}
-                      dayslab1={lab.DaysLab1}
-                      dayslab2={lab.DaysLab2}
-                      dayslab3={lab.DaysLab3}
-                      locationmap={lab.Location}
-                      imagelink={lab.website}
-                      Labid={lab._id}
-                      averageRating={lab.averageRating ? lab.averageRating : 0}
-                    />
-                  ))}
+                  {currentLabs.map((lab, index) => (
+        <Labsec
+          key={`${lab._id}-${index}`}
+          hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${lab.Labphoto}`}
+          mainheading={lab.LabName}
+          headings={lab.address}
+          starttime1={lab.LabStartTime1}
+          endtime1={lab.LabEndTime1}
+          starttime2={lab.LabStartTime2}
+          endtime2={lab.LabEndTime2}
+          starttime3={lab.LabStartTime3}
+          endtime3={lab.LabEndTime3}
+          dayslab1={lab.DaysLab1}
+          dayslab2={lab.DaysLab2}
+          dayslab3={lab.DaysLab3}
+          locationmap={lab.Location}
+          imagelink={lab.website}
+          Labid={lab._id}
+          averageRating={lab.averageRating ? lab.averageRating : 0}
+        />
+      ))}
 
-                  {visibleLabs < filteredLabs.length && (
-                    <button className="show-more-button" onClick={showMoreLabs}>
-                      Show More
-                    </button>
-                  )}
+      <Pagination
+        totalLabs={filteredLabs.length}
+        labsPerPage={labsPerPage}
+        paginate={paginate}
+        currentPage={currentPage}
+      />
                 </div>
               )}
             </div>

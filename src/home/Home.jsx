@@ -397,7 +397,7 @@ const slideIndices = Array.from({ length: Math.ceil(camp.length / itemsPerSlide)
                         </li>
                       ))}
                   </ul>
-                  <div className="btn-box">
+                  <div className="camping-button">
                     <Link
                       to="https://gracelab.barodaweb.org/patient-inquiry"
                       target="_blank"

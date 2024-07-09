@@ -7168,3 +7168,8 @@ blockquote::before,
   margin: 10px 0;
 
 }
+
+.camping-button {
+  text-align: start;
+  margin-top: 25px;
+}
