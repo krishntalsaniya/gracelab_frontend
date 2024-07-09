@@ -215,7 +215,8 @@ function Hospitaldesc(props) {
               </div>
               <Button
                 variant="primary"
-                className="rounded-pill mt-3 float-end contact-sec"
+                className="mt-3 float-end contact-sec"
+                 style={{borderRadius:10}}
                 onClick={() => setShowModal(true)}
               >
                 Contact

@@ -391,10 +391,11 @@ const slideIndices = Array.from({ length: Math.ceil(camp.length / itemsPerSlide)
                   <ul className="about-features-list">
                     {upcoming.DoctorsDetails &&
                       upcoming.DoctorsDetails.map((doctor, index) => (
-                        <li key={index} style={{ listStyle: "none" }}>
-                          <IoCheckmarkDoneSharp style={{ color: "#ffb923" }} />
-                          {doctor.DoctorName}
-                        </li>
+                       <li key={index} style={{ listStyle: "none", display: "flex", alignItems: "center" }}>
+  <IoCheckmarkDoneSharp style={{ color: "#ffb923", marginRight: "8px" }} /> {/* Adjust margin-right as needed */}
+  {doctor.DoctorName}
+</li>
+
                       ))}
                   </ul>
                   <div className="btn-box">
@@ -471,50 +472,48 @@ const slideIndices = Array.from({ length: Math.ceil(camp.length / itemsPerSlide)
           {camp.slice(slideIndex * itemsPerSlide, (slideIndex + 1) * itemsPerSlide).map((camping, index) => (
             <Col key={index} lg={12 / itemsPerSlide} md={12 / itemsPerSlide} sm={12}>
               <Link to="/camping" key={camping.id}>
-                <Card className="">
-                  <Card.Img
-                    className="card-camp-image"
-                    variant="top"
-                    src={`${process.env.REACT_APP_API_URL_GRACELAB}/${camping.Photo}`}
-                     alt={camping.title}
-                    onError={(e) => { e.target.src = placeholderimage }
-                  }
-                  />
-                  <Card.Body className="card-home-camping">
-                    <Card.Title>{camping.title}</Card.Title>
-                    <Card.Text>
-                      <p>{`Date : ${camping.Date ? new Date(camping.Date).toISOString().split('T')[0] : ""}`}</p>
-                    </Card.Text>
-                    <Card.Text>
-                      {expandedDescriptions[camping._id]
-                        ? camping.Descreption
-                        : `${camping.Descreption.substring(0, 100)}...`}
-                      {camping.Descreption.length > 100 && (
-                        <span
-                          style={{ color: '#eb268f', cursor: 'pointer' }}
-                          onClick={() => toggleDescription(camping._id)}
-                        >
-                          {expandedDescriptions[camping._id] ? ' Read Less' : ' Read More'}
-                        </span>
-                      )}
-                    </Card.Text>
-                    <Card.Text>
-                      <small className="text-muted">{`No Of Patient: ${camping.NoOfPatients}`}</small>
-                    </Card.Text>
-                  <Card.Text>
-  <small className="text-muted">Doctors:</small>
-  <div className="row">
-    {camping.DoctorsDetails &&
-      camping.DoctorsDetails.map((doctor, index) => (
-        <div className="col-12 col-lg-6" key={index}>
-          <li>{doctor.DoctorName}</li>
-        </div>
-      ))}
-  </div>
-</Card.Text>
-
-                  </Card.Body>
-                </Card>
+               <Card className="">
+      <Card.Img
+        className="card-camp-image"
+        variant="top"
+        src={`${process.env.REACT_APP_API_URL_GRACELAB}/${camping.Photo}`}
+        alt={camping.title}
+        onError={(e) => { e.target.src = placeholderimage }}
+      />
+      <Card.Body className="card-home-camping">
+        <Card.Title>{camping.title}</Card.Title>
+        <Card.Text>
+          <p>{`Date : ${camping.Date ? new Date(camping.Date).toISOString().split('T')[0] : ""}`}</p>
+        </Card.Text>
+        <Card.Text>
+          {expandedDescriptions[camping._id]
+            ? camping.Descreption
+            : `${camping.Descreption.substring(0, 100)}...`}
+          {camping.Descreption.length > 100 && (
+            <span
+              style={{ color: '#eb268f', cursor: 'pointer' }}
+              onClick={() => toggleDescription(camping._id)}
+            >
+              {expandedDescriptions[camping._id] ? ' Read Less' : ' Read More'}
+            </span>
+          )}
+        </Card.Text>
+        <Card.Text>
+          <small className="text-muted">{`No Of Patient: ${camping.NoOfPatients}`}</small>
+        </Card.Text>
+        <Card.Text>
+          <small className="text-muted">Doctors:</small>
+          <div className="row">
+            {camping.DoctorsDetails &&
+              camping.DoctorsDetails.map((doctor, index) => (
+                <div className="col-12 col-lg-6" key={index}>
+                  <li>{doctor.DoctorName}</li>
+                </div>
+              ))}
+          </div>
+        </Card.Text>
+      </Card.Body>
+    </Card>
               </Link>
             </Col>
           ))}
@@ -579,7 +578,7 @@ const slideIndices = Array.from({ length: Math.ceil(camp.length / itemsPerSlide)
         </Container>
       </section>
 
-      <section className="about-area ptb-70">
+      <section className="about-area ptb-40">
         <Container>
           <Row className="align-items-center">
             <Col lg={6} md={12}>
