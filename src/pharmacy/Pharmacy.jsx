@@ -34,6 +34,44 @@ function Pharmacy() {
     const showMorePharmacies = () => {
   setVisiblePharmacies(prevVisiblePharmacies => prevVisiblePharmacies + 2);
 };
+ const filteredLabs = PharmacyList?.filter(
+    (lab) => lab.PharmacyName.toLowerCase().includes(query.toLowerCase())
+  );
+
+ const [currentPage, setCurrentPage] = useState(1);
+  const pharmaciesPerPage = 2; // Number of pharmacies per page
+
+  // Calculate indices of pharmacies to display on the current page
+  const indexOfLastPharmacy = currentPage * pharmaciesPerPage;
+  const indexOfFirstPharmacy = indexOfLastPharmacy - pharmaciesPerPage;
+  const currentPharmacies = filteredLabs.slice(indexOfFirstPharmacy, indexOfLastPharmacy);
+
+  // Function to handle page change
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // Pagination component
+  const Pagination = ({ totalPharmacies, pharmaciesPerPage, paginate, currentPage }) => {
+    const pageNumbers = [];
+
+    for (let i = 1; i <= Math.ceil(totalPharmacies / pharmaciesPerPage); i++) {
+      pageNumbers.push(i);
+    }
+
+    return (
+      <nav>
+        <ul className="pagination">
+          {pageNumbers.map(number => (
+            <li key={number} className={`page-item ${currentPage === number ? 'active' : ''}`}>
+              <button onClick={() => paginate(number)} className="page-link">
+                {number}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    );
+  };
+
 
 
   useEffect(() => {
@@ -247,9 +285,7 @@ setpharmacyad(`${laboratories}`)
 
   };
 
-    const filteredLabs = PharmacyList?.filter(
-    (lab) => lab.PharmacyName.toLowerCase().includes(query.toLowerCase())
-  );
+   
 
    const handleInputChange = (e) => {
     const inputValue = e.target.value;
@@ -510,31 +546,34 @@ navigatelink="/pharmacy-login"
                             </div>
                           </div>
     
-    {filteredLabs.slice(0, visiblePharmacies).map((lab, index) => (
-  <Pharmacysec
-    key={`${lab._id}-${index}`}
-    hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${lab.Pharmacyphoto}`}
-    mainheading={lab.PharmacyName}
-    headings={lab.address}
-    starttime1={lab.PharmacyStartTime1}
-    endtime1={lab.PharmacyEndTime1}
-    starttime2={lab.PharmacyStartTime2}
-    endtime2={lab.PharmacyEndTime2}
-    starttime3={lab.PharmacyStartTime3}
-    endtime3={lab.PharmacyEndTime3}
-    dayslab1={lab.DaysPharmacy1}
-    dayslab2={lab.DaysPharmacy2}
-    dayslab3={lab.DaysPharmacy3}
-    locationmap={lab.Location}
-    imagelink={lab.website}
-    Labid={lab._id}
-    averageRating={lab.averageRating}
-  />
-))}
+    {currentPharmacies.map((lab, index) => (
+        <Pharmacysec
+          key={`${lab._id}-${index}`}
+          hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${lab.Pharmacyphoto}`}
+          mainheading={lab.PharmacyName}
+          headings={lab.address}
+          starttime1={lab.PharmacyStartTime1}
+          endtime1={lab.PharmacyEndTime1}
+          starttime2={lab.PharmacyStartTime2}
+          endtime2={lab.PharmacyEndTime2}
+          starttime3={lab.PharmacyStartTime3}
+          endtime3={lab.PharmacyEndTime3}
+          dayslab1={lab.DaysPharmacy1}
+          dayslab2={lab.DaysPharmacy2}
+          dayslab3={lab.DaysPharmacy3}
+          locationmap={lab.Location}
+          imagelink={lab.website}
+          Labid={lab._id}
+          averageRating={lab.averageRating}
+        />
+      ))}
 
-{visiblePharmacies < filteredLabs.length && (
-  <button className="show-more-button" onClick={showMorePharmacies}>Show More</button>
-)}
+      <Pagination
+        totalPharmacies={filteredLabs.length}
+        pharmaciesPerPage={pharmaciesPerPage}
+        paginate={paginate}
+        currentPage={currentPage}
+      />
     </div>
   )}
 </div>
