@@ -54,6 +54,44 @@ function Doctor() {
     setVisibleDoctors((prevVisibleDoctors) => prevVisibleDoctors + 2);
   };
 
+    const filteredDoctors = doctorlist?.filter(
+    (doctor) =>doctor.DoctorName.toLowerCase().includes(query.toLowerCase())
+  );
+
+   const [currentPage, setCurrentPage] = useState(1);
+  const doctorsPerPage = 2; // Number of doctors per page
+
+  // Calculate indices of doctors to display on the current page
+  const indexOfLastDoctor = currentPage * doctorsPerPage;
+  const indexOfFirstDoctor = indexOfLastDoctor - doctorsPerPage;
+  const currentDoctors = filteredDoctors.slice(indexOfFirstDoctor, indexOfLastDoctor);
+
+  // Function to handle page change
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // Pagination component
+  const Pagination = ({ totalDoctors, doctorsPerPage, paginate, currentPage }) => {
+    const pageNumbers = [];
+
+    for (let i = 1; i <= Math.ceil(totalDoctors / doctorsPerPage); i++) {
+      pageNumbers.push(i);
+    }
+
+    return (
+      <nav>
+        <ul className="pagination">
+          {pageNumbers.map(number => (
+            <li key={number} className={`page-item ${currentPage === number ? 'active' : ''}`}>
+              <button onClick={() => paginate(number)} className="page-link">
+                {number}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    );
+  };
+
    useEffect(() => {
     setFilteredDoctors(doctorlist); // Initialize filtered list with full list on component mount
   }, [doctorlist]);
@@ -440,9 +478,7 @@ function Doctor() {
 
 
 
-  const filteredDoctors = doctorlist?.filter(
-    (doctor) =>doctor.DoctorName.toLowerCase().includes(query.toLowerCase())
-  );
+
 
 
 
@@ -764,38 +800,34 @@ function Doctor() {
                     </div>
                   </div>
 
-                  {filteredDoctors
-                    .slice(0, visibleDoctors)
-                    .map((doc, index) => (
-                      <Doctordes
-                        key={`${doc._id}-${index}`}
-                        hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${doc.Doctorphoto}`}
-                        mainheading={doc.DoctorName}
-                        headings={doc.address}
-                        starttime1={doc.OPD1StartTime}
-                        endtime1={doc.OPD1EndTime}
-                        starttime2={doc.OPD2StartTime}
-                        endtime2={doc.OPD2EndTime}
-                        starttime3={doc.OPD3StartTime}
-                        endtime3={doc.OPD3EndTime}
-                        dayslab1={doc.DaysDoctor1}
-                        dayslab2={doc.DaysDoctor2}
-                        dayslab3={doc.DaysDoctor3}
-                        locationmap={doc.Location}
-                        imagelink={doc.website}
-                        Labid={doc._id}
-                        averageRating={doc.averageRating}
-                      />
-                    ))}
+                {currentDoctors.map((doc, index) => (
+        <Doctordes
+          key={`${doc._id}-${index}`}
+          hospitalimage={`${process.env.REACT_APP_API_URL_GRACELAB}/${doc.Doctorphoto}`}
+          mainheading={doc.DoctorName}
+          headings={doc.address}
+          starttime1={doc.OPD1StartTime}
+          endtime1={doc.OPD1EndTime}
+          starttime2={doc.OPD2StartTime}
+          endtime2={doc.OPD2EndTime}
+          starttime3={doc.OPD3StartTime}
+          endtime3={doc.OPD3EndTime}
+          dayslab1={doc.DaysDoctor1}
+          dayslab2={doc.DaysDoctor2}
+          dayslab3={doc.DaysDoctor3}
+          locationmap={doc.Location}
+          imagelink={doc.website}
+          Labid={doc._id}
+          averageRating={doc.averageRating}
+        />
+      ))}
 
-                  {visibleDoctors < filteredDoctors.length && (
-                    <button
-                      className="show-more-button"
-                      onClick={showMoreDoctors}
-                    >
-                      Show More
-                    </button>
-                  )}
+      <Pagination
+        totalDoctors={filteredDoctors.length}
+        doctorsPerPage={doctorsPerPage}
+        paginate={paginate}
+        currentPage={currentPage}
+      />
                 </div>
               )}
             </div>
