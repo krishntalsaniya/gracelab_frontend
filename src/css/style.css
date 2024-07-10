@@ -7177,3 +7177,73 @@ blockquote::before,
   background-color: #ffffff;
   /* White background */
 }
+
+.mobile-link {
+  color: initial;
+  /* Add other default styles here */
+}
+
+.mobile-link.active-link {
+  color: pink;
+  /* Change to the color you prefer */
+}
+
+
+
+
+
+
+
+
+
+.input-container {
+  position: relative;
+  margin: 20px;
+}
+
+.input-field {
+  width: 300px;
+  /* Adjust width as needed */
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  /* Adjust border radius as needed */
+  transition: all 0.3s ease;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: #007bff;
+  /* Example focus color */
+}
+
+.input-field:focus+.floating-label,
+.input-field:not(:placeholder-shown)+.floating-label {
+  transform: translateY(-20px);
+  font-size: 12px;
+  color: #999;
+  background-color: white;
+  /* Match background color to input */
+  padding: 0 5px;
+  /* Adjust padding as needed */
+  position: absolute;
+  /* Position label over input */
+  top: 0;
+  /* Align with input top */
+  left: 10px;
+  /* Adjust left position */
+  z-index: 2;
+  /* Ensure label is above input border */
+}
+
+.floating-label {
+  position: absolute;
+  left: 10px;
+  top: 16px;
+  /* Adjust as needed to center vertically */
+  font-size: 16px;
+  color: #ccc;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}

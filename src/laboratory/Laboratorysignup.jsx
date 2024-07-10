@@ -56,6 +56,15 @@ function Laboratorysignup() {
   const [daysData, setDaysData] = useState([]);
   const [loc, setLoc] = useState([]);
   const [labTest, setLabTest] = useState([]);
+   const [focused, setFocused] = useState(false);
+
+  const handleFocus = () => {
+    setFocused(true);
+  };
+
+  const handleBlur = () => {
+    setFocused(false);
+  };
  
 
  
@@ -678,6 +687,8 @@ const generateUniqueReferenceNo = async () => {
                             {errors.ReferralCode}
                           </Form.Control.Feedback>
                         </Form.Group>
+
+                        
 
                         <Button
                           type="submit"

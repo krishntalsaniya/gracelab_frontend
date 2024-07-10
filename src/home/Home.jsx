@@ -529,7 +529,7 @@ const slideIndices = Array.from({ length: Math.ceil(camp.length / itemsPerSlide)
           <div className="row">
             {camping.DoctorsDetails &&
               camping.DoctorsDetails.map((doctor, index) => (
-                <div className="col-12 col-lg-6" key={index}>
+               <div className="col-6 col-lg-6" key={index}>
                   <li>{doctor.DoctorName}</li>
                 </div>
               ))}

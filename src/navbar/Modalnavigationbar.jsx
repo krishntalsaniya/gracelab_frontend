@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link,useLocation } from "react-router-dom";
 import { FaAngleDown } from "react-icons/fa";
-import { Col, Modal, Row, Card, Image } from "react-bootstrap";
+import { Col, Modal, Row, Card, Image,} from "react-bootstrap";
 
 import logo from "../img/logo.jpg";
 import icon1 from "../img/icon1.png";
@@ -42,6 +42,16 @@ function Modalnavigationbar(props) {
 
   const handleClose = () => {
     setShowModal(false);
+  };
+ const location = useLocation();
+  const [activeLink, setActiveLink] = useState(location.pathname);
+
+  useEffect(() => {
+    setActiveLink(location.pathname);
+  }, [location]);
+
+  const getLinkClass = (path) => {
+    return activeLink === path ? 'mobile-link active-link' : 'mobile-link';
   };
 
   useEffect(() => {
@@ -96,196 +106,126 @@ function Modalnavigationbar(props) {
                   aria-controls={`offcanvasNavbar-expand-${expand}`}
                 />
               )}
-              <Navbar.Offcanvas
-                id={`offcanvasNavbar-expand-${expand}`}
-                aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
-                placement="end"
-              >
-                <Offcanvas.Header closeButton>
-                  <Offcanvas.Title
-                    id={`offcanvasNavbarLabel-expand-${expand}`}
-                  ></Offcanvas.Title>
-                </Offcanvas.Header>
-                <Offcanvas.Body>
-                  <Nav className="justify-content-end flex-grow-1 pe-3">
-                    <Link to="/" className="mobile-link">
-                      Home
-                    </Link>
-                    <Link
-                      to="/cms/667e52387a043e58372e16ce"
-                      className="mobile-link"
-                    >
-                      About us
-                    </Link>
+           <Navbar.Offcanvas id={`offcanvasNavbar-expand-lg`} aria-labelledby={`offcanvasNavbarLabel-expand-lg`} placement="end">
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title id={`offcanvasNavbarLabel-expand-lg`}>Menu</Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          <Nav className="justify-content-end flex-grow-1 pe-3">
+            <Link to="/" className={getLinkClass('/')} onClick={() => setActiveLink('/')}>
+              Home
+            </Link>
+            <Link to="/cms/667e52387a043e58372e16ce" className={getLinkClass('/cms/667e52387a043e58372e16ce')} onClick={() => setActiveLink('/cms/667e52387a043e58372e16ce')}>
+              About us
+            </Link>
+            <Link to="/camping" className={getLinkClass('/camping')} onClick={() => setActiveLink('/camping')}>
+              Campaign
+            </Link>
+            <NavDropdown className={getLinkClass('/network')} title="Network" id={`offcanvasNavbarDropdown-expand-lg`}>
+              <Link to="/laboratory" onClick={() => { handleLinkClick('Laboratory'); setActiveLink('/laboratory'); }} className={getLinkClass('/laboratory')}>
+                Laboratory
+              </Link>
+              <Link to="/pharmacy" onClick={() => { handleLinkClick('Pharmacy'); setActiveLink('/pharmacy'); }} className={getLinkClass('/pharmacy')}>
+                Pharmacy
+              </Link>
+              <Link to="/doctor" onClick={() => { handleLinkClick('Doctors'); setActiveLink('/doctor'); }} className={getLinkClass('/doctor')}>
+                Doctors
+              </Link>
+              <Link to="/hospital" onClick={() => { handleLinkClick('Hospital'); setActiveLink('/hospital'); }} className={getLinkClass('/hospital')}>
+                Hospital
+              </Link>
+              <Link to="/patient-login" onClick={() => { handleLinkClick('Patients'); setActiveLink('/patient-login'); }} className={getLinkClass('/patient-login')}>
+                Patients
+              </Link>
+            </NavDropdown>
+            <Link to={props.navigatelink} className="btn btn-secondary ms-3 btn-login" onClick={(e) => (e.currentTarget.getAttribute('href') === '/' || e.currentTarget.getAttribute('href') === '/Registration') ? handleShow() : handleClose()}>
+              Login / Sign Up
+            </Link>
 
-                    <Link
-                      to="/camping"
-                      className="mobile-link"
-                    >
-                      Campaign
+            <Modal show={showModal} onHide={handleClose} centered size="lg">
+              <Modal.Header closeButton>
+                <Modal.Title className="fw-bold mobile-link">
+                  Login to our Network
+                </Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Row className="justify-content-center" id="industry">
+                  <Col lg={3} md={4} sm={6}>
+                    <Link to="/laboratory" onClick={() => handleLinkClick('Laboratory')}>
+                      <Card className="single-services-box-modalpopup text-center">
+                        <Card.Body>
+                          <div className="icon">
+                            <Image src={icon1} alt="Service Icon" />
+                          </div>
+                          <Card.Title className="networktitle">
+                            Laboratory
+                          </Card.Title>
+                        </Card.Body>
+                      </Card>
                     </Link>
-                    <NavDropdown
-                      className="mobile-link"
-                      title="Network"
-                      id={`offcanvasNavbarDropdown-expand-${expand}`}
-                    >
-                      <Link
-                        to="/laboratory"
-                        onClick={() => handleLinkClick("Laboratory")}
-                        className="mobile-link"
-                      >
-                        Laboratory
-                      </Link>
-                      <Link
-                        to="/pharmacy"
-                        onClick={() => handleLinkClick("Pharmacy")}
-                        className="mobile-link"
-                      >
-                        Pharmacy
-                      </Link>
-                      <Link
-                        to="/doctor"
-                        onClick={() => handleLinkClick("Doctors")}
-                        className="mobile-link"
-                      >
-                        Doctors
-                      </Link>
-                      <Link
-                        to="/hospital"
-                        onClick={() => handleLinkClick("Hospital")}
-                        className="mobile-link"
-                      >
-                        Hospital
-                      </Link>
-                      <Link
-                        to="/patient-login"
-                        onClick={() => handleLinkClick("Patients")}
-                        className="mobile-link"
-                      >
-                        Patients
-                      </Link>
-                    </NavDropdown>
-                    {/* <Link to="/Registration" className='mobile-link'>Registration</Link> */}
-                    {/* <Link to="/contact" className="mobile-link">
-                      Contact
-                    </Link> */}
-                    <Link
-                      to={props.navigatelink}
-                      className="btn btn-secondary ms-3 btn-login"
-                      onClick={(e) =>
-                        e.currentTarget.getAttribute("href") === "/" ||
-                        "/Registration"
-                          ? handleShow()
-                          : handleClose()
-                      }
-                    >
-                      Login / Sign Up
+                  </Col>
+                  <Col lg={3} md={4} sm={6}>
+                    <Link to="/pharmacy" onClick={() => handleLinkClick('Pharmacy')}>
+                      <Card className="single-services-box-modalpopup text-center">
+                        <Card.Body>
+                          <div className="icon">
+                            <Image src={icon2} alt="Service Icon" />
+                          </div>
+                          <Card.Title className="networktitle">
+                            Pharmacy
+                          </Card.Title>
+                        </Card.Body>
+                      </Card>
                     </Link>
-
-                    <Modal
-                      show={showModal}
-                      onHide={handleClose}
-                      centered
-                      size="lg"
-                    >
-                      <Modal.Header closeButton>
-                        <Modal.Title className="fw-bold mobile-link">
-                          Login to our Network
-                        </Modal.Title>
-                      </Modal.Header>
-                      <Modal.Body>
-                        <Row className="justify-content-center" id="industry">
-                          <Col lg={3} md={4} sm={6}>
-                            <Link
-                              to="/laboratory"
-                              onClick={() => handleLinkClick("Laboratory")}
-                            >
-                              <Card className="single-services-box-modalpopup text-center">
-                                <Card.Body>
-                                  <div className="icon">
-                                    <Image src={icon1} alt="Service Icon" />
-                                  </div>
-                                  <Card.Title className="networktitle">
-                                    Laboratory
-                                  </Card.Title>
-                                </Card.Body>
-                              </Card>
-                            </Link>
-                          </Col>
-                          <Col lg={3} md={4} sm={6}>
-                            <Link
-                              to="/pharmacy"
-                              onClick={() => handleLinkClick("Pharmacy")}
-                            >
-                              <Card className="single-services-box-modalpopup text-center">
-                                <Card.Body>
-                                  <div className="icon">
-                                    <Image src={icon2} alt="Service Icon" />
-                                  </div>
-                                  <Card.Title className="networktitle">
-                                    Pharmacy
-                                  </Card.Title>
-                                </Card.Body>
-                              </Card>
-                            </Link>
-                          </Col>
-                          <Col lg={3} md={4} sm={6}>
-                            <Link
-                              to="/doctor"
-                              onClick={() => handleLinkClick("Doctors")}
-                            >
-                              <Card className="single-services-box-modalpopup text-center">
-                                <Card.Body>
-                                  <div className="icon">
-                                    <Image src={icon3} alt="Service Icon" />
-                                  </div>
-                                  <Card.Title className="networktitle">
-                                    Doctors
-                                  </Card.Title>
-                                </Card.Body>
-                              </Card>
-                            </Link>
-                          </Col>
-                          <Col lg={3} md={4} sm={6}>
-                            <Link
-                              to="/hospital"
-                              onClick={() => handleLinkClick("Hospital")}
-                            >
-                              <Card className="single-services-box-modalpopup text-center">
-                                <Card.Body>
-                                  <div className="icon">
-                                    <Image src={icon4} alt="Service Icon" />
-                                  </div>
-                                  <Card.Title className="networktitle">
-                                    Hospital
-                                  </Card.Title>
-                                </Card.Body>
-                              </Card>
-                            </Link>
-                          </Col>
-                          <Col lg={3} md={4} sm={6}>
-                            <Link
-                              to="/patient"
-                              onClick={() => handleLinkClick("Patients")}
-                            >
-                              <Card className="single-services-box-modalpopup text-center">
-                                <Card.Body>
-                                  <div className="icon">
-                                    <Image src={icon5} alt="Service Icon" />
-                                  </div>
-                                  <Card.Title className="networktitle">
-                                    Patient
-                                  </Card.Title>
-                                </Card.Body>
-                              </Card>
-                            </Link>
-                          </Col>
-                        </Row>
-                      </Modal.Body>
-                    </Modal>
-                  </Nav>
-                </Offcanvas.Body>
-              </Navbar.Offcanvas>
+                  </Col>
+                  <Col lg={3} md={4} sm={6}>
+                    <Link to="/doctor" onClick={() => handleLinkClick('Doctors')}>
+                      <Card className="single-services-box-modalpopup text-center">
+                        <Card.Body>
+                          <div className="icon">
+                            <Image src={icon3} alt="Service Icon" />
+                          </div>
+                          <Card.Title className="networktitle">
+                            Doctors
+                          </Card.Title>
+                        </Card.Body>
+                      </Card>
+                    </Link>
+                  </Col>
+                  <Col lg={3} md={4} sm={6}>
+                    <Link to="/hospital" onClick={() => handleLinkClick('Hospital')}>
+                      <Card className="single-services-box-modalpopup text-center">
+                        <Card.Body>
+                          <div className="icon">
+                            <Image src={icon4} alt="Service Icon" />
+                          </div>
+                          <Card.Title className="networktitle">
+                            Hospital
+                          </Card.Title>
+                        </Card.Body>
+                      </Card>
+                    </Link>
+                  </Col>
+                  <Col lg={3} md={4} sm={6}>
+                    <Link to="/patient" onClick={() => handleLinkClick('Patients')}>
+                      <Card className="single-services-box-modalpopup text-center">
+                        <Card.Body>
+                          <div className="icon">
+                            <Image src={icon5} alt="Service Icon" />
+                          </div>
+                          <Card.Title className="networktitle">
+                            Patient
+                          </Card.Title>
+                        </Card.Body>
+                      </Card>
+                    </Link>
+                  </Col>
+                </Row>
+              </Modal.Body>
+            </Modal>
+          </Nav>
+        </Offcanvas.Body>
+      </Navbar.Offcanvas>
             </Container>
           </Navbar>
         </div>

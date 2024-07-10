@@ -63,7 +63,6 @@ function App() {
   <Route path='/pharmacy' element={<Pharmacy />} />
   <Route path='/doctor' element={<Doctor />} />
   <Route path='/forgotpassword' element={<Forgotpass />} />
-  {/* <Route path='/about' element={<About />} /> */}
   <Route path='/contact' element={<Contact />} />
   <Route path='/registration' element={<Registration />} />
   <Route path='/sign-up' element={<Signup />} />
@@ -76,7 +75,6 @@ function App() {
   <Route path='/tellusmore' element={<Tellusmore />} />
   <Route path='/camping' element={<Camping />} />
   <Route path='/cms/:_ID' element={<About />} />
-  {/* <Route path='/tellusmore' element={<About />} /> */}
 
  
 </Routes> 
