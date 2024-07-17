@@ -119,7 +119,7 @@ function Labsec(props) {
         formDataToSend
       );
 
-      console.log("Form submitted successfully:", response.data);
+      //console.log("Form submitted successfully:", response.data);
 
       Swal.fire({
         icon: "success",
@@ -152,7 +152,7 @@ function Labsec(props) {
         }
       );
 
-      console.log("Rating submitted successfully:", response.data);
+      //console.log("Rating submitted successfully:", response.data);
 
       Swal.fire({
         icon: "success",
@@ -177,7 +177,7 @@ function Labsec(props) {
   const handleChat = () => {
     navigate(`/chat/${props.Labid}`);
   };
-  console.log("Average Rating", props.averageRating);
+  //console.log("Average Rating", props.averageRating);
 
   return (
     <>
@@ -249,9 +249,9 @@ function Labsec(props) {
                 Rate Us
               </Button>
 
-              <Button className="mt-3 float-end chat-sec" onClick={handleChat}>
+              {/* <Button className="mt-3 float-end chat-sec" onClick={handleChat}>
                 Chat
-              </Button>
+              </Button> */}
             </Card.Body>
           </Col>
         </Row>

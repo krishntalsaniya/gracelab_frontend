@@ -67,14 +67,14 @@ function Pharmacy() {
 
       // Assuming the response contains an array of laboratories
       const laboratories = response;
-      console.log("pharmacy_data : ",response.data);
+      //console.log("pharmacy_data : ",response.data);
       const labdata = laboratories.data
 
-      console.log("lab data ",labdata)
+      //console.log("lab data ",labdata)
 
       // Filter active laboratories (if needed)
       const activeLaboratories = labdata.filter(lab => lab.isActive);
-      console.log("activeLaboratories:",activeLaboratories);
+      //console.log("activeLaboratories:",activeLaboratories);
      
 
       setPharmacyList(activeLaboratories);
@@ -114,14 +114,14 @@ function Pharmacy() {
           isActive: filter,
         }
       );
-      console.log("response locatio data",response);
+      //console.log("response locatio data",response);
 
       // Assuming the response contains an array of laboratories
       const laboratories = response.data[0];
-      console.log("pharmacy_data : ",laboratories);
+      //console.log("pharmacy_data : ",laboratories);
       const labdata = laboratories.data
 
-      console.log("lab data ",labdata)
+      //console.log("lab data ",labdata)
 
       // Filter active laboratories (if needed)
       const activeLaboratories = labdata.filter(lab => lab.isActive);
@@ -161,15 +161,15 @@ function Pharmacy() {
           IsActive: true,
         }
       );
-      console.log("response locatio data",response);
+      //console.log("response locatio data",response);
 
       // Assuming the response contains an array of laboratories
       const laboratories = response.data[0].data[0].CustomAdsImage;
 setpharmacyad(`${laboratories}`)
-      console.log("pharmacy_data : ",laboratories);
+      //console.log("pharmacy_data : ",laboratories);
       const labdata = laboratories
 
-      console.log("lab data ",labdata)
+      //console.log("lab data ",labdata)
 
       // Filter active laboratories (if needed)
       const activeLaboratories = labdata.filter(lab => lab.isActive);
@@ -191,11 +191,11 @@ setpharmacyad(`${laboratories}`)
         (pharmacylocationfetch) => pharmacylocationfetch.IsActive
       );
       setpharmacylocation(pharmacylocation)
-      console.log('Pharmacy Location: ',locationp.data)
+      //console.log('Pharmacy Location: ',locationp.data)
 
       
     } catch (error) {
-      console.log('Error :', error)
+      //console.log('Error :', error)
     }
   };
   Pharmacylocation();
@@ -208,17 +208,17 @@ setpharmacyad(`${laboratories}`)
       const pharmacylist = await axios.get(
         `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/listPharmacies`
       );
-      // console.log("pha",pharmacylist)
+      // //console.log("pha",pharmacylist)
       const Allisactivepharmacy = pharmacylist.data.filter(
         (post) =>post.isActive
       );
       
       setpharmacylaballlist(Allisactivepharmacy)
-      console.log('Pharmacy Location: ',pharmacylist.data)
+      //console.log('Pharmacy Location: ',pharmacylist.data)
 
       
     } catch (error) {
-      console.log('Error :', error)
+      //console.log('Error :', error)
     }
   };
   Pharmacylistall();

@@ -111,7 +111,7 @@ function Pharmacysec(props) {
       formDataToSend
     );
 
-    console.log('Form submitted successfully:', response.data);
+    //console.log('Form submitted successfully:', response.data);
 
     Swal.fire({
       icon: 'success',
@@ -145,7 +145,7 @@ function Pharmacysec(props) {
         }
       );
 
-      console.log('Rating submitted successfully:', response.data);
+      //console.log('Rating submitted successfully:', response.data);
 
       Swal.fire({
         icon: 'success',

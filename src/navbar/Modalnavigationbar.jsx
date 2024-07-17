@@ -108,7 +108,7 @@ function Modalnavigationbar(props) {
               )}
            <Navbar.Offcanvas id={`offcanvasNavbar-expand-lg`} aria-labelledby={`offcanvasNavbarLabel-expand-lg`} placement="end">
         <Offcanvas.Header closeButton>
-          <Offcanvas.Title id={`offcanvasNavbarLabel-expand-lg`}>Menu</Offcanvas.Title>
+          <Offcanvas.Title id={`offcanvasNavbarLabel-expand-lg`}></Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
           <Nav className="justify-content-end flex-grow-1 pe-3">

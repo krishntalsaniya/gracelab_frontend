@@ -68,10 +68,10 @@ function Doctor() {
           (doctorisactive) => doctorisactive.IsActive
         );
 
-        setlocation(docotorlocation);
-        console.log("doctor list location : ", locationcity.data);
+        setlocation(docotorlocation); 
+        //console.log("doctor list location : ", locationcity.data);
       } catch (error) {
-        console.log("doctor error :", error);
+        //console.log("doctor error :", error);
       }
     };
     Locationfetch();
@@ -86,9 +86,9 @@ function Doctor() {
           (specialityisactive) => specialityisactive.IsActive
         );
         setdoctorspecialist(specilityisactive);
-        console.log("specilityisactive", specilityisactive);
+        //console.log("specilityisactive", specilityisactive);
       } catch (error) {
-        console.log("Doctor Speciality error  :", error);
+        //console.log("Doctor Speciality error  :", error);
       }
     };
     Doctorspecilist();
@@ -110,13 +110,13 @@ function Doctor() {
             isActive: true,
           }
         );
-        console.log("symtoms data by image  ", Symptom.data);
+        //console.log("symtoms data by image  ", Symptom.data);
 
         setdoctorlist(Symptom.data);
-        console.log("location", Symptom);
-        // console.log("Symptom wise data : ",Symptom.data)
+        //console.log("location", Symptom);
+        // //console.log("Symptom wise data : ",Symptom.data)
       } catch (error) {
-        console.log("Symptom wise data error : ", error);
+        //console.log("Symptom wise data error : ", error);
       }
     };
     Doctorlistall();
@@ -150,13 +150,13 @@ function Doctor() {
           }
         );
 
-        console.log("data doctor: ", response.data[0]);
+        //console.log("data doctor: ", response.data[0]);
 
         const laboratories = response.data[0];
         const labdata = laboratories.data;
         const activeLaboratories = labdata.filter((lab) => lab.isActive);
         setDoctorAllList(activeLaboratories);
-        console.log("doctor all list :", setDoctorAllList);
+        //console.log("doctor all list :", setDoctorAllList);
       } catch (error) {
         console.error("Error fetching laboratories:", error);
       }
@@ -173,9 +173,9 @@ function Doctor() {
           (specialityisactive) => specialityisactive.IsActive
         );
         setsymptomwise(specilityisactive);
-        console.log("doctor symtoms", specilityisactive);
+        //console.log("doctor symtoms", specilityisactive);
       } catch (error) {
-        console.log("doctor symtoms  :", error);
+        //console.log("doctor symtoms  :", error);
       }
     };
     Doctorsymtoms();
@@ -186,7 +186,7 @@ function Doctor() {
           `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list/customize-advertisement`
         );
         setAdsData(response.data);
-        console.log("image doctor", response.data);
+        //console.log("image doctor", response.data);
       } catch (error) {
         console.error("Error fetching ads:", error);
       }
@@ -218,11 +218,11 @@ function Doctor() {
             IsActive: true,
           }
         );
-        console.log("customized advertizment: ", response);
+        //console.log("customized advertizment: ", response);
 
         // Assuming the response contains an array of laboratories
         const doctorlist = response;
-        console.log("labbbbbb", doctorlist);
+        //console.log("labbbbbb", doctorlist);
       } catch (error) {
         console.error("Error fetching laboratories:", error);
       }
@@ -256,7 +256,7 @@ function Doctor() {
             IsActive: true,
           }
         );
-        // console.log("customized advertizment: ",response.data[0].data[0].CustomAdsImage);
+        // //console.log("customized advertizment: ",response.data[0].data[0].CustomAdsImage);
 
         // Assuming the response contains an array of laboratories
         const doctoradimage = response.data[0].data[0].CustomAdsImage;
@@ -303,11 +303,11 @@ function Doctor() {
       // Set the advertisement image path based on the matched ad
       const imagePath = matchedAd.CustomAdsImage;
       setHospitalad(imagePath);
-      console.log("image path", imagePath);
+      //console.log("image path", imagePath);
     } else {
       // No matching ad found, clear the advertisement image
       setHospitalad(""); // Set to empty string or default image path
-      console.log("No matching ad found for selected specialties");
+      //console.log("No matching ad found for selected specialties");
     }
   };
 

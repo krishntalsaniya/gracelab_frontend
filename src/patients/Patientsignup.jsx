@@ -60,7 +60,7 @@ useEffect(() => {
         const labt = await axios.get(
           `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/location/city`
         );
-        console.log("location signup: ",labt);
+        //console.log("location signup: ",labt);
         // const allLabListIsActive = labt.data.filter(
         //   (laboratoruisActive) => laboratoruisActive.isActive
         // );
@@ -87,7 +87,7 @@ useEffect(() => {
     );
     const count = response.data.count;
 
-    console.log("count", count);
+    //console.log("count", count);
 
     const sequenceNumber = String(count + 1).padStart(6, "0"); // Add 1 to the count to get the next sequence number
 
@@ -132,7 +132,7 @@ useEffect(() => {
         }
       );
 
-      console.log('Patient created successfully:', response.data);
+      //console.log('Patient created successfully:', response.data);
 
       Swal.fire({
         title: 'Success!',

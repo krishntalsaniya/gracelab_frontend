@@ -28,7 +28,7 @@ function Laboratory() {
   //     });
 
   //     const result = response.data;
-  //     console.log('login data :',result)
+  //     //console.log('login data :',result)
       
   //     if (result.isOk) {
   //       localStorage.setItem("AdminUser",result._id)

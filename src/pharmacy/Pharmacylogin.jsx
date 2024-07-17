@@ -31,7 +31,7 @@ function Pharmacylogin() {
   //     });
 
   //     const result = response.data;
-  //     console.log('login data :',result)
+  //     //console.log('login data :',result)
 
   //     if (result.isOk) {
   //       // Handle successful login (e.g., save user data, redirect to dashboard)

@@ -59,9 +59,9 @@ function Hospital() {
         );
 
         setlocation(docotorlocation);
-        // console.log("doctor list : ",locationcity.data);
+        // //console.log("doctor list : ",locationcity.data);
       } catch (error) {
-        console.log("doctor error :", error);
+        //console.log("doctor error :", error);
       }
     };
     Locationfetch();
@@ -76,9 +76,9 @@ function Hospital() {
           (specialityisactive) => specialityisactive.IsActive
         );
         setdoctorspecialist(specilityisactive);
-        console.log("hospital speciality list", specilityisactive);
+        //console.log("hospital speciality list", specilityisactive);
       } catch (error) {
-        console.log("Hospital Speciality error  :", error);
+        //console.log("Hospital Speciality error  :", error);
       }
     };
     Hospitalspecilist();
@@ -126,10 +126,10 @@ function Hospital() {
 
         // Assuming the response contains an array of laboratories
         const Hospitallist = response;
-        console.log("labbbbbb", Hospitallist);
+        //console.log("labbbbbb", Hospitallist);
         const hospitaldata = Hospitallist.data;
 
-        console.log("hospital all data ", hospitaldata);
+        //console.log("hospital all data ", hospitaldata);
 
         // Filter active laboratories (if needed)
         const activeHospitals = hospitaldata.filter(
@@ -173,10 +173,10 @@ function Hospital() {
 
         // Assuming the response contains an array of laboratories
         const Hospitallist = response.data[0];
-        console.log("labbbbbb", Hospitallist);
+        //console.log("labbbbbb", Hospitallist);
         const hospitaldata = Hospitallist.data;
 
-        console.log("hospital all data ", hospitaldata);
+        //console.log("hospital all data ", hospitaldata);
 
         // Filter active laboratories (if needed)
         const activeHospitals = hospitaldata.filter(
@@ -196,7 +196,7 @@ function Hospital() {
           `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list/customize-advertisement`
         );
         setAdsData(response.data);
-        console.log("Imagessssssssssssssssssssssssssssssssssss", response.data);
+        //console.log("Imagessssssssssssssssssssssssssssssssssss", response.data);
       } catch (error) {
         console.error("Error fetching ads:", error);
       }
@@ -228,11 +228,11 @@ function Hospital() {
             IsActive: true,
           }
         );
-        console.log("customized advertizment: ", response);
+        //console.log("customized advertizment: ", response);
 
         // Assuming the response contains an array of laboratories
         const Hospitallist = response;
-        console.log("labbbbbb", Hospitallist);
+        //console.log("labbbbbb", Hospitallist);
       } catch (error) {
         console.error("Error fetching laboratories:", error);
       }
@@ -266,11 +266,11 @@ function Hospital() {
             IsActive: true,
           }
         );
-        console.log("customized advertizment: ", response);
+        //console.log("customized advertizment: ", response);
 
         // Assuming the response contains an array of laboratories
         const hospitalimage = response.data[0].data[0].CustomAdsImage;
-        console.log("hospitalimage", hospitalimage);
+        //console.log("hospitalimage", hospitalimage);
         sethospitalimage(
           `${process.env.REACT_APP_API_URL_GRACELAB}/${hospitalimage}`
         );
@@ -313,11 +313,11 @@ function Hospital() {
       // Set the advertisement image path based on the matched ad
       const imagePath = matchedAd.CustomAdsImage;
       setHospitalad(imagePath);
-      console.log("image path", imagePath);
+      //console.log("image path", imagePath);
     } else {
       // No matching ad found, clear the advertisement image
       setHospitalad(""); // Set to empty string or default image path
-      console.log("No matching ad found for selected specialties");
+      //console.log("No matching ad found for selected specialties");
     }
   };
 

@@ -109,7 +109,7 @@ function Laboratorypage() {
           `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list/customize-advertisement`
         );
         setAdsData(response.data);
-        console.log("image doctor", response.data);
+        //console.log("image doctor", response.data);
       } catch (error) {
         console.error("Error fetching ads:", error);
       }
@@ -140,11 +140,11 @@ function Laboratorypage() {
             IsActive: true,
           }
         );
-        console.log("customized advertizment: ", response);
+        //console.log("customized advertizment: ", response);
 
         // Assuming the response contains an array of laboratories
         const Laboratoryllist = response.data;
-        console.log("labbbbbb", Laboratoryllist);
+        //console.log("labbbbbb", Laboratoryllist);
       } catch (error) {
         console.error("Error fetching laboratories:", error);
       }
@@ -183,14 +183,14 @@ function Laboratorypage() {
             IsActive: true,
           }
         );
-        console.log("customized advertizment: ", response);
+        //console.log("customized advertizment: ", response);
 
         // Assuming the response contains an array of laboratories
         const Adimage = response.data[0].data[0].CustomAdsImage;
         setadvertisement(
           `${process.env.REACT_APP_API_URL_GRACELAB}/${Adimage}`
         );
-        console.log("Adimage", Adimage);
+        //console.log("Adimage", Adimage);
       } catch (error) {
         console.error("Error fetching laboratories:", error);
       }
@@ -225,7 +225,7 @@ function Laboratorypage() {
 
     // Update the state with newSelectedTests
     setSelectedTest(newSelectedTests);
-    console.log("selected tests", newSelectedTests);
+    //console.log("selected tests", newSelectedTests);
 
     // Find the last checked test
     const lastCheckedTest = newSelectedTests[newSelectedTests.length - 1];
@@ -239,11 +239,11 @@ function Laboratorypage() {
       // Set the advertisement image path based on the matched ad
       const imagePath = matchedAd.CustomAdsImage;
       setHospitalad(imagePath);
-      console.log("image path", imagePath);
+      //console.log("image path", imagePath);
     } else {
       // No matching ad found, clear the advertisement image
       setHospitalad(""); // Set to empty string or default image path
-      console.log("No matching ad found for selected tests");
+      //console.log("No matching ad found for selected tests");
     }
   };
 
@@ -274,7 +274,7 @@ function Laboratorypage() {
   const filteredLabs = labListAll?.filter((lab) =>
     lab.LabName.toLowerCase().includes(query.toLowerCase())
   );
-  console.log("filteredLabs", filteredLabs);
+  //console.log("filteredLabs", filteredLabs);
 
   const filteredLocations =
     loc?.filter((city) =>
