@@ -124,7 +124,7 @@ function Pharmacysignup() {
     );
     const count = response.data.count;
 
-    //console.log("count", count);
+
 
     const sequenceNumber = String(count + 1).padStart(6, "0"); // Add 1 to the count to get the next sequence number
 
@@ -178,7 +178,7 @@ function Pharmacysignup() {
         },
       });
 
-      //console.log('Pharmacy created successfully:', response.data);
+     
 
       Swal.fire({
         title: "Success!",

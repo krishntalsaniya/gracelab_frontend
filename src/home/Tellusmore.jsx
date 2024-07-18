@@ -9,7 +9,7 @@ function Tellusmore() {
   const [termsData, setTermsData] = useState([]);
 
   const selectedtellusmore = localStorage.getItem('selectedtellusmore');
-  //console.log("selected tell us more", selectedtellusmore);
+
 
   useEffect(() => {
     const fetchTermsAndConditions = async () => {
@@ -17,7 +17,7 @@ function Tellusmore() {
         const response = await axios.get(
           `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/get/LearnMorebynetwork/${selectedtellusmore}`
         );
-        //console.log('API Response:', response.data); // Log the API response data
+ 
         if (Array.isArray(response.data)) {
           setTermsData(response.data); // Set array of terms
         } else {

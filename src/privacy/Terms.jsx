@@ -17,7 +17,7 @@ useEffect(() => {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/get/termsandconditionbynetwork/${selectedNavItem}`
       );
-      //console.log('API Response:', response.data); // Log the API response data
+
      if (Array.isArray(response.data)) {
           setTermsData(response.data); // Set array of terms
         } else {

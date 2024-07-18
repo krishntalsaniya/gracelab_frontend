@@ -16,10 +16,10 @@ function Termscms() {
         const res = await axios.get(
           `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/get/blogs/${_ID}`
         );
-        //console.log("About", res.data); // Log the response to verify structure
+     
         setBout(res.data);
       } catch (error) {
-        //console.log("Error fetching data:", error);
+        console.log("Error fetching data:", error);
       }
     };
     fetchAbout();

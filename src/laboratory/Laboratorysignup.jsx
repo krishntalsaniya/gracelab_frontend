@@ -94,7 +94,7 @@ function Laboratorysignup() {
         const labt = await axios.get(
           `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/location/city`
         );
-        //console.log("location signup: ",labt);
+   
         // const allLabListIsActive = labt.data.filter(
         //   (laboratoruisActive) => laboratoruisActive.isActive
         // );
@@ -114,7 +114,7 @@ function Laboratorysignup() {
           (laboratoryTestActive) => laboratoryTestActive.IsActive
         );
         setLabTest(laboratoryTest);
-        //console.log("lab test:",test);
+
       } catch (error) {
         console.error("Error fetching laboratory tests:", error);
       }
@@ -146,7 +146,7 @@ const generateUniqueReferenceNo = async () => {
     );
     const count = response.data.count;
 
-    //console.log("count", count);
+
 
     const sequenceNumber = String(count + 1).padStart(6, "0"); // Add 1 to the count to get the next sequence number
 
@@ -200,7 +200,7 @@ const generateUniqueReferenceNo = async () => {
         },
       });
 
-      //console.log('Laboratory created successfully:', response.data);
+     
 
       Swal.fire({
         title: "Success!",

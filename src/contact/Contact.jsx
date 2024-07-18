@@ -45,7 +45,7 @@ function Contact() {
             textarea: values.textarea,
           });
     
-          //console.log('Patient created successfully:', response.data);
+     
     
           Swal.fire({
             title: "Success!",

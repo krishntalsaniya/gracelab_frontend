@@ -18,13 +18,13 @@ function Footer() {
         (
           `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list/blogs`
         );
-        //console.log("show CMS content:", HomeCMScontent.data);
+
 
               
         setcmsdesc(HomeCMScontent.data)
-        //console.log("cms data in about us ",HomeCMScontent.data);
+     
        } catch (error) {
-        //console.log("cms data   :", error)
+        console.log("cms data   :", error)
        }
         
       }

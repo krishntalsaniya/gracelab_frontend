@@ -146,7 +146,7 @@ function Signup(props) {
             }}
             validationSchema={SignupSchema}
             onSubmit={values => {
-              //console.log(values);
+              console.log(values);
             }}
           >
             {({

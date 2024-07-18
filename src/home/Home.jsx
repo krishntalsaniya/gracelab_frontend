@@ -126,12 +126,12 @@ function Home() {
         const HomeCMScontent = await axios.get(
           `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list/blogs`
         );
-        //console.log("show CMS content:", HomeCMScontent.data);
+      
 
         setcmsdesc(HomeCMScontent.data);
-        //console.log("cms data in about us ", HomeCMScontent.data);
+    
       } catch (error) {
-        //console.log("cms data   :", error);
+        console.log("cms data   :", error);
       }
     };
     CMScontent();
@@ -141,12 +141,12 @@ function Home() {
         const Loyaltyimages = await axios.get(
           `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list/loyaltyimage`
         );
-        //console.log("Loyaltyimages images :", Loyaltyimages.data);
+ 
 
         setLoyalty(Loyaltyimages.data);
-        //console.log("cms data in about us ", Loyaltyimages.data);
+  
       } catch (error) {
-        //console.log("cms data   :", error);
+        console.log("cms data   :", error);
       }
     };
     Loyaltyimages();
@@ -164,12 +164,12 @@ function Home() {
             IsActive: true,
           }
         );
-        //console.log("show camp details:", campdetails);
+   
 
         setcamp(campdetails.data[0].data);
-        //console.log("show camp details this  ", campdetails.data);
+        
       } catch (error) {
-        //console.log("cms data   :", error);
+        console.log("cms data   :", error);
       }
     };
     campdetails();
@@ -181,15 +181,15 @@ function Home() {
         const Homebannerimage = await axios.get(
           `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list/banners`
         );
-        //console.log("show baneer images :", Homebannerimage);
+    
 
         const specilityisactive = Homebannerimage.data.filter(
           (specialityisactive) => specialityisactive.IsActive
         );
         setBannerList(specilityisactive);
-        //console.log("specilityisactive", specilityisactive);
+  
       } catch (error) {
-        //console.log("Doctor Speciality error  :", error);
+        console.log("Doctor Speciality error  :", error);
       }
     };
     Homebannerimage();
@@ -199,15 +199,15 @@ function Home() {
         const campsection = await axios.get(
           `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/list/listNearestUpcomingCamp`
         );
-        //console.log("upcoming section :", campsection);
+    
 
         const campsectionactive = campsection.data.filter(
           (campsectionactive) => campsectionactive.IsActive
         );
         setcampList(campsectionactive);
-        //console.log("campsectionactive", campsectionactive);
+    
       } catch (error) {
-        //console.log("Doctor Speciality error  :", error);
+        console.log("Doctor Speciality error  :", error);
       }
     };
     campsection();

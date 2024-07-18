@@ -23,7 +23,7 @@ function Camping() {
             IsActive: true,
           }
         );
-        //console.log("Camping data:", response);
+ 
         setCamp(response.data[0].data);
       } catch (error) {
         console.error("Error fetching camping data:", error);
@@ -45,7 +45,7 @@ function Camping() {
             IsActive: true,
           }
         );
-        //console.log("Camping data:", response.data[0].data);
+
         setupcomingcapms(response.data[0].data);
       } catch (error) {
         console.error("Error fetching camping data:", error);

@@ -131,7 +131,7 @@ listDay();
       const listspeciality = async () => {
     try {
       const speciality = await axios.get(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/get/getAllDoctorSpeciality`);
-      //console.log("doctor speciality",speciality)
+     
       setspeciality(speciality.data)
     } catch (error) {
       console.error('Error fetching days data:', error);
@@ -150,9 +150,9 @@ listspeciality();
           (specialityisactive) => specialityisactive.IsActive
         );
         setsymptomwise(specilityisactive);
-        //console.log("doctor symtoms", Doctorsymtoms);
+      
       } catch (error) {
-        //console.log("doctor symtoms  :", error);
+        console.log("doctor symtoms  :", error);
       }
     };
     Doctorsymtoms();
@@ -184,7 +184,7 @@ listspeciality();
     );
     const count = response.data.count;
 
-    //console.log("count", count);
+  
 
     const sequenceNumber = String(count + 1).padStart(6, "0"); // Add 1 to the count to get the next sequence number
 
@@ -239,7 +239,7 @@ listspeciality();
         },
       });
 
-      //console.log('Pharmacy created successfully:', response.data);
+    
 
       Swal.fire({
         title: "Success!",

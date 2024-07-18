@@ -107,7 +107,6 @@ function Hospitaldesc(props) {
         formDataToSend
       );
 
-      //console.log('Form submitted successfully:', response.data);
 
       Swal.fire({
         icon: 'success',
@@ -140,7 +139,7 @@ function Hospitaldesc(props) {
         }
       );
 
-      //console.log('Rating submitted successfully:', response.data);
+  
 
       Swal.fire({
         icon: 'success',
