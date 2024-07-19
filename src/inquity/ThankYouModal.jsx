@@ -16,7 +16,7 @@ const ThankYouModal = () => {
           {/* <Button variant="primary" onClick={handleShow}>
         Launch demo modal
       </Button> */}
-      <Button type="submit" onClick={handleShow} variant="primary"  style={{ marginTop: "30px", backgroundColor: "#ea2691" }}>
+      <Button type="submit" onClick={handleShow} variant="primary"  style={{ marginTop: "30px" }}>
         Submit Inquiry
       </Button>
 
