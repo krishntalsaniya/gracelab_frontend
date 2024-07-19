@@ -32,6 +32,9 @@ import Doctorpage from './doctorpages/Doctorpage';
 import Labpage from './laboraotrypage/Labpage';
 import Tellusmore from './home/Tellusmore';
 import Camping from './camping/Camping';
+import Patient from './inquity/Patient';
+import DoctorInquiry from './inquity/Doctor';
+
 
 
 
@@ -70,11 +73,14 @@ function App() {
   <Route path='/terms-condition' element={<Terms />} />
   <Route path='/sterling-hospital' element={<Sterling />} />
   <Route path='/pharmacy-page' element={<Pharmacypage />} />
+  <Route path='/patient-inquiry' element={<Patient />} />
+  <Route path='/pharmacy-page' element={<Doctor />} />
   <Route path='/doctor-page' element={<Doctorpage />} />
   <Route path='/lab-page' element={<Labpage />} />
   <Route path='/tellusmore' element={<Tellusmore />} />
   <Route path='/camping' element={<Camping />} />
   <Route path='/cms/:_ID' element={<About />} />
+  <Route path='/doctor-inquiry' element={<DoctorInquiry/> } />
 
  
 </Routes> 

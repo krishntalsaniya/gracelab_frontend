@@ -57,7 +57,7 @@ function Camping() {
 
   const handleRedirect = () => {
     window.open(
-      "https://gracelab.barodaweb.org/patient-inquiry",
+      "https://frontgracelab.barodaweb.in/patient-inquiry",
       "_blank",
       "noopener,noreferrer"
     );
@@ -172,7 +172,8 @@ function Camping() {
                   </Card.Body>
                   <div className="register-camping">
                     <Link
-                      onClick={handleRedirect}
+                      to="/patient-inquiry"
+                      
                       className="btn btn-secondary ms-3 btn-login"
                     >
                       Register
