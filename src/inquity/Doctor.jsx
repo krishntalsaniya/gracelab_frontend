@@ -11,7 +11,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import ThankYouModal from "./ThankYouModal";
-function DoctorInquiry () {
+const DoctorInquiry = () => {
   //   const [formData, setFormData] = useState({
   //     name: '',
   //     email: '',
@@ -24,7 +24,10 @@ function DoctorInquiry () {
     firstName: Yup.string().required("Name is required"),
     lastName: Yup.string().required("Last Name is required"),
     MiddleName: Yup.string().required("Middle Name is required"),
-    Age: Yup.string().required("Age is required"),
+   Age: Yup.number()
+    .typeError('Age must be a number')
+    .required('Age is required'),
+    
     Gender: Yup.string().required("Gender is required"),
     Branch: Yup.string().required("Branch is required"),
     Experience: Yup.string().required("Experience is required"),
@@ -152,7 +155,7 @@ function DoctorInquiry () {
                   justifyContent: "center",
                 }}
               >
-                <Image src={logo} className="h-100" fluid />
+                <Image src={logo} className="h-100" style={{minWidth:200}} fluid />
               </div>
               <div className="text p_relative d_block mb_25 mb-3">
                 <h3
@@ -709,16 +712,16 @@ function DoctorInquiry () {
                       </Row>
 
 
-                      {/* <div className="form-group message-btn">
+                      <div className="form-group message-btn">
                         <Button
                           type="submit"
-                          style={{ backgroundColor: "#ea2691" }}
+                        //   style={{ backgroundColor: "#ea2691" }}
                           className="theme-btn theme-btn-five"
                         >
                           Submit Inquiry <i className="icon-4" />
                         </Button>
-                      </div> */}
-                      <ThankYouModal />
+                      </div>
+                      {/* <ThankYouModal /> */}
                     </Form>
                   )}
                 </Formik>
@@ -726,33 +729,7 @@ function DoctorInquiry () {
             </div>
           </div>
         </section>
-        <section className="bg-light pt-2 pb-2">
-          <div className="container">
-            <div class="row">
-              <div class="col-lg-6 col-md-6">
-                <p className="mb-0">
-                  © 2024{" "}
-                  <a
-                    href="http://gracelab.barodaweb.org/demos/"
-                    target="_blank"
-                  >
-                    Grace Laboratory
-                  </a>
-                  All Rights Reserved
-                </p>
-              </div>
-
-              <div class="col-lg-6 col-md-6">
-                <p class="text-end mb-0">
-                  Powered By :{" "}
-                  <a href="https://www.barodaweb.com/" target="_blank">
-                    Barodaweb | The E- Catalogue Designer.
-                  </a>
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
+      
       </div>
       {/* <Footer /> */}
     </>
