@@ -172,8 +172,8 @@ function Camping() {
                   </Card.Body>
                   <div className="register-camping">
                     <Link
-                      to="/patient-inquiry"
-                      
+                      to={handleRedirect}
+                      onClick={handleRedirect}
                       className="btn btn-secondary ms-3 btn-login"
                     >
                       Register
