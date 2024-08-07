@@ -382,6 +382,54 @@ function Modalnavigationbar(props) {
                       Blood Test For Kids
                     </Link>
                       </li>
+                        <li className="nav-item">
+                       <Link
+                      to="/full-body-checkup"
+                      className="nav-link"
+                    >
+                      Full Body Checkup
+                    </Link>
+                      </li>
+                       <li className="nav-item">
+                       <Link
+                      to="/senior-citizen-male"
+                      className="nav-link"
+                    >
+                      Health checkup for senior citizen (male)
+                    </Link>
+                      </li>
+                       <li className="nav-item">
+                       <Link
+                      to="/senior-citizen-female"
+                      className="nav-link"
+                    >
+                      Health checkup for senior citizen (Female)
+                    </Link>
+                      </li>
+                       <li className="nav-item">
+                       <Link
+                      to="/swine-flue"
+                      className="nav-link"
+                    >
+                      Swine Flue Test In vadodara
+                    </Link>
+                      </li>
+                       <li className="nav-item">
+                       <Link
+                      to="/serology-blood-test"
+                      className="nav-link"
+                    >
+                      Serology Blood Test
+                    </Link>
+                      </li>
+                       <li className="nav-item">
+                       <Link
+                      to="/ige-test"
+                      className="nav-link"
+                    >
+                      Blood Ige Test in vadodara
+                    </Link>
+                      </li>
                   
                     </ul>
                   </li>

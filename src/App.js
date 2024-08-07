@@ -41,6 +41,17 @@ import Awards from './about/Awards';
 import Pragnancybloodtest from './Bloodtest/Pragnancybloodtest';
 import Directors from './about/Directors';
 import Bloodtestkid from './Bloodtest/Bloodtestkid';
+import Fullbodycheckup from './Bloodtest/Fullbodycheckup';
+import Seniorcitizenmale from './Bloodtest/Seniorcitizenmale';
+import Seniorcitizenfemale from './Bloodtest/Seniorcitizenfemale';
+import Swineflue from './Bloodtest/Swineflue';
+import Serologytest from './Bloodtest/Serologytest';
+import Pcodtest from './Bloodtest/Pcodtest';
+import Igetest from './Bloodtest/Igetest';
+
+
+
+
 
 
 function App() {
@@ -89,6 +100,13 @@ function App() {
   <Route path='/awards' element={<Awards/> } />
   <Route path='/pregnancy-blood-test' element={<Pragnancybloodtest/> } />
   <Route path='/blood-test-kids' element={<Bloodtestkid/> } />
+  <Route path='/full-body-checkup' element={<Fullbodycheckup/> } />
+  <Route path='/senior-citizen-male' element={<Seniorcitizenmale/> } />
+  <Route path='/senior-citizen-female' element={<Seniorcitizenfemale/> } />
+  <Route path='/swine-flue' element={<Swineflue/> } />
+  <Route path='/serology-blood-test' element={<Serologytest/> } />
+  <Route path='/PCOD-pofile-blood-test' element={<Pcodtest/> } />
+  <Route path='/ige-test' element={<Igetest/> } />
   <Route path='/Directors' element={<Directors/> } />
 
  
