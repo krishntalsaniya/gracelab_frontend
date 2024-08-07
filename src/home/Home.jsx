@@ -368,58 +368,50 @@ const slideIndices = Array.from({ length: Math.ceil(camp.length / itemsPerSlide)
             <Row key={index} className="align-items-center">
               <Col lg={6} md={12}>
                 <div className="about-image">
-                 <Link to="/camping">
-                  <Image
-                    src={`${process.env.REACT_APP_API_URL_GRACELAB}/${upcoming.Photo}`}
-                    alt={
-                      upcoming.placeholderimage
-                        ? upcoming.title
-                        : "Placeholder Image"
-                    }
-                  />
-                 </Link>
-                </div>
+  <Link to="/camping">
+    <Image
+      src={`${process.env.REACT_APP_API_URL_GRACELAB}/${upcoming.Photo}`}
+      alt={upcoming.title}
+      onError={(e) => { e.target.src = placeholderimage }}
+      style={{ width: '300px', display: 'block', }} // Inline CSS for image
+    />
+  </Link>
+</div>
               </Col>
-              <Col lg={6} md={12}>
-                <div className="about-content">
-                     <h5>
-      <strong >Camp Venue: </strong>
-  {(upcoming.CampVenueDetails?.Society || "").length > 30
-    ? `${upcoming.CampVenueDetails.Society.substring(0, 30)}...`
-    : upcoming.CampVenueDetails?.Society || ""}
-</h5>
-       <p>
-  <strong>Date</strong>{` : ${upcoming.Date ? new Date(upcoming.Date).toISOString().split('T')[0] : ""}`}
-</p>
-
-        <p>{upcoming.Descreption || ""}</p>
-         <Card.Text>
-         <small style={{ fontWeight: 'bold', fontSize: '13px' }}>{`No Of Patient: ${upcoming.NoOfPatients}`}</small>
-
-        </Card.Text>
-
-                  <ul className="about-features-list">
-                    
-                    {upcoming.DoctorsDetails &&
-                      upcoming.DoctorsDetails.map((doctor, index) => (
-                       <li key={index} style={{ listStyle: "none", display: "flex", alignItems: "center" }}>
-  <IoCheckmarkDoneSharp style={{ color: "#ffb923", marginRight: "8px" }} /> {/* Adjust margin-right as needed */}
-  {doctor.DoctorName}
-</li>
-
-                      ))}
-                  </ul>
-                  <div className="btn-box">
-                    <Link
-                      to="https://gracelab.barodaweb.org/patient-inquiry"
-                      target="_blank"
-                      className="btn btn-primary btn-login"
-                    >
-                      Register
-                    </Link>
-                  </div>
-                </div>
-              </Col>
+              <Col lg={6} md={12} xs={12}>
+  <div className="about-content">
+    <h5>
+      <strong>Camp Venue: </strong>
+      {(upcoming.CampVenueDetails?.Society || "").length > 30
+        ? `${upcoming.CampVenueDetails.Society.substring(0, 30)}...`
+        : upcoming.CampVenueDetails?.Society || ""}
+    </h5>
+    <p>
+      <strong>Date</strong>{` : ${upcoming.Date ? new Date(upcoming.Date).toISOString().split('T')[0] : ""}`}
+    </p>
+    <p>{upcoming.Description || ""}</p>
+    <Card.Text>
+      <small style={{ fontWeight: 'bold', fontSize: '13px' }}>{`No Of Patient: ${upcoming.NoOfPatients}`}</small>
+    </Card.Text>
+    <ul className="about-features-list">
+      {upcoming.DoctorsDetails &&
+        upcoming.DoctorsDetails.map((doctor, index) => (
+          <li key={index} style={{ listStyle: "none", display: "flex", alignItems: "center" }}>
+            <IoCheckmarkDoneSharp style={{ color: "#ffb923", marginRight: "8px" }} /> {/* Adjust margin-right as needed */}
+            {doctor.DoctorName}
+          </li>
+        ))}
+    </ul>
+    <div className="btn-box">
+      <Link
+        to="/patient-inquiry"
+        className="btn btn-primary btn-login"
+      >
+        Register
+      </Link>
+    </div>
+  </div>
+</Col>
             </Row>
           ))}
             {/* <Slider {...settings} className="mt-4">

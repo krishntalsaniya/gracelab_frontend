@@ -1192,6 +1192,7 @@ a:hover {
   margin-top: 12px;
   margin-bottom: 0;
   font-family: sans-serif;
+  text-align: justify;
 }
 
 .about-content .about-features-list {
@@ -1227,7 +1228,7 @@ a:hover {
 
 .about-content .btn-box {
   margin-top: 25px;
-  text-align: end;
+  text-align: center;
 }
 
 .about-content .video-btn {
@@ -7246,4 +7247,62 @@ blockquote::before,
   color: #ccc;
   pointer-events: none;
   transition: all 0.3s ease;
+}
+
+
+
+/* General styles */
+.about-content {
+  padding: 15px;
+}
+
+/* Adjustments for larger screens */
+@media (min-width: 992px) {
+  .about-content {
+    padding: 30px;
+  }
+
+  .about-features-list {
+    margin-left: 20px;
+  }
+}
+
+/* Adjustments for medium screens */
+@media (max-width: 991px) and (min-width: 768px) {
+  .about-content {
+    padding: 20px;
+  }
+}
+
+/* Adjustments for small screens */
+@media (max-width: 767px) {
+  .about-content {
+    padding: 15px;
+    text-align: center;
+  }
+
+  .btn-box {
+    text-align: center;
+  }
+
+  .about-features-list {
+    margin-left: 0;
+  }
+}
+
+.loading-indicator {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  z-index: 9999;
+}
+
+.test-images {
+  width: 500px;
+  margin: 0 auto;
 }

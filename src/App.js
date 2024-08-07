@@ -34,12 +34,13 @@ import Tellusmore from './home/Tellusmore';
 import Camping from './camping/Camping';
 import Patient from './inquity/Patient';
 import DoctorInquiry from './inquity/Doctor';
-
-
-
-
-
-
+import Blog from './Blog/Blog';
+import Blogdetails from './Blog/Blogdetails';
+import News from './News and midia/News';
+import Awards from './about/Awards';
+import Pragnancybloodtest from './Bloodtest/Pragnancybloodtest';
+import Directors from './about/Directors';
+import Bloodtestkid from './Bloodtest/Bloodtestkid';
 
 
 function App() {
@@ -82,6 +83,13 @@ function App() {
   <Route path='/camping' element={<Camping />} />
   <Route path='/cms/:_ID' element={<About />} />
   <Route path='/doctor-inquiry' element={<DoctorInquiry/> } />
+  <Route path='/blog' element={<Blog/> } />
+  <Route path='/blogdetails/:id' element={<Blogdetails/> } />
+  <Route path='/news' element={<News/> } />
+  <Route path='/awards' element={<Awards/> } />
+  <Route path='/pregnancy-blood-test' element={<Pragnancybloodtest/> } />
+  <Route path='/blood-test-kids' element={<Bloodtestkid/> } />
+  <Route path='/Directors' element={<Directors/> } />
 
  
 </Routes> 

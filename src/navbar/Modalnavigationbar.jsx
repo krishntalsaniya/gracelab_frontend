@@ -250,20 +250,44 @@ function Modalnavigationbar(props) {
                       Home
                     </Link>
                   </li>
-                  <li className="nav-item">
-                    <Link
-                      to="/cms/667e52387a043e58372e16ce"
-                      className="nav-link"
-                    >
-                      About Us
-                    </Link>
-                  </li>
+                 
                   <li className="nav-item">
                     <Link to="/camping" className="nav-link">
                       Campaign
                     </Link>
                   </li>
-                  <li className="nav-item">
+
+                    <li className="nav-item">
+                    <Link to="/" className="nav-link">
+                      About Us <FaAngleDown />
+                    </Link>
+                    <ul className="dropdown-menu">
+                      <li className="nav-item">
+                       <Link
+                      to="/cms/667e52387a043e58372e16ce"
+                      className="nav-link"
+                    >
+                      About Gracelab
+                    </Link>
+                      </li>
+                     <li className="nav-item">
+                    <Link to="/Directors" className="nav-link">
+                      Directors
+                    </Link>
+                  </li>
+                   <li className="nav-item">
+                    <Link to="/Testimonial" className="nav-link">
+                      Testimonial
+                    </Link>
+                  </li>
+                   <li className="nav-item">
+                    <Link to="/awards" className="nav-link">
+                      Awards and Certificate
+                    </Link>
+                  </li>
+                    </ul>
+                  </li>
+                   <li className="nav-item">
                     <Link to="/" className="nav-link">
                       Network <FaAngleDown />
                     </Link>
@@ -313,6 +337,93 @@ function Modalnavigationbar(props) {
                           Patients
                         </Link>
                       </li>
+                    </ul>
+                  </li>
+                  
+                  <li className="nav-item">
+                    <Link to="/" className="nav-link">
+                      Media <FaAngleDown />
+                    </Link>
+                    <ul className="dropdown-menu">
+                      <li className="nav-item">
+                        <Link
+                          to="/news"
+                          className="nav-link"
+                        >
+                          News and Media
+                        </Link>
+                      </li>
+                     <li className="nav-item">
+                    <Link to="/blog" className="nav-link">
+                      Blog
+                    </Link>
+                  </li>
+                    </ul>
+                  </li>
+
+                   <li className="nav-item">
+                    <Link to="/" className="nav-link">
+                     Package <FaAngleDown />
+                    </Link>
+                    <ul className="dropdown-menu">
+                      <li className="nav-item">
+                       <Link
+                      to="/pregnancy-blood-test"
+                      className="nav-link"
+                    >
+                      Pregnancy Blood Test
+                    </Link>
+                      </li>
+                      <li className="nav-item">
+                       <Link
+                      to="/blood-test-kids"
+                      className="nav-link"
+                    >
+                      Blood Test For Kids
+                    </Link>
+                      </li>
+                  
+                    </ul>
+                  </li>
+                  
+                   <li className="nav-item">
+                    <Link to="/" className="nav-link">
+                     Contact <FaAngleDown />
+                    </Link>
+                    <ul className="dropdown-menu">
+                      <li className="nav-item">
+                       <Link
+                      to="/contact"
+                      className="nav-link"
+                    >
+                      Contact Us
+                    </Link>
+                      </li>
+                     <li className="nav-item">
+                    <Link to="/" className="nav-link">
+                      Feedback
+                    </Link>
+                  </li>
+                   <li className="nav-item">
+                    <Link to="/cms/66878d3413d429f45685f7e7" className="nav-link">
+                      Terms and condition
+                    </Link>
+                  </li>
+                   <li className="nav-item">
+                    <Link to="/cms/66878d5913d429f45685f7ea" className="nav-link">
+                      Refund Policy
+                    </Link>
+                  </li>
+                    <li className="nav-item">
+                    <Link to="/awards" className="nav-link">
+                      Privacy Policy
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/center" className="nav-link">
+                      Center
+                    </Link>
+                  </li>
                     </ul>
                   </li>
                   {/* <li className="nav-item"><Link to="/sterling-hospital" className="nav-link">hospital</Link></li> */}

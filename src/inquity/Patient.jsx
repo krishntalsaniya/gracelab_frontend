@@ -10,6 +10,7 @@ import bg2 from "../img/logo.jpg";
 import { Col, Label, Row } from "reactstrap";
 import ThankYouModal from "./ThankYouModal";
 import { useParams } from "react-router-dom";
+import Modalnavigationbar from "../navbar/Modalnavigationbar";
 
 
 function Patinent() {
@@ -147,6 +148,8 @@ console.log(mydata)
     }
   };
   return (
+   <>
+   <Modalnavigationbar />
     <div>
       <section className="container mb-5">
         <div className="auto-container">
@@ -647,6 +650,7 @@ console.log(mydata)
         </div>
       </section>
     </div>
+    </>
   );
 }
 
