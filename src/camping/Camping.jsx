@@ -4,6 +4,8 @@ import { Card, Col, Button, Image } from "react-bootstrap";
 import axios from "axios";
 import placeholderimage from "../img/placeholder.jpeg";
 import Modalnavigationbar from "../navbar/Modalnavigationbar";
+import Pagetitle from "../patients/Pagetitle";
+import { MdArrowForwardIos } from "react-icons/md";
 
 function Camping() {
   const [camp, setCamp] = useState([]);
@@ -66,7 +68,18 @@ function Camping() {
   return (
     <>
       <Modalnavigationbar />
+
+          <div className="page-title-area">
+        <Pagetitle
+          heading="Our Camping"
+          pagetitlelink="/"
+          title1="Home"
+          title2="Our Camping"
+          IconComponent={MdArrowForwardIos}
+        />
+      </div>
       {/* <h2 className="text-center">Upcoming Camps</h2> */}
+       <section class="services-area ptb-120">
       <h1 className="caming-sec">Completed Camping </h1>
       <div className="container">
         <div className="row">
@@ -123,7 +136,7 @@ function Camping() {
           ))}
         </div>
       </div>
-
+</section>
       <h1 className="caming-sec">Upcoming Camping </h1>
 
       <div className="container">

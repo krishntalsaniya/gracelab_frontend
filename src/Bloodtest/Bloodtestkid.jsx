@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Image, Modal, Button, Form, Card } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Image,
+  Modal,
+  Button,
+  Form,
+  Card,
+} from "react-bootstrap";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import Modalnavigationbar from "../navbar/Modalnavigationbar";
 import placeholderimage from "../img/placeholder.jpeg";
 import { useParams } from "react-router-dom";
@@ -17,7 +26,7 @@ const TestTypes = [
   { id: 5, name: "Health checkup for senior citizen (Female)" },
   { id: 6, name: "Swine Flue Test In vadodara" },
   { id: 7, name: "Serology Blood Test" },
-  { id: 8, name: "Blood Ige Test in vadodara" }
+  { id: 8, name: "Blood Ige Test in vadodara" },
 ];
 
 function Bloodtestkid() {
@@ -70,8 +79,8 @@ function Bloodtestkid() {
       toast.error("There was an error submitting your inquiry.");
     }
   };
-const selectedTestId = "2";
-          console.log("Selected Test ID:", selectedTestId);
+  const selectedTestId = "2";
+  console.log("Selected Test ID:", selectedTestId);
   useEffect(() => {
     const fetchCMSContent = async () => {
       try {
@@ -86,15 +95,19 @@ const selectedTestId = "2";
           setBlog(response.data);
 
           // Extract selectedTest ID from the response data
-           // Debugging: Check selectedTest ID
+          // Debugging: Check selectedTest ID
 
           // Find the matching test type based on the selectedTest ID
-          const matchedTestType = TestTypes.find(test => test.id.toString() === selectedTestId);
+          const matchedTestType = TestTypes.find(
+            (test) => test.id.toString() === selectedTestId
+          );
           console.log("Matched Test Type:", matchedTestType); // Debugging: Check matched test type
 
           if (matchedTestType) {
             // Find the item with the matching selectedTest ID
-            const matchedItem = response.data.find(item => item.selectedTest === matchedTestType.id.toString());
+            const matchedItem = response.data.find(
+              (item) => item.selectedTest === matchedTestType.id.toString()
+            );
             console.log("Matched Item:", matchedItem); // Debugging: Check matched item
 
             if (matchedItem) {
@@ -102,7 +115,10 @@ const selectedTestId = "2";
             }
           }
         } else {
-          console.error("Unexpected response format or empty data:", response.data);
+          console.error(
+            "Unexpected response format or empty data:",
+            response.data
+          );
           setBlog([]);
         }
       } catch (error) {
@@ -118,7 +134,7 @@ const selectedTestId = "2";
     <>
       <Modalnavigationbar />
 
-         <div className="page-title-area">
+      <div className="page-title-area">
         <Pagetitle
           heading="Blood-kids-test"
           pagetitlelink="/"
@@ -132,32 +148,49 @@ const selectedTestId = "2";
         <Container>
           <Row>
             {blog
-              .filter(item => item._id === selectedItemId)
-              .map(item => (
+              .filter((item) => item._id === selectedItemId)
+              .map((item) => (
                 <Col lg={4} md={6} key={item._id} className="mb-4">
                   <Card className="test-card">
                     <Card.Img
                       variant="top"
                       src={`${process.env.REACT_APP_API_URL_GRACELAB}/${item.Images}`}
                       alt="Test"
-                      onError={(e) => { e.target.src = placeholderimage }}
-                      style={{ height: '200px', objectFit: 'cover' }}
+                      onError={(e) => {
+                        e.target.src = placeholderimage;
+                      }}
+                      style={{ height: "200px", objectFit: "cover" }}
                     />
                     <Card.Body>
                       <Card.Title>{item.Title}</Card.Title>
-                      <Card.Subtitle className="mb-2 text-muted">Test Name: {item.TestName}</Card.Subtitle>
-                      <Card.Subtitle className="mb-2 text-muted">Price: {item.Price}</Card.Subtitle>
+                      <Card.Subtitle className="mb-2 text-muted">
+                        Test Name: {item.TestName}
+                      </Card.Subtitle>
+                      <Card.Subtitle className="mb-2 text-muted">
+                        Price: {item.Price}
+                      </Card.Subtitle>
 
                       <Card.Text>
-                        {showMore === item._id ? 
-                          <div dangerouslySetInnerHTML={{ __html: item.Description }} />
-                          :
-                          <div dangerouslySetInnerHTML={{ __html: item.Description.slice(0, 100) + '...' }} />
-                        }
+                        {showMore === item._id ? (
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: item.Description,
+                            }}
+                          />
+                        ) : (
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: item.Description.slice(0, 100) + "...",
+                            }}
+                          />
+                        )}
                       </Card.Text>
                       <Button
-                        variant="link"
-                        onClick={() => setShowMore(showMore === item._id ? null : item._id)}
+                        // variant="link"
+                        onClick={() =>
+                          setShowMore(showMore === item._id ? null : item._id)
+                        }
+                        className="show-more-button"
                       >
                         {showMore === item._id ? "Show Less" : "Show More"}
                       </Button>
@@ -178,12 +211,12 @@ const selectedTestId = "2";
                   </Card>
                 </Col>
               ))}
-        </Row>
+          </Row>
         </Container>
       </section>
 
-       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-  <Modal.Header closeButton className="modal-header">
+      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+        <Modal.Header closeButton className="modal-header">
           <Modal.Title>Inquiry Form</Modal.Title>
         </Modal.Header>
         <Modal.Body>

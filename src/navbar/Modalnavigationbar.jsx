@@ -186,6 +186,31 @@ function Modalnavigationbar(props) {
              Blood Ige Test in vadodara
               </Link>
             </NavDropdown>
+
+            <NavDropdown className={getLinkClass('/network')} title="Contact" id={`offcanvasNavbarDropdown-expand-lg`}>
+              <Link  to="/contact" className={getLinkClass('/contact')}>
+                Contact Us
+             </Link>
+              <Link  to="/Feedback" className={getLinkClass('/Feedback')}>
+                Feedback
+             </Link>
+              <Link  to="/cms/66878d3413d429f45685f7e7" className={getLinkClass('/cms/66878d3413d429f45685f7e7')}>
+                Terms and condition
+             </Link>
+              <Link  to="/cms/66878d5913d429f45685f7ea" className={getLinkClass('/cms/66878d5913d429f45685f7ea')}>
+                Refund Policy
+             </Link>
+              <Link  to="/awards" className={getLinkClass('/awards')}>
+                Privacy Policy
+             </Link>
+              <Link  to="/center" className={getLinkClass('/center')}>
+                Center
+             </Link>
+              <Link  to="/join-handwith-us" className={getLinkClass('/join-handwith-us')}>
+                Join hand with us 
+             </Link>
+
+            </NavDropdown>
             
             <Link to={props.navigatelink} className="btn btn-secondary ms-3 btn-login" onClick={(e) => (e.currentTarget.getAttribute('href') === '/' || e.currentTarget.getAttribute('href') === '/Registration') ? handleShow() : handleClose()}>
               Login / Sign Up
@@ -519,6 +544,11 @@ function Modalnavigationbar(props) {
                   <li className="nav-item">
                     <Link to="/center" className="nav-link">
                       Center
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/join-handwith-us" className="nav-link">
+                      Join hand with us 
                     </Link>
                   </li>
                     </ul>

@@ -7346,3 +7346,23 @@ blockquote::before,
 .submit-button {
   margin-top: 1rem;
 }
+
+
+.show-more-button {
+  text-decoration: none;
+  /* Remove underline */
+  color: pink;
+  /* Set text color to pink */
+  font-size: 1rem;
+  /* Optional: adjust font size if needed */
+  display: inline-block;
+  /* Ensure proper alignment */
+  margin: 0;
+  /* Adjust margin if needed */
+  padding: 0;
+  /* Adjust padding if needed */
+  border: none;
+  /* Remove border if any */
+  background: transparent;
+  /* Ensure no background */
+}

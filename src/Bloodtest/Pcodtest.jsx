@@ -4,6 +4,8 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify"; // Import Toast components
 import 'react-toastify/dist/ReactToastify.css'; // Import Toast styles
 import Modalnavigationbar from "../navbar/Modalnavigationbar";
+import Pagetitle from "../patients/Pagetitle";
+import { MdArrowForwardIos } from "react-icons/md";
 
 function Pcodtest() {
   const [showModal, setShowModal] = useState(false);
@@ -74,7 +76,17 @@ function Pcodtest() {
     <>
       <Modalnavigationbar />
 
-      <section className="about-area ptb-40">
+      <div className="page-title-area">
+        <Pagetitle
+          heading="Full Body Checkup"
+          pagetitlelink="/"
+          title1="Home"
+          title2="Full Body Checkup"
+          IconComponent={MdArrowForwardIos}
+        />
+      </div>
+
+      <section className="about-area ptb-120">
         <Container>
           {blog.map((item) => (
             <Row className="align-items-center" key={item._id}>

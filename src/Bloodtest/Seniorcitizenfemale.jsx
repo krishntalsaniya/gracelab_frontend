@@ -6,6 +6,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import Modalnavigationbar from "../navbar/Modalnavigationbar";
 import placeholderimage from "../img/placeholder.jpeg";
 import { useParams } from "react-router-dom";
+import Pagetitle from "../patients/Pagetitle";
+import { MdArrowForwardIos } from "react-icons/md";
 
 const TestTypes = [
   { id: 1, name: "Pregnancy Blood Test" },
@@ -116,7 +118,17 @@ const selectedTestId = "5";
     <>
       <Modalnavigationbar />
 
-      <section className="about-area ptb-40">
+      <div className="page-title-area">
+        <Pagetitle
+          heading="Health checkup"
+          pagetitlelink="/"
+          title1="Home"
+          title2="Health checkup"
+          IconComponent={MdArrowForwardIos}
+        />
+      </div>
+
+      <section className="about-area ptb-120">
         <Container>
           <Row>
             {blog

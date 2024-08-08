@@ -51,6 +51,8 @@ import Igetest from './Bloodtest/Igetest';
 import Center from './contact/Center';
 import Feedback from './contact/Feedback';
 import Centerdetails from './contact/Centerdetails';
+import Joinhandwithus from './contact/Joinhandwithus';
+
 
 
 
@@ -111,6 +113,7 @@ function App() {
   <Route path='/center' element={<Center/> } />
   <Route path='/Feedback' element={<Feedback/> } />
   <Route path='/centerdetails/:id' element={<Centerdetails/> } />
+  <Route path='/join-handwith-us' element={<Joinhandwithus/> } />
 
  
 </Routes> 
