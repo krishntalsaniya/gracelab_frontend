@@ -4,6 +4,9 @@ import axios from "axios";
 import Modalnavigationbar from "../navbar/Modalnavigationbar";
 import Lightbox from "react-image-lightbox";
 import "react-image-lightbox/style.css";
+import Pagetitle from "../patients/Pagetitle";
+import { MdArrowForwardIos } from "react-icons/md";
+import placeholderimage from "../img/placeholder.jpeg";
 
 function News() {
   const [blog, setBlog] = useState([]);
@@ -90,7 +93,15 @@ function News() {
   return (
     <>
       <Modalnavigationbar />
-      <h1 className="caming-sec">News and Media</h1>
+             <div className="page-title-area">
+        <Pagetitle
+          heading="News and media"
+          pagetitlelink="/"
+          title1="Home"
+          title2="News and media"
+          IconComponent={MdArrowForwardIos}
+        />
+      </div>
       <div>
         <section className="shop-area">
           <div className="container">
@@ -116,6 +127,7 @@ function News() {
                             <img
                               src={encodeURI(`${process.env.REACT_APP_API_URL_GRACELAB}/${item.bannerImage}`)}
                               alt={item.Title}
+                               onError={(e) => { e.target.src = placeholderimage }}
                               className="img-fluid"
                               style={{ maxWidth: '100%', height: 'auto' }} // Ensure proper styling
                             />

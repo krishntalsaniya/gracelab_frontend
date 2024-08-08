@@ -4,6 +4,9 @@ import axios from "axios";
 import Modalnavigationbar from "../navbar/Modalnavigationbar";
 import Lightbox from "react-image-lightbox";
 import "react-image-lightbox/style.css";
+import Pagetitle from "../patients/Pagetitle";
+import { MdArrowForwardIos } from "react-icons/md";
+import placeholderimage from "../img/placeholder.jpeg";
 
 function Awards() {
   const [blog, setBlog] = useState([]);
@@ -90,7 +93,17 @@ function Awards() {
   return (
     <>
       <Modalnavigationbar />
-      <h1 className="caming-sec">Awards and certificate</h1>
+
+        <div className="page-title-area">
+        <Pagetitle
+          heading="Awards and certificate"
+          pagetitlelink="/"
+          title1="Home"
+          title2="Awards and certificate"
+          IconComponent={MdArrowForwardIos}
+        />
+      </div>
+    
       <div>
         <section className="shop-area">
           <div className="container">
@@ -116,6 +129,7 @@ function Awards() {
                             <img
                               src={encodeURI(`${process.env.REACT_APP_API_URL_GRACELAB}/${item.bannerImage}`)}
                               alt={item.Title}
+                              onError={(e) => { e.target.src = placeholderimage }}
                               className="img-fluid"
                               style={{ maxWidth: '100%', height: 'auto' }} // Ensure proper styling
                             />

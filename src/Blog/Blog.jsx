@@ -4,6 +4,8 @@ import { Card, Col } from "react-bootstrap";
 import axios from "axios";
 import placeholderimage from "../img/placeholder.jpeg";
 import Modalnavigationbar from "../navbar/Modalnavigationbar";
+import Pagetitle from "../patients/Pagetitle";
+import { MdArrowForwardIos } from "react-icons/md";
 
 function Blog() {
   const [blog, setblog] = useState([]);
@@ -67,48 +69,59 @@ function Blog() {
     return doc.body.textContent || '';
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return isNaN(date) ? "Invalid date" : date.toISOString().split('T')[0];
+  };
+
   return (
     <>
       <Modalnavigationbar />
- <h1 className="caming-sec">Blog </h1>
-    <div className="container">
-      <div className="row">
-         {blog.map((camping) => {
-        console.log("gbngfngn",camping._id); // Debugging statement moved here
-        return (
-          <Col key={camping._id} lg={4} className="mb-4">
-            <Link to={`/blogdetails/${camping._id}`}>
-              <Card className="camping-card">
-                <Card.Img
-                  className="card-image-camping"
-                  variant="top"
-                  src={
-                    camping.Images
-                      ? `${process.env.REACT_APP_API_URL_GRACELAB}/${camping.Images}`
-                      : placeholderimage
-                  }
-                  alt={camping.Images}
-                  onError={(e) => {
-                    e.target.src = placeholderimage;
-                  }}
-                />
-                <Card.Body className="card-body-camping">
-                  <Card.Title>{camping.Title}</Card.Title>
-                  <Card.Title>{camping.Author}</Card.Title>
-                  <small className="text-muted">
-                    Date: {new Date(camping.Date).toISOString().split('T')[0]}
-                  </small>
-                  <Card.Text>
-                    {stripHtml(camping.Description)}
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            </Link>
-          </Col>
-        );
-      })}
+      <div className="page-title-area">
+        <Pagetitle
+          heading="Blog"
+          pagetitlelink="/"
+          title1="Home"
+          title2="Blog"
+          IconComponent={MdArrowForwardIos}
+        />
       </div>
-    </div>
+      <div className="container">
+        <div className="row">
+          {blog.map((camping) => {
+            console.log("gbngfngn", camping._id); // Debugging statement moved here
+            return (
+              <Col key={camping._id} lg={4} className="mb-4 mt-5">
+                <Link to={`/blogdetails/${camping._id}`}>
+                  <Card className="camping-card">
+                    <Card.Img
+                      className="card-image-camping"
+                      variant="top"
+                      src={
+                        camping.Images
+                          ? `${process.env.REACT_APP_API_URL_GRACELAB}/${camping.Images}`
+                          : placeholderimage
+                      }
+                      alt={camping.Images}
+                      onError={(e) => {
+                        e.target.src = placeholderimage;
+                      }}
+                    />
+                    <Card.Body className="card-body-camping">
+                      <Card.Title>{camping.Title}</Card.Title>
+                      <Card.Title>{camping.Author}</Card.Title>
+                      <small className="text-muted">
+                        Date: {formatDate(camping.Date)}
+                      </small>
+                      <Card.Text>{stripHtml(camping.Description)}</Card.Text>
+                    </Card.Body>
+                  </Card>
+                </Link>
+              </Col>
+            );
+          })}
+        </div>
+      </div>
       {/* news section */}
       {/* 
       <div className="container">

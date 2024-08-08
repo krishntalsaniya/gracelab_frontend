@@ -118,63 +118,65 @@ function Pcodtest() {
       </section>
 
       {/* Modal Component */}
-      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Inquiry Form</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="formName">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                placeholder="Enter your name"
-                required
-              />
-            </Form.Group>
-            <Form.Group controlId="formEmail">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                placeholder="Enter your email"
-                required
-              />
-            </Form.Group>
-            <Form.Group controlId="formMobileNo">
-              <Form.Label>Mobile No</Form.Label>
-              <Form.Control
-                type="tel"
-                name="mobileNo"
-                value={formData.mobileNo}
-                onChange={handleInputChange}
-                placeholder="Enter your mobile number"
-                required
-              />
-            </Form.Group>
-            <Form.Group controlId="formMessage">
-              <Form.Label>Message</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                name="message"
-                value={formData.message}
-                onChange={handleInputChange}
-                placeholder="Enter your message"
-                required
-              />
-            </Form.Group>
-            <Button variant="primary" type="submit">
-              Submit
-            </Button>
-          </Form>
-        </Modal.Body>
-      </Modal>
+    <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+  <Modal.Header closeButton className="modal-header">
+    <Modal.Title>Inquiry Form</Modal.Title>
+  </Modal.Header>
+  <Modal.Body className="modal-body form-floating">
+    <Form onSubmit={handleSubmit}>
+      <Form.Group controlId="formName" className="form-group  form-floating">
+        <Form.Label className="form-label">Name</Form.Label>
+        <Form.Control
+          type="text"
+          name="name"
+          value={formData.name}
+          onChange={handleInputChange}
+          placeholder="Enter your name"
+          required
+        />
+      </Form.Group>
+      <Form.Group controlId="formEmail" className="form-group form-floating">
+        <Form.Label className="form-label">Email</Form.Label>
+        <Form.Control
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleInputChange}
+          placeholder="Enter your email"
+          required
+        />
+      </Form.Group>
+      <Form.Group controlId="formMobileNo" className="form-group form-floating">
+        <Form.Label className="form-label">Mobile No</Form.Label>
+        <Form.Control
+          type="tel"
+          name="mobileNo"
+          value={formData.mobileNo}
+          onChange={handleInputChange}
+          placeholder="Enter your mobile number"
+          required
+        />
+      </Form.Group>
+      <Form.Group controlId="formMessage" className="form-group form-floating">
+        <Form.Label className="form-label">Message</Form.Label>
+        <Form.Control
+          as="textarea"
+          rows={3}
+          name="message"
+          value={formData.message}
+          onChange={handleInputChange}
+          placeholder="Enter your message"
+          required
+          className="form-textarea"
+        />
+      </Form.Group>
+      <Button variant="primary" type="submit" className="submit-button">
+        Submit
+      </Button>
+    </Form>
+  </Modal.Body>
+</Modal>
+
 
       <ToastContainer /> {/* Add ToastContainer to display toasts */}
     </>

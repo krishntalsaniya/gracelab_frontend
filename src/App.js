@@ -48,9 +48,9 @@ import Swineflue from './Bloodtest/Swineflue';
 import Serologytest from './Bloodtest/Serologytest';
 import Pcodtest from './Bloodtest/Pcodtest';
 import Igetest from './Bloodtest/Igetest';
-
-
-
+import Center from './contact/Center';
+import Feedback from './contact/Feedback';
+import Centerdetails from './contact/Centerdetails';
 
 
 
@@ -108,6 +108,9 @@ function App() {
   <Route path='/PCOD-pofile-blood-test' element={<Pcodtest/> } />
   <Route path='/ige-test' element={<Igetest/> } />
   <Route path='/Directors' element={<Directors/> } />
+  <Route path='/center' element={<Center/> } />
+  <Route path='/Feedback' element={<Feedback/> } />
+  <Route path='/centerdetails/:id' element={<Centerdetails/> } />
 
  
 </Routes> 

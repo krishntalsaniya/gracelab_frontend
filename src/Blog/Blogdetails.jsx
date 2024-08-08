@@ -7,7 +7,7 @@ import { Link, useParams } from 'react-router-dom';
 
 function Blogdetails() {
   const { id } = useParams();
-  console.log("chjhc",id)
+
   const [bout, setBout] = useState({ blogDesc: "", blogTitle: "" }); // Initialize with a default structure
 
   useEffect(() => {
@@ -58,48 +58,11 @@ function Blogdetails() {
             <div className="article-image">
               <div dangerouslySetInnerHTML={{ __html: bout.Description }} />
             </div>
-            <div className="article-content">
-              <div className="entry-meta">
-                <ul>
-                  <li>
-                    <i className="far fa-user-circle" />
-                    By: <a href="single-blog.html">Admin</a>
-                  </li>
-                  <li>7 Aug 2024</li>
-                  <li><a href="single-blog.html">Tech</a></li>
-                  <li>2 Mins Read</li>
-                  <li>521 Views</li>
-                  <li><a href="single-blog.html">3 Comments</a></li>
-                </ul>
+         
               </div>
-              <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry...</p>
-              <blockquote className="wp-block-quote">
-                <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</p>
-                <cite>Tom Cruise</cite>
-              </blockquote>
-              <p>Equidem impedit officiis quo te...</p>
-              <ul className="wp-block-gallery">
-                {/* <li className="blocks-gallery-item">
-                  <figure>
-                    <img src="assets/img/blog-img8.jpg" alt="image" />
-                  </figure>
-                </li>
-                <li className="blocks-gallery-item">
-                  <figure>
-                    <img src="assets/img/blog-img7.jpg" alt="image" />
-                  </figure>
-                </li>
-                <li className="blocks-gallery-item">
-                  <figure>
-                    <img src="assets/img/blog-img6.jpg" alt="image" />
-                  </figure>
-                </li> */}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+              </div>
+              </div>
+              </div>
   </section>
   {/* End Blog Details Area */}
 </div>

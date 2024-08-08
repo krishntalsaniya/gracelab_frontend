@@ -1,21 +1,36 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Image, Modal, Button, Form, Accordion } from "react-bootstrap";
+import { Container, Row, Col, Image, Modal, Button, Form, Card } from "react-bootstrap";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify"; // Import Toast components
-import 'react-toastify/dist/ReactToastify.css'; // Import Toast styles
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import Modalnavigationbar from "../navbar/Modalnavigationbar";
+import placeholderimage from "../img/placeholder.jpeg";
+import { useParams } from "react-router-dom";
+
+const TestTypes = [
+  { id: 1, name: "Pregnancy Blood Test" },
+  { id: 2, name: "Blood Test For Kids" },
+  { id: 3, name: "Full Body Checkup" },
+  { id: 4, name: "Health checkup for senior citizen (male)" },
+  { id: 5, name: "Health checkup for senior citizen (Female)" },
+  { id: 6, name: "Swine Flue Test In vadodara" },
+  { id: 7, name: "Serology Blood Test" },
+  { id: 8, name: "Blood Ige Test in vadodara" }
+];
 
 function Igetest() {
   const [showModal, setShowModal] = useState(false);
   const [blog, setBlog] = useState([]);
-  const [selectedItemId, setSelectedItemId] = useState(null); // State to store selected item ID
-
+  const [selectedItemId, setSelectedItemId] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     mobileNo: "",
     message: "",
   });
+  const [showMore, setShowMore] = useState(null); // Track which card's description is expanded
+
+  const { testName } = useParams(); // Extract testName from route params
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -24,41 +39,68 @@ function Igetest() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!selectedItemId) {
       console.error("No item selected");
       return;
     }
 
     try {
-      // Fetch details of the selected item
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/getTestDetailById/${selectedItemId}`
+      const dataToSend = { ...formData };
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/create/TestDetails/${selectedItemId}`,
+        dataToSend
       );
-      console.log("Fetched details for selected item:", response.data);
 
-      // Show success toast
+      console.log("Form submitted successfully:", response.data);
       toast.success("Inquiry was successfully received!");
 
-      setShowModal(false); // Close the modal after handling data
+      setFormData({
+        name: "",
+        email: "",
+        mobileNo: "",
+        message: "",
+      });
+
+      setShowModal(false);
     } catch (error) {
-      console.error("Error fetching item details:", error);
-      // Show error toast
+      console.error("Error submitting the form:", error);
       toast.error("There was an error submitting your inquiry.");
     }
   };
-
+const selectedTestId = "8";
+          console.log("Selected Test ID:", selectedTestId);
   useEffect(() => {
     const fetchCMSContent = async () => {
       try {
         const response = await axios.get(
           `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/get/getallTestDetails`
         );
-        console.log("set all images and list:", response.data);
 
-        if (Array.isArray(response.data)) {
+        console.log("API Response:", response.data); // Debugging: Check API response
+        console.log("TestTypes:", TestTypes); // Debugging: Check TestTypes
+
+        if (Array.isArray(response.data) && response.data.length > 0) {
           setBlog(response.data);
+
+          // Extract selectedTest ID from the response data
+           // Debugging: Check selectedTest ID
+
+          // Find the matching test type based on the selectedTest ID
+          const matchedTestType = TestTypes.find(test => test.id.toString() === selectedTestId);
+          console.log("Matched Test Type:", matchedTestType); // Debugging: Check matched test type
+
+          if (matchedTestType) {
+            // Find the item with the matching selectedTest ID
+            const matchedItem = response.data.find(item => item.selectedTest === matchedTestType.id.toString());
+            console.log("Matched Item:", matchedItem); // Debugging: Check matched item
+
+            if (matchedItem) {
+              setSelectedItemId(matchedItem._id); // Set the selected item ID
+            }
+          }
         } else {
-          console.error("Unexpected response format:", response.data);
+          console.error("Unexpected response format or empty data:", response.data);
           setBlog([]);
         }
       } catch (error) {
@@ -68,7 +110,7 @@ function Igetest() {
     };
 
     fetchCMSContent();
-  }, []);
+  }, [testName]);
 
   return (
     <>
@@ -76,48 +118,58 @@ function Igetest() {
 
       <section className="about-area ptb-40">
         <Container>
-          {blog.map((item) => (
-            <Row className="align-items-center" key={item._id}>
-              <Col lg={6} md={12}>
-                <div className="about-image test-images">
-                  <Image src={`${process.env.REACT_APP_API_URL_GRACELAB}/${item.Images}`} alt="image" />
-                </div>
-              </Col>
-              <Col lg={6} md={12}>
-                <div className="about-content">
-                  <h2>{item.Title}</h2>
-                  <h5>Test Name: {item.TestName}</h5>
-                  <h5>Price: {item.Price}</h5>
+          <Row>
+            {blog
+              .filter(item => item._id === selectedItemId)
+              .map(item => (
+                <Col lg={4} md={6} key={item._id} className="mb-4">
+                  <Card className="test-card">
+                    <Card.Img
+                      variant="top"
+                      src={`${process.env.REACT_APP_API_URL_GRACELAB}/${item.Images}`}
+                      alt="Test"
+                      onError={(e) => { e.target.src = placeholderimage }}
+                      style={{ height: '200px', objectFit: 'cover' }}
+                    />
+                    <Card.Body>
+                      <Card.Title>{item.Title}</Card.Title>
+                      <Card.Subtitle className="mb-2 text-muted">Test Name: {item.TestName}</Card.Subtitle>
+                      <Card.Subtitle className="mb-2 text-muted">Price: {item.Price}</Card.Subtitle>
 
-                  <Accordion>
-                    <Accordion.Item eventKey="0">
-                      <Accordion.Header>Description</Accordion.Header>
-                      <Accordion.Body>
-                        <div dangerouslySetInnerHTML={{ __html: item.Description }} />
-                      </Accordion.Body>
-                    </Accordion.Item>
-                  </Accordion>
+                      <Card.Text>
+                        {showMore === item._id ? 
+                          <div dangerouslySetInnerHTML={{ __html: item.Description }} />
+                          :
+                          <div dangerouslySetInnerHTML={{ __html: item.Description.slice(0, 100) + '...' }} />
+                        }
+                      </Card.Text>
+                      <Button
+                        variant="link"
+                        onClick={() => setShowMore(showMore === item._id ? null : item._id)}
+                      >
+                        {showMore === item._id ? "Show Less" : "Show More"}
+                      </Button>
 
-                  <div className="btn-box">
-                    <Button
-                      variant="primary"
-                      className="btn-login"
-                      onClick={() => {
-                        setSelectedItemId(item._id); // Set the selected item ID
-                        setShowModal(true);
-                      }}
-                    >
-                      Inquiry
-                    </Button>
-                  </div>
-                </div>
-              </Col>
-            </Row>
-          ))}
+                      <div className="btn-box mt-3">
+                        <Button
+                          variant="primary"
+                          className="btn-login"
+                          onClick={() => {
+                            setSelectedItemId(item._id);
+                            setShowModal(true);
+                          }}
+                        >
+                          Inquiry
+                        </Button>
+                      </div>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              ))}
+        </Row>
         </Container>
       </section>
 
-      {/* Modal Component */}
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Inquiry Form</Modal.Title>
@@ -176,7 +228,7 @@ function Igetest() {
         </Modal.Body>
       </Modal>
 
-      <ToastContainer /> {/* Add ToastContainer to display toasts */}
+      <ToastContainer />
     </>
   );
 }

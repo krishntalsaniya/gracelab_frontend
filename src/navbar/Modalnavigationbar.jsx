@@ -115,9 +115,21 @@ function Modalnavigationbar(props) {
             <Link to="/" className={getLinkClass('/')} onClick={() => setActiveLink('/')}>
               Home
             </Link>
-            <Link to="/cms/667e52387a043e58372e16ce" className={getLinkClass('/cms/667e52387a043e58372e16ce')} onClick={() => setActiveLink('/cms/667e52387a043e58372e16ce')}>
-              About us
-            </Link>
+           <NavDropdown className={getLinkClass('/network')} title="About" id={`offcanvasNavbarDropdown-expand-lg`}>
+              <Link  to="/cms/667e52387a043e58372e16ce" className={getLinkClass('/cms/667e52387a043e58372e16ce')}>
+                About Gracelab
+              </Link>
+              <Link to="/Directors" className={getLinkClass('/Directors')}>
+                Directors
+              </Link>
+              <Link to="/Testimonial" className={getLinkClass('/Testimonial')}>
+                Testimonial
+              </Link>
+              <Link to="/awards" className={getLinkClass('/awards')}>
+                Awards and certificate
+              </Link>
+             
+            </NavDropdown>
             <Link to="/camping" className={getLinkClass('/camping')} onClick={() => setActiveLink('/camping')}>
               Campaign
             </Link>
@@ -138,6 +150,43 @@ function Modalnavigationbar(props) {
                 Patients
               </Link>
             </NavDropdown>
+
+              <NavDropdown className={getLinkClass('/network')} title="Media" id={`offcanvasNavbarDropdown-expand-lg`}>
+              <Link  to="/news" className={getLinkClass('/news')}>
+                News and media
+              </Link>
+              <Link to="/blog" className={getLinkClass('/blog')}>
+               Blog
+              </Link>
+            </NavDropdown>
+
+              <NavDropdown className={getLinkClass('/network')} title="Package" id={`offcanvasNavbarDropdown-expand-lg`}>
+              <Link  to="/pregnancy-blood-test" className={getLinkClass('/pregnancy-blood-test')}>
+                Pregnancy Blood Test
+              </Link>
+              <Link to="/blood-test-kids" className={getLinkClass('/blood-test-kids')}>
+               Blood Test For Kids
+              </Link>
+              <Link to="/full-body-checkup" className={getLinkClass('/full-body-checkup')}>
+               Full Body Checkup
+              </Link>
+              <Link to="/senior-citizen-male" className={getLinkClass('/senior-citizen-male')}>
+              Health checkup for senior citizen (male)
+              </Link>
+              <Link to="/senior-citizen-female" className={getLinkClass('/senior-citizen-female')}>
+              Health checkup for senior citizen (Female)
+              </Link>
+              <Link to="/swine-flue" className={getLinkClass('/swine-flue')}>
+             Swine Flue Test In vadodara
+              </Link>
+              <Link to="/serology-blood-test" className={getLinkClass('/serology-blood-test')}>
+            Serology Blood Test
+              </Link>
+              <Link to="/ige-test" className={getLinkClass('/ige-test')}>
+             Blood Ige Test in vadodara
+              </Link>
+            </NavDropdown>
+            
             <Link to={props.navigatelink} className="btn btn-secondary ms-3 btn-login" onClick={(e) => (e.currentTarget.getAttribute('href') === '/' || e.currentTarget.getAttribute('href') === '/Registration') ? handleShow() : handleClose()}>
               Login / Sign Up
             </Link>
@@ -448,7 +497,7 @@ function Modalnavigationbar(props) {
                     </Link>
                       </li>
                      <li className="nav-item">
-                    <Link to="/" className="nav-link">
+                    <Link to="/Feedback" className="nav-link">
                       Feedback
                     </Link>
                   </li>
