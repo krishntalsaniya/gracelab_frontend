@@ -52,6 +52,8 @@ import Center from './contact/Center';
 import Feedback from './contact/Feedback';
 import Centerdetails from './contact/Centerdetails';
 import Joinhandwithus from './contact/Joinhandwithus';
+import Testimonial from './Testimonial/Testimonial';
+
 
 
 
@@ -114,6 +116,7 @@ function App() {
   <Route path='/Feedback' element={<Feedback/> } />
   <Route path='/centerdetails/:id' element={<Centerdetails/> } />
   <Route path='/join-handwith-us' element={<Joinhandwithus/> } />
+  <Route path='/Testimonial' element={<Testimonial/> } />
 
  
 </Routes> 

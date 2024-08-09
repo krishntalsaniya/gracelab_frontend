@@ -56,8 +56,9 @@ useEffect(() => {
         <div class="container">
           <div class="row">
            {center.map((center)=>(
-              <Link to={`/centerdetails/${center._id}`}>
-<div class="col-lg-4 col-md-6 col-sm-6">
+              
+  <div class="col-lg-4 col-md-6 col-sm-6">
+    <Link to={`/centerdetails/${center._id}`}>
               <div class="single-services-box">
                 <div class="icon">
                   <FaMapMarkerAlt className="service-icon" />{" "}
@@ -68,14 +69,15 @@ useEffect(() => {
                 <p>
                  {center.Address}
                 </p>
-               <h3>M:</h3>
+               <h3>M:{center.Contact}</h3>
 
                 {/* <a href="single-services.html" class="learn-more-btn">
                   Learn More <i class="flaticon-arrow-pointing-to-right"></i>
                 </a> */}
               </div>
+                </Link>
             </div>
-              </Link>
+            
            ))}
           </div>
         </div>

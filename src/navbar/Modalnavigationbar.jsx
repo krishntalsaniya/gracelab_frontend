@@ -545,7 +545,7 @@ function Modalnavigationbar(props) {
                     </Link>
                   </li>
                     <li className="nav-item">
-                    <Link to="/awards" className="nav-link">
+                    <Link to="/cms/66b5dfea9f6f866057e3073b" className="nav-link">
                       Privacy Policy
                     </Link>
                   </li>

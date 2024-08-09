@@ -4,6 +4,7 @@ import { MdArrowForwardIos } from "react-icons/md";
 import { Link, useParams } from "react-router-dom";
 import placeholderimage from "../img/placeholder.jpeg";
 import { FaMapMarkerAlt } from "react-icons/fa"; // Import React Icon
+import { MdWifiCalling3 } from "react-icons/md";
 
 import axios from "axios";
 
@@ -108,7 +109,37 @@ function Centerdetails() {
                           </Link>
                         </ul>
                       </li>
+
+                  <br />
+
+                       <li>
+                        <span
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            width: "50px",
+                            height: "25px",
+                            color: "#eb268f",
+                          }}
+                        >
+                          <MdWifiCalling3 
+                            style={{
+                              width: "40px",
+                              height: "40px",
+                            }}
+                          />
+                        </span>
+                        <ul>
+                        
+                            <h6>{bout.Contact}</h6> {/* Changed <p> to <li> */}
+                          
+                        </ul>
+                      </li>
+
                     </ul>
+
+                    
                   ) : (
                     <p>No data available</p>
                   )}

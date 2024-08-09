@@ -2663,8 +2663,45 @@ a:hover {
   padding: 25px;
   -webkit-box-shadow: 0 2px 28px 0 rgba(0, 0, 0, 0.06);
   box-shadow: 0 2px 28px 0 rgba(0, 0, 0, 0.06);
-  max-height: 320px;
-  min-height: 320px;
+
+
+}
+
+/* @media (max-width: 768px) {
+  .team-details-desc {
+    padding: 15px;
+    height: auto;
+  }
+
+  .team-details-sidebar,
+  .team-details-desc {
+    width: 100%;
+  }
+
+  .team-details-area .row>div {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+} */
+
+@media (max-width: 576px) {
+  .team-details-area .row {
+    flex-direction: column;
+  }
+
+  .team-details-sidebar,
+  .team-details-desc {
+    padding: 10px;
+    width: 100%;
+  }
+
+  .team-details-desc {
+    order: 2;
+  }
+
+  .team-details-sidebar {
+    order: 1;
+  }
 }
 
 .team-details-desc h3 {
@@ -7372,4 +7409,105 @@ blockquote::before,
 
 .input-field {
   text-align: left;
+}
+
+
+.director-details-sidebar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+
+.team-profile img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.team-content h3 {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.team-details-desc {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.center-details-desc {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.team-details-area .row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.team-details-area .row>div {
+  /* display: flex;
+  align-items: stretch;
+  margin-bottom: 20px; */
+}
+
+@media (max-width: 768px) {
+
+  .team-details-sidebar,
+  .team-details-desc {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .team-details-sidebar {
+    margin-bottom: 10px;
+  }
+
+  .team-details-desc {
+    margin-bottom: 20px;
+  }
+
+  .team-details-area .row>div {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .team-details-area .row {
+    flex-direction: column;
+  }
+
+  .team-details-sidebar,
+  .team-details-desc {
+    padding: 10px;
+    width: 100%;
+  }
+
+  .team-details-desc {
+    order: 2;
+  }
+
+  .team-details-sidebar {
+    order: 1;
+  }
 }

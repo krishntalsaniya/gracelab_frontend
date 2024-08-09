@@ -182,8 +182,8 @@ const selectedTestId = "9";
         </Container>
       </section>
 
-      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-        <Modal.Header closeButton>
+    <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+        <Modal.Header closeButton className="modal-header">
           <Modal.Title>Inquiry Form</Modal.Title>
         </Modal.Header>
         <Modal.Body>
