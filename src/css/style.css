@@ -2663,6 +2663,8 @@ a:hover {
   padding: 25px;
   -webkit-box-shadow: 0 2px 28px 0 rgba(0, 0, 0, 0.06);
   box-shadow: 0 2px 28px 0 rgba(0, 0, 0, 0.06);
+  max-height: 320px;
+  min-height: 320px;
 }
 
 .team-details-desc h3 {
@@ -7010,8 +7012,8 @@ blockquote::before,
 }
 
 .card-body-camping {
-  min-height: 275px !important;
-  max-height: 275px !important;
+  min-height: 320px !important;
+  max-height: 320px !important;
 }
 
 .card-home-camping {
@@ -7068,13 +7070,13 @@ blockquote::before,
   /* Smooth background color transition */
 }
 
-.show-more-button:hover {
+/* .show-more-button:hover {
   background-color: #fff;
   color: #ec2590;
   border: 1px solid #ec2590;
   border-radius: 5px;
-  /* Darker background color on hover */
-}
+
+} */
 
 .camping-card {
   /* width: 18rem; */
@@ -7365,4 +7367,9 @@ blockquote::before,
   /* Remove border if any */
   background: transparent;
   /* Ensure no background */
+}
+
+
+.input-field {
+  text-align: left;
 }

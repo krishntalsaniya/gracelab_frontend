@@ -2,19 +2,18 @@ import React from 'react';
 import { MdArrowForwardIos } from "react-icons/md";
 import Modalnavigationbar from '../navbar/Modalnavigationbar';
 import Pagetitle from '../patients/Pagetitle';
-import { FaTwitter, FaYoutube, FaFacebook, FaLinkedin, FaInstagramSquare } from "react-icons/fa";
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
-import { Formik, Field, FieldArray } from 'formik';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Swal from 'sweetalert2';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function Feedback() {
   const navigate = useNavigate();
 
   const SignupSchema = Yup.object().shape({
-    name: Yup.string().required('Please enter your name'),
+    Name: Yup.string().required('Please enter your Name'),
     email: Yup.string()
       .email('Invalid email')
       .matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Email must be valid and end with .com')
@@ -28,15 +27,21 @@ function Feedback() {
     textarea: Yup.string().required('Please enter your message'),
   });
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values, { resetForm }) => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/contact`, {
-        contactname: values.name,
-        Email: values.email,
-        ContactNo: values.contactno,
-        message: values.message,
-        textarea: values.textarea,
-        feedback: values.feedback,
+      // Transform feedback data to use proper keys with Yes/No values
+      const feedback = {
+        'Did you get timely service?': values.feedback['Did you get timely service?'] || '',
+        'Did you face any problem during blood collection?': values.feedback['Did you face any problem during blood collection?'] || '',
+        'Was the staff courteous and helpful?': values.feedback['Was the staff courteous and helpful?'] || '',
+        'Was it clean?': values.feedback['Was it clean?'] || '',
+        'Did Staff do the hand sanitization before collection?': values.feedback['Did Staff do the hand sanitization before collection?'] || '',
+        'Will you recommend Grace Laboratory to others?': values.feedback['Will you recommend Grace Laboratory to others?'] || '',
+      };
+
+      const response = await axios.post(`${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/Feedback`, {
+        ...values,
+        feedback,
       });
 
       Swal.fire({
@@ -45,10 +50,17 @@ function Feedback() {
         icon: "success",
         confirmButtonText: "OK"
       });
-      // Redirect or show success message here
+
+      // Reset the form after successful submission
+      resetForm();
     } catch (error) {
-      console.error('Error creating laboratory:', error);
-      // Show error message here
+      console.error('Error submitting feedback:', error);
+      Swal.fire({
+        title: "Error",
+        text: "There was an error submitting your feedback. Please try again.",
+        icon: "error",
+        confirmButtonText: "OK"
+      });
     }
   };
 
@@ -68,20 +80,18 @@ function Feedback() {
 
           <Formik
             initialValues={{
-              name: '',
+              Name: '',
               email: '',
               contactno: '',
               message: '',
               textarea: '',
               feedback: {
-                service: '',
-                quality: '',
-                support: '',
-                value: '',
-                overall: '',
-                website: '',
-                delivery: '',
-                experience: '',
+                'Did you get timely service?': '',
+                'Did you face any problem during blood collection?': '',
+                'Was the staff courteous and helpful?': '',
+                'Was it clean?': '',
+                'Did Staff do the hand sanitization before collection?': '',
+                'Will you recommend Grace Laboratory to others?': '',
               }
             }}
             validationSchema={SignupSchema}
@@ -94,31 +104,72 @@ function Feedback() {
               handleChange,
               handleBlur,
               handleSubmit,
+              resetForm,
             }) => (
               <Form onSubmit={handleSubmit} id="contactForm">
                 <Row>
-                  <Col lg={6} md={6}>
-                    <Form.Group className='form-group' controlId="formName">
-                      <Form.Label className='text-start w-100'>Name</Form.Label>
+                  <Col lg={12} md={12}>
+                    <div className="feedback-questions" style={{ textAlign: 'left' }}>
+                      {[
+                        'Did you get timely service?',
+                        'Did you face any problem during blood collection?',
+                        'Was the staff courteous and helpful?',
+                        'Was it clean?',
+                        'Did Staff do the hand sanitization before collection?',
+                        'Will you recommend Grace Laboratory to others?',
+                      ].map((field, idx) => {
+                        return (
+                          <Form.Group key={idx}>
+                            <Form.Label>{field}</Form.Label>
+                            <Form.Check
+                              type="radio"
+                              label="Yes"
+                              Name={`feedback.${field}`}
+                              value="Yes"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              checked={values.feedback[field] === 'Yes'}
+                            />
+                            <Form.Check
+                              type="radio"
+                              label="No"
+                              Name={`feedback.${field}`}
+                              value="No"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              checked={values.feedback[field] === 'No'}
+                            />
+                            {errors.feedback && errors.feedback[field] && touched.feedback && touched.feedback[field] && (
+                              <div className="text-danger">{errors.feedback[field]}</div>
+                            )}
+                          </Form.Group>
+                        );
+                      })}
+                    </div>
+                  </Col>
+
+                  <Col lg={6} md={6} className='mt-5'>
+                    <Form.Group controlId="formName" style={{textAlign:'left'}}>
+                      <Form.Label>Name</Form.Label>
                       <Form.Control
                         type="text"
-                        name="name"
-                        placeholder="Your name"
+                        Name="Name"
+                        placeholder="Your Name"
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        value={values.name}
-                        isInvalid={touched.name && errors.name}
+                        value={values.Name}
+                        isInvalid={touched.Name && errors.Name}
                       />
-                      <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
+                      <Form.Control.Feedback type="invalid">{errors.Name}</Form.Control.Feedback>
                     </Form.Group>
                   </Col>
 
-                  <Col lg={6} md={6}>
-                    <Form.Group controlId="formContactNo">
-                      <Form.Label className='text-start w-100'>Contact no</Form.Label>
+                  <Col lg={6} md={6} className='mt-5'>
+                    <Form.Group controlId="formContactNo" style={{textAlign:'left'}}>
+                      <Form.Label>Contact no</Form.Label>
                       <Form.Control
                         type="text"
-                        name="contactno"
+                        Name="contactno"
                         placeholder="Your Contact no"
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -130,11 +181,11 @@ function Feedback() {
                   </Col>
 
                   <Col lg={6} md={6}>
-                    <Form.Group controlId="formEmail">
-                      <Form.Label className='text-start w-100'>Email</Form.Label>
+                    <Form.Group controlId="formEmail" style={{textAlign:'left'}}>
+                      <Form.Label >Email</Form.Label>
                       <Form.Control
                         type="text"
-                        name="email"
+                        Name="email"
                         placeholder="Your Email"
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -146,11 +197,11 @@ function Feedback() {
                   </Col>
 
                   <Col lg={6} md={6}>
-                    <Form.Group controlId="formMessage">
-                      <Form.Label className='text-start w-100'>Message</Form.Label>
+                    <Form.Group controlId="formMessage" style={{textAlign:'left'}}>
+                      <Form.Label >Message</Form.Label>
                       <Form.Control
                         type="text"
-                        name="message"
+                        Name="message"
                         placeholder="Your Message"
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -162,212 +213,29 @@ function Feedback() {
                   </Col>
 
                   <Col lg={12} md={12}>
-                    <div className="feedback-questions">
-                      <Form.Label>Did you get timely service? *</Form.Label>
-                      <Form.Group>
-                        <Form.Check
-                          type="checkbox"
-                          label="Yes"
-                          name="feedback.service"
-                          value="Yes"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          checked={values.feedback.service === 'Yes'}
-                        />
-                        <Form.Check
-                          type="checkbox"
-                          label="No"
-                          name="feedback.service"
-                          value="No"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          checked={values.feedback.service === 'No'}
-                        />
-                      </Form.Group>
-
-                      <Form.Label>Was the quality of the service satisfactory? *</Form.Label>
-                      <Form.Group>
-                        <Form.Check
-                          type="checkbox"
-                          label="Yes"
-                          name="feedback.quality"
-                          value="Yes"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          checked={values.feedback.quality === 'Yes'}
-                        />
-                        <Form.Check
-                          type="checkbox"
-                          label="No"
-                          name="feedback.quality"
-                          value="No"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          checked={values.feedback.quality === 'No'}
-                        />
-                      </Form.Group>
-
-                      <Form.Label>Was the support team helpful? *</Form.Label>
-                      <Form.Group>
-                        <Form.Check
-                          type="checkbox"
-                          label="Yes"
-                          name="feedback.support"
-                          value="Yes"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          checked={values.feedback.support === 'Yes'}
-                        />
-                        <Form.Check
-                          type="checkbox"
-                          label="No"
-                          name="feedback.support"
-                          value="No"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          checked={values.feedback.support === 'No'}
-                        />
-                      </Form.Group>
-
-                      <Form.Label>Was the service value for money? *</Form.Label>
-                      <Form.Group>
-                        <Form.Check
-                          type="checkbox"
-                          label="Yes"
-                          name="feedback.value"
-                          value="Yes"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          checked={values.feedback.value === 'Yes'}
-                        />
-                        <Form.Check
-                          type="checkbox"
-                          label="No"
-                          name="feedback.value"
-                          value="No"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          checked={values.feedback.value === 'No'}
-                        />
-                      </Form.Group>
-
-                      <Form.Label>Overall satisfaction with the service? *</Form.Label>
-                      <Form.Group>
-                        <Form.Check
-                          type="checkbox"
-                          label="Yes"
-                          name="feedback.overall"
-                          value="Yes"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          checked={values.feedback.overall === 'Yes'}
-                        />
-                        <Form.Check
-                          type="checkbox"
-                          label="No"
-                          name="feedback.overall"
-                          value="No"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          checked={values.feedback.overall === 'No'}
-                        />
-                      </Form.Group>
-
-                      <Form.Label>Was our website easy to use? *</Form.Label>
-                      <Form.Group>
-                        <Form.Check
-                          type="checkbox"
-                          label="Yes"
-                          name="feedback.website"
-                          value="Yes"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          checked={values.feedback.website === 'Yes'}
-                        />
-                        <Form.Check
-                          type="checkbox"
-                          label="No"
-                          name="feedback.website"
-                          value="No"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          checked={values.feedback.website === 'No'}
-                        />
-                      </Form.Group>
-
-                      <Form.Label>Was the delivery timely? *</Form.Label>
-                      <Form.Group>
-                        <Form.Check
-                          type="checkbox"
-                          label="Yes"
-                          name="feedback.delivery"
-                          value="Yes"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          checked={values.feedback.delivery === 'Yes'}
-                        />
-                        <Form.Check
-                          type="checkbox"
-                          label="No"
-                          name="feedback.delivery"
-                          value="No"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          checked={values.feedback.delivery === 'No'}
-                        />
-                      </Form.Group>
-
-                      <Form.Label>Overall experience with us? *</Form.Label>
-                      <Form.Group>
-                        <Form.Check
-                          type="checkbox"
-                          label="Yes"
-                          name="feedback.experience"
-                          value="Yes"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          checked={values.feedback.experience === 'Yes'}
-                        />
-                        <Form.Check
-                          type="checkbox"
-                          label="No"
-                          name="feedback.experience"
-                          value="No"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          checked={values.feedback.experience === 'No'}
-                        />
-                      </Form.Group>
-                    </div>
+                    <Form.Group controlId="formTextarea" style={{textAlign:'left'}}>
+                      <Form.Label >Your Feedback</Form.Label>
+                      <Form.Control
+                        as="textarea"
+                        Name="textarea"
+                        rows="6"
+                        placeholder="Your Feedback"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.textarea}
+                        isInvalid={touched.textarea && errors.textarea}
+                      />
+                      <Form.Control.Feedback type="invalid">{errors.textarea}</Form.Control.Feedback>
+                    </Form.Group>
                   </Col>
 
                   <Col lg={12} md={12}>
-                    <Form.Group controlId="formSubmit">
-                      <Button type="submit">Send Message</Button>
-                    </Form.Group>
+                    <Button variant="primary" type="submit" className="w-100">Send Feedback</Button>
                   </Col>
                 </Row>
               </Form>
             )}
           </Formik>
-
-          <div className="contact-info">
-            <div className="section-title text-center">
-              <h2>Don't Hesitate to contact with us</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra.</p>
-            </div>
-            <div className="contact-info-content">
-              <h3>Call us for immediate support at this number</h3>
-              <h2><a href="tel:+0881306298615">+91 90169 50768</a></h2>
-              <ul className="social">
-                <li><a href="https://twitter.com/i/flow/login" target="_blank" rel="noopener noreferrer"><FaTwitter /></a></li>
-                <li><a href="https://www.youtube.com/?app=desktop&gl=SG&hl=en-GB" target="_blank" rel="noopener noreferrer"><FaYoutube /></a></li>
-                <li><a href="https://www.facebook.com/login/" target="_blank" rel="noopener noreferrer"><FaFacebook /></a></li>
-                <li><a href="https://www.linkedin.com/login" target="_blank" rel="noopener noreferrer"><FaLinkedin /></a></li>
-                <li><a href="https://www.instagram.com/accounts/login/" target="_blank" rel="noopener noreferrer"><FaInstagramSquare /></a></li>
-              </ul>
-            </div>
-          </div>
         </Container>
       </section>
     </>

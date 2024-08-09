@@ -504,6 +504,14 @@ function Modalnavigationbar(props) {
                       Blood Ige Test in vadodara
                     </Link>
                       </li>
+                      <li className="nav-item">
+                       <Link
+                      to="/PCOD-pofile-blood-test"
+                      className="nav-link"
+                    >
+                      PCOD Profile Blood Test
+                    </Link>
+                      </li>
                   
                     </ul>
                   </li>

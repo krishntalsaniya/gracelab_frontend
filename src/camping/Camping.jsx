@@ -87,7 +87,7 @@ function Camping() {
             <Col key={camping.id} lg={4} className="mb-4">
               <Link to="/camping">
                 <Card
-                  style={{ width: "100%", maxHeight: "450", minHeight: "450" }}
+                  style={{ width: "100%", maxHeight: "550", minHeight: "550" }}
                   className="camping-card"
                 >
                   <Card.Img
@@ -123,12 +123,12 @@ function Camping() {
                     </Card.Text>
                   </Card.Body>
                   <div className="register-camping">
-                    <Link
+                    {/* <Link
                       to="/patient-inquiry"
                       className="btn btn-secondary ms-3 btn-login"
                     >
                       Register
-                    </Link>
+                    </Link> */}
                   </div>
                 </Card>
               </Link>
