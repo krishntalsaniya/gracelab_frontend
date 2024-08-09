@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Card, Col } from "react-bootstrap";
 import axios from "axios";
-import placeholderimage from "../img/placeholder.jpeg";
+import placeholderimage from "../img/Blog-Placeholder.png";
 import Modalnavigationbar from "../navbar/Modalnavigationbar";
 import Pagetitle from "../patients/Pagetitle";
 import { MdArrowForwardIos } from "react-icons/md";

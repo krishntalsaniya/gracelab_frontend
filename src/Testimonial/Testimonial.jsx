@@ -8,6 +8,8 @@ import Pagetitle from "../patients/Pagetitle";
 import { MdArrowForwardIos } from "react-icons/md";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import placeholderimage from "../img/placeholder-testimonials.jpg";
+
 
 function Testimonial() {
   const [center, setcenter] = useState([]);
@@ -63,6 +65,9 @@ function Testimonial() {
                   <img
                     src={`https://img.youtube.com/vi/${item.URL.split("v=")[1].split("&")[0]}/0.jpg`}
                     alt={item.Tittle}
+                     onError={(e) => {
+                      e.target.src = placeholderimage;
+                    }}
                     
                     style={{
                       width: "100%",

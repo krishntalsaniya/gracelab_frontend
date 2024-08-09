@@ -6,7 +6,7 @@ import Lightbox from "react-image-lightbox";
 import "react-image-lightbox/style.css";
 import Pagetitle from "../patients/Pagetitle";
 import { MdArrowForwardIos } from "react-icons/md";
-import placeholderimage from "../img/placeholder.jpeg";
+import placeholderimage from "../img/news-placeholder.jpg";
 
 function News() {
   const [blog, setBlog] = useState([]);

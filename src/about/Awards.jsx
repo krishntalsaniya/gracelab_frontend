@@ -6,7 +6,7 @@ import Lightbox from "react-image-lightbox";
 import "react-image-lightbox/style.css";
 import Pagetitle from "../patients/Pagetitle";
 import { MdArrowForwardIos } from "react-icons/md";
-import placeholderimage from "../img/placeholder.jpeg";
+import placeholderimage from "../img/award-placeholder.png";
 
 function Awards() {
   const [blog, setBlog] = useState([]);
