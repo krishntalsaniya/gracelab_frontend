@@ -4,7 +4,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Modalnavigationbar from "../navbar/Modalnavigationbar";
-import placeholderimage from "../img/placeholder.jpeg";
+import placeholderimage from "../img/fullbody-checkup-placeholder.png";
 import { useParams } from "react-router-dom";
 import Pagetitle from "../patients/Pagetitle";
 import { MdArrowForwardIos } from "react-icons/md";
@@ -154,12 +154,14 @@ const selectedTestId = "3";
                           <div dangerouslySetInnerHTML={{ __html: item.Description.slice(0, 100) + '...' }} />
                         }
                       </Card.Text>
-                      <Button
-                        variant="link"
-                        onClick={() => setShowMore(showMore === item._id ? null : item._id)}
-                      >
-                        {showMore === item._id ? "Show Less" : "Show More"}
-                      </Button>
+                  <Button
+  onClick={() =>
+    setShowMore(showMore === item._id ? null : item._id)
+  }
+  className="show-more-button"
+>
+  {showMore === item._id ? "Show Less" : "Show More"}
+</Button>
 
                       <div className="btn-box mt-3">
                         <Button

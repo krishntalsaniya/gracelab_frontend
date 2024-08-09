@@ -13,7 +13,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Modalnavigationbar from "../navbar/Modalnavigationbar";
-import placeholderimage from "../img/placeholder.jpeg";
+import placeholderimage from "../img/kids-placeholder.jpg";
 import { useParams } from "react-router-dom";
 import Pagetitle from "../patients/Pagetitle";
 import { MdArrowForwardIos } from "react-icons/md";
