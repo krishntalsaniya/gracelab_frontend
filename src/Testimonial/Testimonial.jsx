@@ -10,7 +10,6 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import placeholderimage from "../img/placeholder-testimonials.jpg";
 
-
 function Testimonial() {
   const [center, setcenter] = useState([]);
 
@@ -62,21 +61,37 @@ function Testimonial() {
                   onClick={() => handleCardClick(item.URL)}
                   style={{ cursor: "pointer" }}
                 >
-                  <img
-                    src={`https://img.youtube.com/vi/${item.URL.split("v=")[1].split("&")[0]}/0.jpg`}
-                    alt={item.Tittle}
-                     onError={(e) => {
-                      e.target.src = placeholderimage;
-                    }}
-                    
-                    style={{
-                      width: "100%",
-                      height: "auto",
-                      display: "block",
-                      margin: 0,
-                      padding: 0,
-                    }}
-                  />
+                  <Link
+  to="#"
+  onClick={(e) => {
+    e.preventDefault(); // Prevent the default Link behavior
+    window.open(
+      `https://img.youtube.com/vi/${
+      item.URL.split("v=")[1].split("&")[0]
+    }/0.jpg`,
+      "_blank",
+      "noopener,noreferrer"
+    );
+  }}
+>
+  <img
+    src={`https://img.youtube.com/vi/${
+      item.URL.split("v=")[1].split("&")[0]
+    }/0.jpg`}
+    alt={item.Tittle}
+    onError={(e) => {
+      e.target.src = placeholderimage;
+    }}
+    style={{
+      width: "100%",
+      height: "auto",
+      display: "block",
+      margin: 0,
+      padding: 0,
+    }}
+  />
+</Link>
+
                   <h3>{item.Tittle}</h3>
                 </div>
               </div>
