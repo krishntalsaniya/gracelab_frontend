@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Link,useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FaAngleDown } from "react-icons/fa";
-import { Col, Modal, Row, Card, Image,} from "react-bootstrap";
+import { Col, Modal, Row, Card, Image } from "react-bootstrap";
 
 import logo from "../img/logo.jpg";
 import icon1 from "../img/icon1.png";
@@ -43,7 +43,7 @@ function Modalnavigationbar(props) {
   const handleClose = () => {
     setShowModal(false);
   };
- const location = useLocation();
+  const location = useLocation();
   const [activeLink, setActiveLink] = useState(location.pathname);
 
   useEffect(() => {
@@ -51,7 +51,7 @@ function Modalnavigationbar(props) {
   }, [location]);
 
   const getLinkClass = (path) => {
-    return activeLink === path ? 'mobile-link active-link' : 'mobile-link';
+    return activeLink === path ? "mobile-link active-link" : "mobile-link";
   };
 
   useEffect(() => {
@@ -106,213 +106,357 @@ function Modalnavigationbar(props) {
                   aria-controls={`offcanvasNavbar-expand-${expand}`}
                 />
               )}
-           <Navbar.Offcanvas id={`offcanvasNavbar-expand-lg`} aria-labelledby={`offcanvasNavbarLabel-expand-lg`} placement="end">
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title id={`offcanvasNavbarLabel-expand-lg`}></Offcanvas.Title>
-        </Offcanvas.Header>
-        <Offcanvas.Body>
-          <Nav className="justify-content-end flex-grow-1 pe-3">
-            <Link to="/" className={getLinkClass('/')} onClick={() => setActiveLink('/')}>
-              Home
-            </Link>
-           <NavDropdown className={getLinkClass('/network')} title="About" id={`offcanvasNavbarDropdown-expand-lg`}>
-              <Link  to="/cms/667e52387a043e58372e16ce" className={getLinkClass('/cms/667e52387a043e58372e16ce')}>
-                About Gracelab
-              </Link>
-              <Link to="/Directors" className={getLinkClass('/Directors')}>
-                Directors
-              </Link>
-              <Link to="/Testimonial" className={getLinkClass('/Testimonial')}>
-                Testimonial
-              </Link>
-              <Link to="/awards" className={getLinkClass('/awards')}>
-                Awards and certificate
-              </Link>
-             
-            </NavDropdown>
-            <Link to="/camping" className={getLinkClass('/camping')} onClick={() => setActiveLink('/camping')}>
-              Campaign
-            </Link>
-            <NavDropdown className={getLinkClass('/network')} title="Network" id={`offcanvasNavbarDropdown-expand-lg`}>
-              <Link to="/laboratory" onClick={() => { handleLinkClick('Laboratory'); setActiveLink('/laboratory'); }} className={getLinkClass('/laboratory')}>
-                Laboratory
-              </Link>
-              <Link to="/pharmacy" onClick={() => { handleLinkClick('Pharmacy'); setActiveLink('/pharmacy'); }} className={getLinkClass('/pharmacy')}>
-                Pharmacy
-              </Link>
-              <Link to="/doctor" onClick={() => { handleLinkClick('Doctors'); setActiveLink('/doctor'); }} className={getLinkClass('/doctor')}>
-                Doctors
-              </Link>
-              <Link to="/hospital" onClick={() => { handleLinkClick('Hospital'); setActiveLink('/hospital'); }} className={getLinkClass('/hospital')}>
-                Hospital
-              </Link>
-              <Link to="/patient-login" onClick={() => { handleLinkClick('Patients'); setActiveLink('/patient-login'); }} className={getLinkClass('/patient-login')}>
-                Patients
-              </Link>
-            </NavDropdown>
-
-              <NavDropdown className={getLinkClass('/network')} title="Media" id={`offcanvasNavbarDropdown-expand-lg`}>
-              <Link  to="/news" className={getLinkClass('/news')}>
-                News and media
-              </Link>
-              <Link to="/blog" className={getLinkClass('/blog')}>
-               Blog
-              </Link>
-            </NavDropdown>
-
-              <NavDropdown className={getLinkClass('/network')} title="Package" id={`offcanvasNavbarDropdown-expand-lg`}>
-              <Link  to="/pregnancy-blood-test" className={getLinkClass('/pregnancy-blood-test')}>
-                Pregnancy Blood Test
-              </Link>
-              <Link to="/blood-test-kids" className={getLinkClass('/blood-test-kids')}>
-               Blood Test For Kids
-              </Link>
-              <Link to="/full-body-checkup" className={getLinkClass('/full-body-checkup')}>
-               Full Body Checkup
-              </Link>
-              <Link to="/senior-citizen-male" className={getLinkClass('/senior-citizen-male')}>
-              Health checkup for senior citizen (male)
-              </Link>
-              <Link to="/senior-citizen-female" className={getLinkClass('/senior-citizen-female')}>
-              Health checkup for senior citizen (Female)
-              </Link>
-              <Link to="/swine-flue" className={getLinkClass('/swine-flue')}>
-             Swine Flue Test In vadodara
-              </Link>
-              <Link to="/serology-blood-test" className={getLinkClass('/serology-blood-test')}>
-            Serology Blood Test
-              </Link>
-              <Link to="/ige-test" className={getLinkClass('/ige-test')}>
-             Blood Ige Test in vadodara
-              </Link>
-              <Link
-                      to="/PCOD-pofile-blood-test"
-                     className={getLinkClass('/ige-test')}
+              <Navbar.Offcanvas
+                id={`offcanvasNavbar-expand-lg`}
+                aria-labelledby={`offcanvasNavbarLabel-expand-lg`}
+                placement="end"
+              >
+                <Offcanvas.Header closeButton>
+                  <Offcanvas.Title
+                    id={`offcanvasNavbarLabel-expand-lg`}
+                  ></Offcanvas.Title>
+                </Offcanvas.Header>
+                <Offcanvas.Body>
+                  <Nav className="justify-content-end flex-grow-1 pe-3">
+                    <Link
+                      to="/"
+                      className={getLinkClass("/")}
+                      onClick={() => setActiveLink("/")}
                     >
-                      PCOD Profile Blood Test
+                      Home
                     </Link>
-            </NavDropdown>
+                    <NavDropdown
+                      className={getLinkClass("/network")}
+                      title="About"
+                      id={`offcanvasNavbarDropdown-expand-lg`}
+                    >
+                      <Link
+                        to="/cms/667e52387a043e58372e16ce"
+                        className={getLinkClass(
+                          "/cms/667e52387a043e58372e16ce"
+                        )}
+                      >
+                        About Gracelab
+                      </Link>
+                      <Link
+                        to="/Directors"
+                        className={getLinkClass("/Directors")}
+                      >
+                        Directors
+                      </Link>
+                      <Link
+                        to="/Testimonial"
+                        className={getLinkClass("/Testimonial")}
+                      >
+                        Testimonial
+                      </Link>
+                      <Link to="/awards" className={getLinkClass("/awards")}>
+                        Awards and certificate
+                      </Link>
+                    </NavDropdown>
+                    <Link
+                      to="/camping"
+                      className={getLinkClass("/camping")}
+                      onClick={() => setActiveLink("/camping")}
+                    >
+                      Campaign
+                    </Link>
+                    <NavDropdown
+                      className={getLinkClass("/network")}
+                      title="Network"
+                      id={`offcanvasNavbarDropdown-expand-lg`}
+                    >
+                      <Link
+                        to="/laboratory"
+                        onClick={() => {
+                          handleLinkClick("Laboratory");
+                          setActiveLink("/laboratory");
+                        }}
+                        className={getLinkClass("/laboratory")}
+                      >
+                        Laboratory
+                      </Link>
+                      <Link
+                        to="/pharmacy"
+                        onClick={() => {
+                          handleLinkClick("Pharmacy");
+                          setActiveLink("/pharmacy");
+                        }}
+                        className={getLinkClass("/pharmacy")}
+                      >
+                        Pharmacy
+                      </Link>
+                      <Link
+                        to="/doctor"
+                        onClick={() => {
+                          handleLinkClick("Doctors");
+                          setActiveLink("/doctor");
+                        }}
+                        className={getLinkClass("/doctor")}
+                      >
+                        Doctors
+                      </Link>
+                      <Link
+                        to="/hospital"
+                        onClick={() => {
+                          handleLinkClick("Hospital");
+                          setActiveLink("/hospital");
+                        }}
+                        className={getLinkClass("/hospital")}
+                      >
+                        Hospital
+                      </Link>
+                      <Link
+                        to="/patient-login"
+                        onClick={() => {
+                          handleLinkClick("Patients");
+                          setActiveLink("/patient-login");
+                        }}
+                        className={getLinkClass("/patient-login")}
+                      >
+                        Patients
+                      </Link>
+                    </NavDropdown>
 
-            <NavDropdown className={getLinkClass('/network')} title="Contact" id={`offcanvasNavbarDropdown-expand-lg`}>
-              <Link  to="/contact" className={getLinkClass('/contact')}>
-                Contact Us
-             </Link>
-              <Link  to="/Feedback" className={getLinkClass('/Feedback')}>
-                Feedback
-             </Link>
-              <Link  to="/cms/66878d3413d429f45685f7e7" className={getLinkClass('/cms/66878d3413d429f45685f7e7')}>
-                Terms and condition
-             </Link>
-              <Link  to="/cms/66878d5913d429f45685f7ea" className={getLinkClass('/cms/66878d5913d429f45685f7ea')}>
-                Refund Policy
-             </Link>
-              <Link  to="/awards" className={getLinkClass('/awards')}>
-                Privacy Policy
-             </Link>
-              <Link  to="/center" className={getLinkClass('/center')}>
-                Center
-             </Link>
-              <Link  to="/join-handwith-us" className={getLinkClass('/join-handwith-us')}>
-                Join hand with us 
-             </Link>
+                    <NavDropdown
+                      className={getLinkClass("/network")}
+                      title="Media"
+                      id={`offcanvasNavbarDropdown-expand-lg`}
+                    >
+                      <Link to="/news" className={getLinkClass("/news")}>
+                        News and media
+                      </Link>
+                      <Link to="/blog" className={getLinkClass("/blog")}>
+                        Blog
+                      </Link>
+                    </NavDropdown>
 
-            </NavDropdown>
-            
-            <Link to={props.navigatelink} className="btn btn-secondary ms-3 btn-login" onClick={(e) => (e.currentTarget.getAttribute('href') === '/' || e.currentTarget.getAttribute('href') === '/Registration') ? handleShow() : handleClose()}>
-              Login / Sign Up
-            </Link>
+                    <NavDropdown
+                      className={getLinkClass("/network")}
+                      title="Package"
+                      id={`offcanvasNavbarDropdown-expand-lg`}
+                    >
+                      <Link
+                        to="/pregnancy-blood-test"
+                        className={getLinkClass("/pregnancy-blood-test")}
+                      >
+                        Pregnancy Blood Test
+                      </Link>
+                      <Link
+                        to="/blood-test-kids"
+                        className={getLinkClass("/blood-test-kids")}
+                      >
+                        Blood Test For Kids
+                      </Link>
+                      <Link
+                        to="/full-body-checkup"
+                        className={getLinkClass("/full-body-checkup")}
+                      >
+                        Full Body Checkup
+                      </Link>
+                      <Link
+                        to="/senior-citizen-male"
+                        className={getLinkClass("/senior-citizen-male")}
+                      >
+                        Health checkup for senior citizen (male)
+                      </Link>
+                      <Link
+                        to="/senior-citizen-female"
+                        className={getLinkClass("/senior-citizen-female")}
+                      >
+                        Health checkup for senior citizen (Female)
+                      </Link>
+                      <Link
+                        to="/swine-flue"
+                        className={getLinkClass("/swine-flue")}
+                      >
+                        Swine Flue Test In vadodara
+                      </Link>
+                      <Link
+                        to="/serology-blood-test"
+                        className={getLinkClass("/serology-blood-test")}
+                      >
+                        Serology Blood Test
+                      </Link>
+                      <Link
+                        to="/ige-test"
+                        className={getLinkClass("/ige-test")}
+                      >
+                        Blood Ige Test in vadodara
+                      </Link>
+                      <Link
+                        to="/PCOD-pofile-blood-test"
+                        className={getLinkClass("/ige-test")}
+                      >
+                        PCOD Profile Blood Test
+                      </Link>
+                    </NavDropdown>
 
-            <Modal show={showModal} onHide={handleClose} centered size="lg">
-              <Modal.Header closeButton>
-                <Modal.Title className="fw-bold mobile-link">
-                  Login to our Network
-                </Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <Row className="justify-content-center" id="industry">
-                  <Col lg={3} md={4} sm={6}>
-                    <Link to="/laboratory" onClick={() => handleLinkClick('Laboratory')}>
-                      <Card className="single-services-box-modalpopup text-center">
-                        <Card.Body>
-                          <div className="icon">
-                            <Image src={icon1} alt="Service Icon" />
-                          </div>
-                          <Card.Title className="networktitle">
-                            Laboratory
-                          </Card.Title>
-                        </Card.Body>
-                      </Card>
+                    <NavDropdown
+                      className={getLinkClass("/network")}
+                      title="Contact"
+                      id={`offcanvasNavbarDropdown-expand-lg`}
+                    >
+                      <Link to="/contact" className={getLinkClass("/contact")}>
+                        Contact Us
+                      </Link>
+                      <Link
+                        to="/Feedback"
+                        className={getLinkClass("/Feedback")}
+                      >
+                        Feedback
+                      </Link>
+                      <Link
+                        to="/cms/66878d3413d429f45685f7e7"
+                        className={getLinkClass(
+                          "/cms/66878d3413d429f45685f7e7"
+                        )}
+                      >
+                        Terms and condition
+                      </Link>
+                      <Link
+                        to="/cms/66878d5913d429f45685f7ea"
+                        className={getLinkClass(
+                          "/cms/66878d5913d429f45685f7ea"
+                        )}
+                      >
+                        Refund Policy
+                      </Link>
+                      <Link to="/cms/66b5dfea9f6f866057e3073b" className={getLinkClass("/cms/66b5dfea9f6f866057e3073b")}>
+                        Privacy Policy
+                      </Link>
+                      <Link to="/center" className={getLinkClass("/center")}>
+                        Center
+                      </Link>
+                      <Link
+                        to="/join-handwith-us"
+                        className={getLinkClass("/join-handwith-us")}
+                      >
+                        Join hand with us
+                      </Link>
+                    </NavDropdown>
+
+                    <Link
+                      to={props.navigatelink}
+                      className="btn btn-secondary ms-3 btn-login"
+                      onClick={(e) =>
+                        e.currentTarget.getAttribute("href") === "/" ||
+                        e.currentTarget.getAttribute("href") === "/Registration"
+                          ? handleShow()
+                          : handleClose()
+                      }
+                    >
+                      Login / Sign Up
                     </Link>
-                  </Col>
-                  <Col lg={3} md={4} sm={6}>
-                    <Link to="/pharmacy" onClick={() => handleLinkClick('Pharmacy')}>
-                      <Card className="single-services-box-modalpopup text-center">
-                        <Card.Body>
-                          <div className="icon">
-                            <Image src={icon2} alt="Service Icon" />
-                          </div>
-                          <Card.Title className="networktitle">
-                            Pharmacy
-                          </Card.Title>
-                        </Card.Body>
-                      </Card>
-                    </Link>
-                  </Col>
-                  <Col lg={3} md={4} sm={6}>
-                    <Link to="/doctor" onClick={() => handleLinkClick('Doctors')}>
-                      <Card className="single-services-box-modalpopup text-center">
-                        <Card.Body>
-                          <div className="icon">
-                            <Image src={icon3} alt="Service Icon" />
-                          </div>
-                          <Card.Title className="networktitle">
-                            Doctors
-                          </Card.Title>
-                        </Card.Body>
-                      </Card>
-                    </Link>
-                  </Col>
-                  <Col lg={3} md={4} sm={6}>
-                    <Link to="/hospital" onClick={() => handleLinkClick('Hospital')}>
-                      <Card className="single-services-box-modalpopup text-center">
-                        <Card.Body>
-                          <div className="icon">
-                            <Image src={icon4} alt="Service Icon" />
-                          </div>
-                          <Card.Title className="networktitle">
-                            Hospital
-                          </Card.Title>
-                        </Card.Body>
-                      </Card>
-                    </Link>
-                  </Col>
-                  <Col lg={3} md={4} sm={6}>
-                    <Link to="/patient" onClick={() => handleLinkClick('Patients')}>
-                      <Card className="single-services-box-modalpopup text-center">
-                        <Card.Body>
-                          <div className="icon">
-                            <Image src={icon5} alt="Service Icon" />
-                          </div>
-                          <Card.Title className="networktitle">
-                            Patient
-                          </Card.Title>
-                        </Card.Body>
-                      </Card>
-                    </Link>
-                  </Col>
-                </Row>
-              </Modal.Body>
-            </Modal>
-          </Nav>
-        </Offcanvas.Body>
-      </Navbar.Offcanvas>
+
+                    <Modal
+                      show={showModal}
+                      onHide={handleClose}
+                      centered
+                      size="lg"
+                    >
+                      <Modal.Header closeButton>
+                        <Modal.Title className="fw-bold mobile-link">
+                          Login to our Network
+                        </Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        <Row className="justify-content-center" id="industry">
+                          <Col lg={3} md={4} sm={6}>
+                            <Link
+                              to="/laboratory"
+                              onClick={() => handleLinkClick("Laboratory")}
+                            >
+                              <Card className="single-services-box-modalpopup text-center">
+                                <Card.Body>
+                                  <div className="icon">
+                                    <Image src={icon1} alt="Service Icon" />
+                                  </div>
+                                  <Card.Title className="networktitle">
+                                    Laboratory
+                                  </Card.Title>
+                                </Card.Body>
+                              </Card>
+                            </Link>
+                          </Col>
+                          <Col lg={3} md={4} sm={6}>
+                            <Link
+                              to="/pharmacy"
+                              onClick={() => handleLinkClick("Pharmacy")}
+                            >
+                              <Card className="single-services-box-modalpopup text-center">
+                                <Card.Body>
+                                  <div className="icon">
+                                    <Image src={icon2} alt="Service Icon" />
+                                  </div>
+                                  <Card.Title className="networktitle">
+                                    Pharmacy
+                                  </Card.Title>
+                                </Card.Body>
+                              </Card>
+                            </Link>
+                          </Col>
+                          <Col lg={3} md={4} sm={6}>
+                            <Link
+                              to="/doctor"
+                              onClick={() => handleLinkClick("Doctors")}
+                            >
+                              <Card className="single-services-box-modalpopup text-center">
+                                <Card.Body>
+                                  <div className="icon">
+                                    <Image src={icon3} alt="Service Icon" />
+                                  </div>
+                                  <Card.Title className="networktitle">
+                                    Doctors
+                                  </Card.Title>
+                                </Card.Body>
+                              </Card>
+                            </Link>
+                          </Col>
+                          <Col lg={3} md={4} sm={6}>
+                            <Link
+                              to="/hospital"
+                              onClick={() => handleLinkClick("Hospital")}
+                            >
+                              <Card className="single-services-box-modalpopup text-center">
+                                <Card.Body>
+                                  <div className="icon">
+                                    <Image src={icon4} alt="Service Icon" />
+                                  </div>
+                                  <Card.Title className="networktitle">
+                                    Hospital
+                                  </Card.Title>
+                                </Card.Body>
+                              </Card>
+                            </Link>
+                          </Col>
+                          <Col lg={3} md={4} sm={6}>
+                            <Link
+                              to="/patient"
+                              onClick={() => handleLinkClick("Patients")}
+                            >
+                              <Card className="single-services-box-modalpopup text-center">
+                                <Card.Body>
+                                  <div className="icon">
+                                    <Image src={icon5} alt="Service Icon" />
+                                  </div>
+                                  <Card.Title className="networktitle">
+                                    Patient
+                                  </Card.Title>
+                                </Card.Body>
+                              </Card>
+                            </Link>
+                          </Col>
+                        </Row>
+                      </Modal.Body>
+                    </Modal>
+                  </Nav>
+                </Offcanvas.Body>
+              </Navbar.Offcanvas>
             </Container>
           </Navbar>
         </div>
 
-
-
-        
         {/* this is main screen sidebar */}
         <div className={`labto-nav ${isOpen ? "active" : ""}`}>
           <div className="container">
@@ -330,44 +474,44 @@ function Modalnavigationbar(props) {
                       Home
                     </Link>
                   </li>
-                 
+
                   <li className="nav-item">
                     <Link to="/camping" className="nav-link">
                       Campaign
                     </Link>
                   </li>
 
-                    <li className="nav-item">
+                  <li className="nav-item">
                     <Link to="/" className="nav-link">
                       About Us <FaAngleDown />
                     </Link>
                     <ul className="dropdown-menu">
                       <li className="nav-item">
-                       <Link
-                      to="/cms/667e52387a043e58372e16ce"
-                      className="nav-link"
-                    >
-                      About Gracelab
-                    </Link>
+                        <Link
+                          to="/cms/667e52387a043e58372e16ce"
+                          className="nav-link"
+                        >
+                          About Gracelab
+                        </Link>
                       </li>
-                     <li className="nav-item">
-                    <Link to="/Directors" className="nav-link">
-                      Directors
-                    </Link>
-                  </li>
-                   <li className="nav-item">
-                    <Link to="/Testimonial" className="nav-link">
-                      Testimonial
-                    </Link>
-                  </li>
-                   <li className="nav-item">
-                    <Link to="/awards" className="nav-link">
-                      Awards and Certificate
-                    </Link>
-                  </li>
+                      <li className="nav-item">
+                        <Link to="/Directors" className="nav-link">
+                          Directors
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link to="/Testimonial" className="nav-link">
+                          Testimonial
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link to="/awards" className="nav-link">
+                          Awards and Certificate
+                        </Link>
+                      </li>
                     </ul>
                   </li>
-                   <li className="nav-item">
+                  <li className="nav-item">
                     <Link to="/" className="nav-link">
                       Network <FaAngleDown />
                     </Link>
@@ -419,152 +563,127 @@ function Modalnavigationbar(props) {
                       </li>
                     </ul>
                   </li>
-                  
+
                   <li className="nav-item">
                     <Link to="/" className="nav-link">
                       Media <FaAngleDown />
                     </Link>
                     <ul className="dropdown-menu">
                       <li className="nav-item">
-                        <Link
-                          to="/news"
-                          className="nav-link"
-                        >
+                        <Link to="/news" className="nav-link">
                           News and Media
                         </Link>
                       </li>
-                     <li className="nav-item">
-                    <Link to="/blog" className="nav-link">
-                      Blog
-                    </Link>
-                  </li>
+                      <li className="nav-item">
+                        <Link to="/blog" className="nav-link">
+                          Blog
+                        </Link>
+                      </li>
                     </ul>
                   </li>
 
-                   <li className="nav-item">
+                  <li className="nav-item">
                     <Link to="/" className="nav-link">
-                     Package <FaAngleDown />
+                      Package <FaAngleDown />
                     </Link>
                     <ul className="dropdown-menu">
                       <li className="nav-item">
-                       <Link
-                      to="/pregnancy-blood-test"
-                      className="nav-link"
-                    >
-                      Pregnancy Blood Test
-                    </Link>
+                        <Link to="/pregnancy-blood-test" className="nav-link">
+                          Pregnancy Blood Test
+                        </Link>
                       </li>
                       <li className="nav-item">
-                       <Link
-                      to="/blood-test-kids"
-                      className="nav-link"
-                    >
-                      Blood Test For Kids
-                    </Link>
-                      </li>
-                        <li className="nav-item">
-                       <Link
-                      to="/full-body-checkup"
-                      className="nav-link"
-                    >
-                      Full Body Checkup
-                    </Link>
-                      </li>
-                       <li className="nav-item">
-                       <Link
-                      to="/senior-citizen-male"
-                      className="nav-link"
-                    >
-                      Health checkup for senior citizen (male)
-                    </Link>
-                      </li>
-                       <li className="nav-item">
-                       <Link
-                      to="/senior-citizen-female"
-                      className="nav-link"
-                    >
-                      Health checkup for senior citizen (Female)
-                    </Link>
-                      </li>
-                       <li className="nav-item">
-                       <Link
-                      to="/swine-flue"
-                      className="nav-link"
-                    >
-                      Swine Flue Test In vadodara
-                    </Link>
-                      </li>
-                       <li className="nav-item">
-                       <Link
-                      to="/serology-blood-test"
-                      className="nav-link"
-                    >
-                      Serology Blood Test
-                    </Link>
-                      </li>
-                       <li className="nav-item">
-                       <Link
-                      to="/ige-test"
-                      className="nav-link"
-                    >
-                      Blood Ige Test in vadodara
-                    </Link>
+                        <Link to="/blood-test-kids" className="nav-link">
+                          Blood Test For Kids
+                        </Link>
                       </li>
                       <li className="nav-item">
-                       <Link
-                      to="/PCOD-pofile-blood-test"
-                      className="nav-link"
-                    >
-                      PCOD Profile Blood Test
-                    </Link>
+                        <Link to="/full-body-checkup" className="nav-link">
+                          Full Body Checkup
+                        </Link>
                       </li>
-                  
+                      <li className="nav-item">
+                        <Link to="/senior-citizen-male" className="nav-link">
+                          Health checkup for senior citizen (male)
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link to="/senior-citizen-female" className="nav-link">
+                          Health checkup for senior citizen (Female)
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link to="/swine-flue" className="nav-link">
+                          Swine Flue Test In vadodara
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link to="/serology-blood-test" className="nav-link">
+                          Serology Blood Test
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link to="/ige-test" className="nav-link">
+                          Blood Ige Test in vadodara
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link to="/PCOD-pofile-blood-test" className="nav-link">
+                          PCOD Profile Blood Test
+                        </Link>
+                      </li>
                     </ul>
                   </li>
-                  
-                   <li className="nav-item">
+
+                  <li className="nav-item">
                     <Link to="/" className="nav-link">
-                     Contact <FaAngleDown />
+                      Contact <FaAngleDown />
                     </Link>
                     <ul className="dropdown-menu">
                       <li className="nav-item">
-                       <Link
-                      to="/contact"
-                      className="nav-link"
-                    >
-                      Contact Us
-                    </Link>
+                        <Link to="/contact" className="nav-link">
+                          Contact Us
+                        </Link>
                       </li>
-                     <li className="nav-item">
-                    <Link to="/Feedback" className="nav-link">
-                      Feedback
-                    </Link>
-                  </li>
-                   <li className="nav-item">
-                    <Link to="/cms/66878d3413d429f45685f7e7" className="nav-link">
-                      Terms and condition
-                    </Link>
-                  </li>
-                   <li className="nav-item">
-                    <Link to="/cms/66878d5913d429f45685f7ea" className="nav-link">
-                      Refund Policy
-                    </Link>
-                  </li>
-                    <li className="nav-item">
-                    <Link to="/cms/66b5dfea9f6f866057e3073b" className="nav-link">
-                      Privacy Policy
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link to="/center" className="nav-link">
-                      Center
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link to="/join-handwith-us" className="nav-link">
-                      Join hand with us 
-                    </Link>
-                  </li>
+                      <li className="nav-item">
+                        <Link to="/Feedback" className="nav-link">
+                          Feedback
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link
+                          to="/cms/66878d3413d429f45685f7e7"
+                          className="nav-link"
+                        >
+                          Terms and condition
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link
+                          to="/cms/66878d5913d429f45685f7ea"
+                          className="nav-link"
+                        >
+                          Refund Policy
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link
+                          to="/cms/66b5dfea9f6f866057e3073b"
+                          className="nav-link"
+                        >
+                          Privacy Policy
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link to="/center" className="nav-link">
+                          Center
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link to="/join-handwith-us" className="nav-link">
+                          Join hand with us
+                        </Link>
+                      </li>
                     </ul>
                   </li>
                   {/* <li className="nav-item"><Link to="/sterling-hospital" className="nav-link">hospital</Link></li> */}
