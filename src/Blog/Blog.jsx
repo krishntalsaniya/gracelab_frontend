@@ -113,7 +113,7 @@ function Blog() {
                       <small className="text-muted">
                         Date: {formatDate(camping.Date)}
                       </small>
-                      <Card.Text>{stripHtml(camping.Description)}</Card.Text>
+                      {/* <Card.Text>{stripHtml(camping.Description)}</Card.Text> */}
                     </Card.Body>
                   </Card>
                 </Link>

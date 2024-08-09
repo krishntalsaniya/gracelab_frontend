@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Modalnavigationbar from "../navbar/Modalnavigationbar";
 import { MdArrowForwardIos } from "react-icons/md";
 import { Link, useParams } from "react-router-dom";
-import placeholderimage from "../img/placeholder.jpeg";
+import placeholderimage from "../img/center-placeholder.jpg";
 import { FaMapMarkerAlt } from "react-icons/fa"; // Import React Icon
 import { MdWifiCalling3 } from "react-icons/md";
 

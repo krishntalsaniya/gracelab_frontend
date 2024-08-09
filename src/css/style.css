@@ -2667,6 +2667,14 @@ a:hover {
 
 }
 
+.blood-test {
+  text-align: end !important;
+}
+
+.title-test-dsc {
+  margin: 50px;
+}
+
 /* @media (max-width: 768px) {
   .team-details-desc {
     padding: 15px;

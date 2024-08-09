@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Image, Modal, Button, Form, Card } from "react-bootstrap";
+import { Container, Row, Col, Modal, Button, Form, Tabs, Tab } from "react-bootstrap";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -17,7 +17,9 @@ const TestTypes = [
   { id: 5, name: "Health checkup for senior citizen (Female)" },
   { id: 6, name: "Swine Flue Test In vadodara" },
   { id: 7, name: "Serology Blood Test" },
-  { id: 8, name: "Blood Ige Test in vadodara" }
+  { id: 8, name: "Blood Ige Test in vadodara" },
+  { id: 9, name: "PCOD Profile Blood Test" }
+
 ];
 
 function Pragnancybloodtest() {
@@ -30,9 +32,8 @@ function Pragnancybloodtest() {
     mobileNo: "",
     message: "",
   });
-  const [showMore, setShowMore] = useState(null); // Track which card's description is expanded
 
-  const { testName } = useParams(); // Extract testName from route params
+  const { testName } = useParams();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -54,7 +55,6 @@ function Pragnancybloodtest() {
         dataToSend
       );
 
-      console.log("Form submitted successfully:", response.data);
       toast.success("Inquiry was successfully received!");
 
       setFormData({
@@ -66,12 +66,15 @@ function Pragnancybloodtest() {
 
       setShowModal(false);
     } catch (error) {
-      console.error("Error submitting the form:", error);
       toast.error("There was an error submitting your inquiry.");
     }
   };
-const selectedTestId = "1";
-          console.log("Selected Test ID:", selectedTestId);
+
+  // Hardcoded selectedTestId, make sure it's correctly set
+  const selectedTestId = "1";
+  console.log("gfds",selectedTestId);
+  
+
   useEffect(() => {
     const fetchCMSContent = async () => {
       try {
@@ -79,111 +82,96 @@ const selectedTestId = "1";
           `${process.env.REACT_APP_API_URL_GRACELAB}/api/auth/get/getallTestDetails`
         );
 
-        console.log("API Response:", response.data); // Debugging: Check API response
-        console.log("TestTypes:", TestTypes); // Debugging: Check TestTypes
-
         if (Array.isArray(response.data) && response.data.length > 0) {
           setBlog(response.data);
 
-          // Extract selectedTest ID from the response data
-           // Debugging: Check selectedTest ID
-
-          // Find the matching test type based on the selectedTest ID
+          // Find the test type by the selectedTestId
           const matchedTestType = TestTypes.find(test => test.id.toString() === selectedTestId);
-          console.log("Matched Test Type:", matchedTestType); // Debugging: Check matched test type
 
           if (matchedTestType) {
-            // Find the item with the matching selectedTest ID
-            const matchedItem = response.data.find(item => item.selectedTest === matchedTestType.id.toString());
-            console.log("Matched Item:", matchedItem); // Debugging: Check matched item
+            // Find the blog item corresponding to the selectedTestId
+            const matchedItem = response.data.find(item => item.selectedTest.toString() === matchedTestType.id.toString());
 
             if (matchedItem) {
-              setSelectedItemId(matchedItem._id); // Set the selected item ID
+              setSelectedItemId(matchedItem._id);  // Set the selectedItemId based on the matched item
+            } else {
+              console.error("No matching test found in the API response.");
             }
           }
         } else {
-          console.error("Unexpected response format or empty data:", response.data);
           setBlog([]);
         }
       } catch (error) {
-        console.error("Error fetching CMS content:", error);
+        console.error("Error fetching test details:", error);
         setBlog([]);
       }
     };
 
     fetchCMSContent();
-  }, [testName]);
+  }, [selectedTestId]);
 
   return (
     <>
       <Modalnavigationbar />
-        <div className="page-title-area">
+      <div className="page-title-area">
         <Pagetitle
-          heading="Pregnanacy-blood-test"
+          heading="Pregnancy Blood Test"
           pagetitlelink="/"
           title1="Home"
-          title2="Pregnanacy-blood-test"
+          title2="Pregnancy Blood Test"
           IconComponent={MdArrowForwardIos}
         />
       </div>
 
       <section className="about-area ptb-50">
         <Container>
-          <Row>
-            {blog
-              .filter(item => item._id === selectedItemId)
-              .map(item => (
-                <Col lg={4} md={6} key={item._id} className="mb-4">
-                  <Card className="test-card">
-                    <Card.Img
-                      variant="top"
+          {blog
+            .filter(item => item._id === selectedItemId)
+            .map(item => (
+              <Row key={item._id}>
+                <Col lg={6} className="mb-4">
+                  <div className="test-details">
+                    <img
                       src={`${process.env.REACT_APP_API_URL_GRACELAB}/${item.Images}`}
-                      alt="Test"
+                      alt={item.Title}
                       onError={(e) => { e.target.src = placeholderimage }}
-                      style={{ height: '200px', objectFit: 'cover' }}
+                      style={{ width: '100%', height: '320px', objectFit: 'cover' }}
                     />
-                    <Card.Body>
-                      <Card.Title>{item.Title}</Card.Title>
-                      <Card.Subtitle className="mb-2 text-muted">Test Name: {item.TestName}</Card.Subtitle>
-                      <Card.Subtitle className="mb-2 text-muted">Price: {item.Price}</Card.Subtitle>
-
-                      <Card.Text>
-                        {showMore === item._id ? 
-                          <div dangerouslySetInnerHTML={{ __html: item.Description }} />
-                          :
-                          <div dangerouslySetInnerHTML={{ __html: item.Description.slice(0, 100) + '...' }} />
-                        }
-                      </Card.Text>
-                    <Button
-  onClick={() =>
-    setShowMore(showMore === item._id ? null : item._id)
-  }
-  className="show-more-button"
->
-  {showMore === item._id ? "Show Less" : "Show More"}
-</Button>
-
-                      <div className="btn-box mt-3">
-                        <Button
-                          variant="primary"
-                          className="btn-login"
-                          onClick={() => {
-                            setSelectedItemId(item._id);
-                            setShowModal(true);
-                          }}
-                        >
-                          Inquiry
-                        </Button>
-                      </div>
-                    </Card.Body>
-                  </Card>
+                  </div>
                 </Col>
-              ))}
-        </Row>
+                <Col lg={6} className="mb-4">
+                  <div className="title-test-dsc">
+                    <h2>{item.Title}</h2>
+                    <h4>Test Name: {item.TestName}</h4>
+                    <h4 style={{ fontWeight: "bolder" }}>Price: {item.Price}</h4>
+
+                    <div className="btn-box blood-test mt-3">
+                      <Button
+                        variant="primary"
+                        className="btn-login"
+                        onClick={() => {
+                          setSelectedItemId(item._id);
+                          setShowModal(true);
+                        }}
+                      >
+                        Inquiry
+                      </Button>
+                    </div>
+                  </div>
+                </Col>
+                <Col lg={12} className="mb-4">
+                  <Tabs defaultActiveKey="description" id="test-tabs" className="mt-3">
+                    <Tab eventKey="description" title="Description">
+                      <div dangerouslySetInnerHTML={{ __html: item.Description }} />
+                    </Tab>
+                  </Tabs>
+                </Col>
+              </Row>
+            ))}
         </Container>
       </section>
 
-        <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Header closeButton className="modal-header">
           <Modal.Title>Inquiry Form</Modal.Title>
         </Modal.Header>

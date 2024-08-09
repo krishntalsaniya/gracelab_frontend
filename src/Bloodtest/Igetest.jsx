@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Image, Modal, Button, Form, Card } from "react-bootstrap";
+import { Container, Row, Col, Modal, Button, Form, Tabs, Tab } from "react-bootstrap";
+
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Modalnavigationbar from "../navbar/Modalnavigationbar";
-import placeholderimage from "../img/placeholder.jpeg";
+import placeholderimage from "../img/ige-placeholder.jpg";
 import { useParams } from "react-router-dom";
 import Pagetitle from "../patients/Pagetitle";
 import { MdArrowForwardIos } from "react-icons/md";
@@ -17,7 +18,9 @@ const TestTypes = [
   { id: 5, name: "Health checkup for senior citizen (Female)" },
   { id: 6, name: "Swine Flue Test In vadodara" },
   { id: 7, name: "Serology Blood Test" },
-  { id: 8, name: "Blood Ige Test in vadodara" }
+  { id: 8, name: "Blood Ige Test in vadodara" },
+    { id: 9, name: "PCOD Profile Blood Test" }
+
 ];
 
 function Igetest() {
@@ -129,58 +132,50 @@ const selectedTestId = "8";
       </div>
 
       <section className="about-area ptb-120">
-        <Container>
-          <Row>
-            {blog
-              .filter(item => item._id === selectedItemId)
-              .map(item => (
-                <Col lg={4} md={6} key={item._id} className="mb-4">
-                  <Card className="test-card">
-                    <Card.Img
-                      variant="top"
+          <Container>
+          {blog
+            .filter(item => item._id === selectedItemId)
+            .map(item => (
+              <Row key={item._id}>
+                <Col lg={6} className="mb-4">
+                  <div className="test-details">
+                    <img
                       src={`${process.env.REACT_APP_API_URL_GRACELAB}/${item.Images}`}
-                      alt="Test"
+                      alt={item.Title}
                       onError={(e) => { e.target.src = placeholderimage }}
-                      style={{ height: '200px', objectFit: 'cover' }}
+                      style={{ width: '100%', height: '320px', objectFit: 'cover' }}
                     />
-                    <Card.Body>
-                      <Card.Title>{item.Title}</Card.Title>
-                      <Card.Subtitle className="mb-2 text-muted">Test Name: {item.TestName}</Card.Subtitle>
-                      <Card.Subtitle className="mb-2 text-muted">Price: {item.Price}</Card.Subtitle>
-
-                      <Card.Text>
-                        {showMore === item._id ? 
-                          <div dangerouslySetInnerHTML={{ __html: item.Description }} />
-                          :
-                          <div dangerouslySetInnerHTML={{ __html: item.Description.slice(0, 100) + '...' }} />
-                        }
-                      </Card.Text>
-                    <Button
-  onClick={() =>
-    setShowMore(showMore === item._id ? null : item._id)
-  }
-  className="show-more-button"
->
-  {showMore === item._id ? "Show Less" : "Show More"}
-</Button>
-
-                      <div className="btn-box mt-3">
-                        <Button
-                          variant="primary"
-                          className="btn-login"
-                          onClick={() => {
-                            setSelectedItemId(item._id);
-                            setShowModal(true);
-                          }}
-                        >
-                          Inquiry
-                        </Button>
-                      </div>
-                    </Card.Body>
-                  </Card>
+                  </div>
                 </Col>
-              ))}
-        </Row>
+                <Col lg={6} className="mb-4">
+                  <div className="title-test-dsc">
+                    <h2>{item.Title}</h2>
+                    <h4>Test Name: {item.TestName}</h4>
+                    <h4 style={{ fontWeight: "bolder" }}>Price: {item.Price}</h4>
+
+                    <div className="btn-box blood-test mt-3">
+                      <Button
+                        variant="primary"
+                        className="btn-login"
+                        onClick={() => {
+                          setSelectedItemId(item._id);
+                          setShowModal(true);
+                        }}
+                      >
+                        Inquiry
+                      </Button>
+                    </div>
+                  </div>
+                </Col>
+                <Col lg={12} className="mb-4">
+                  <Tabs defaultActiveKey="description" id="test-tabs" className="mt-3">
+                    <Tab eventKey="description" title="Description">
+                      <div dangerouslySetInnerHTML={{ __html: item.Description }} />
+                    </Tab>
+                  </Tabs>
+                </Col>
+              </Row>
+            ))}
         </Container>
       </section>
 

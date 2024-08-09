@@ -10,7 +10,7 @@ import Modalnavigationbar from "../navbar/Modalnavigationbar";
 import axios from "axios";
 import Pagetitle from "../patients/Pagetitle";
 import { MdArrowForwardIos } from "react-icons/md";
-import placeholderimage from "../img/placeholder.jpeg";
+import placeholderimage from "../img/join-us-placeholder.jpg";
 
 
 function Joinhandwithus() {
@@ -63,7 +63,10 @@ function Joinhandwithus() {
                         item.bannerImage
                           ? `${process.env.REACT_APP_API_URL_GRACELAB}/${item.bannerImage}`
                           : placeholderimage
-                      } />
+                          
+                      } onError={(e) => {
+                        e.target.src = placeholderimage;
+                      }} />
                     <div className="team-content text-center">
                       <h3>{item.Tittle || "Default Title"}</h3>
                       <p>{item.Description || "This is a dummy text"}</p>
