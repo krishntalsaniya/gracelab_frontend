@@ -42,7 +42,7 @@ function About() {
         </div>
       </div>
 
-      <section className="about-our-company ptb-120 pb-0">
+      <section className="about-our-company pb-0">
         <Container>
           <Row className="align-items-center">
             <Col lg={12} md={12}>
