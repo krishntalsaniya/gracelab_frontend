@@ -185,6 +185,12 @@ function Modalnavigationbar(props) {
               <Link to="/ige-test" className={getLinkClass('/ige-test')}>
              Blood Ige Test in vadodara
               </Link>
+              <Link
+                      to="/PCOD-pofile-blood-test"
+                     className={getLinkClass('/ige-test')}
+                    >
+                      PCOD Profile Blood Test
+                    </Link>
             </NavDropdown>
 
             <NavDropdown className={getLinkClass('/network')} title="Contact" id={`offcanvasNavbarDropdown-expand-lg`}>
